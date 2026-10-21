@@ -7,6 +7,7 @@ Site institucional e sistema de pesquisas da Sinergia Research & Intelligence, m
 ```
 index.html                 site completo (HTML, CSS e JS num arquivo só)
 assets/logo-sinergia.png   logo
+SOLICITACOES.md            mapa das etiquetas ▶ INÍCIO / ◆ MEIO / ■ FIM das solicitações da cliente
 ```
 
 ## Login e permissões
@@ -14,19 +15,37 @@ assets/logo-sinergia.png   logo
 O login tem duas entradas:
 
 - **Administrador**: gerencia pesquisas, projetos, convites, resultados, cadastros, usuários e permissões.
-- **Usuário**: navega como **Agente**, **Cliente Empresa** e/ou **Participante**, conforme o que o administrador marcar em *Usuários e permissões*. Quem tem mais de uma permissão escolhe o perfil ao entrar e troca pelo menu lateral ("Navegar como").
+- **Usuário**: navega como **Equipe interna**, **Cliente Empresa** e/ou **Participante**, conforme o que o administrador marcar em *Usuários e permissões*. Quem tem mais de uma permissão escolhe o perfil ao entrar e troca pelo menu lateral ("Navegar como").
 
-Na aba *Permissões por perfil*, o administrador também liga ou desliga funções de cada perfil (por exemplo, esconder o botão "Ver recursos" dos agentes).
+Na aba *Permissões por perfil*, o administrador também liga ou desliga funções de cada perfil (por exemplo, esconder os insights de focus group do cliente).
+
+Entrevistadores e terceirizados (agentes de campo) **não têm acesso** à plataforma: ficam só em Cadastros, e o login recusa o e-mail deles (solicitação S5).
 
 ### Contas de demonstração (qualquer senha com 4+ caracteres)
 
 | Conta | Acesso |
 |---|---|
 | helena@sinergia.com.br | Administrador |
-| demo@sinergia.com.br | Usuário · Agente, Cliente e Participante |
-| joao.tadeu@sinergia.com.br | Usuário · Agente e Participante |
+| demo@sinergia.com.br | Usuário · Equipe interna (análise), Cliente e Participante |
+| bianca@sinergia.com.br | Usuário · Equipe interna — Transcrição |
+| carla@dadosco.com.br | Usuário · Equipe interna — Processamento (parceiro Dados & Co) |
+| livia@sinergia.com.br | Usuário · Equipe interna — Assistente de análise |
+| joao.tadeu@sinergia.com.br | Usuário · Participante |
+| yasmin@sinergia.com.br | Entrevistadora terceirizada: o login é recusado de propósito |
 | marina@cinemaalfa.com.br | Usuário · Cliente (Cinema Alfa) |
 | ana.ribeiro@email.com | Usuário · Participante |
+
+## Solicitações da cliente (relatório de 21/10/2026)
+
+| Código | Pedido | Onde ver |
+|---|---|---|
+| S1 | Proteção anti-vazamento | Material na sala: marca d'água com nome e hora, pausa fora da tela, captura/impressão bloqueadas e registradas (*Focus group → Registro de acesso*) |
+| S2 | Focus group com chat de vídeo | Administrador: *Focus group*; participante: *Debates*; equipe: *Focus group*; site público: *Focus group* |
+| S3 | Apresentar materiais no chat | Controles da moderação dentro da sala |
+| S4 | Integração com a plataforma | Aba *Focus group* no projeto, esteira *Transcrição e análise*, insights nos resultados do cliente |
+| S5 | Controle de acesso | Agente sem login; perfil Equipe interna com 3 funções |
+
+Fluxo em três etapas, marcado nas telas: **1 · INÍCIO** agendar e convidar → **2 · MEIO** sala ao vivo → **3 · FIM** transcrição e análise. Limite honesto do S1: nenhum site impede foto da tela feita com outro aparelho; a marca d'água individual identifica quem vazou. Na versão real, o vídeo precisa de DRM (Widevine, FairPlay ou PlayReady).
 
 O cadastro de participante no site cria uma conta nova com permissão de Participante. O botão *Restaurar dados de exemplo* (menu do administrador) volta tudo ao estado inicial.
 
@@ -37,7 +56,8 @@ O cadastro de participante no site cria uma conta nova com permissão de Partici
 | Site | Home, Serviços, Cinema, CAT, CIA, Pesquisa aberta, Cadastro | `#home`, `#servicos`, `#cinema`, `#cat`, `#cia`, `#pesquisa`, `#cadastro` |
 | Acesso | Login (Administrador / Usuário) e escolha de perfil | `#login`, `#navegar` |
 | Administrador | A1 Pesquisas e A2 Nova pesquisa, A3 Resultados, A4 Projetos, A5 Projeto, A9 Clientes, A10 Cliente, A6 Convites, A7 Cadastros, A8 Usuários e permissões | `#adm-pesquisas`, `#adm-resultados`, `#adm-projetos`, `#adm-projeto`, `#adm-clientes`, `#adm-cliente`, `#adm-convites`, `#adm-cadastros`, `#adm-usuarios` |
-| Agente | G1 Minhas pesquisas, G2 Detalhes (com a janela G5 Recursos), G3/G4 Aplicar, G6 Perfil | `#ag-pesquisas`, `#ag-detalhes`, `#ag-aplicar`, `#ag-perfil` |
+| Agente | Desativada (S5): entrevistadores e terceirizados não acessam | — |
+| Equipe interna | Focus group, Sala (observação), Transcrição e análise, Perfil | `#eq-focus`, `#eq-sala`, `#eq-transcricoes`, `#eq-perfil` |
 | Cliente Empresa | K2 Projetos (início), K3 Projeto, K5 Resultado individual, K1 Resultados (todas as pesquisas), K4 Perfil | `#cl-projetos`, `#cl-projeto`, `#cl-resultado`, `#cl-resultados`, `#cl-perfil` |
 | Participante | R1 Minhas pesquisas, R2 Preferências, R3 Pergunta com imagens, R4 Revisão, R5 Concluída, R6 Minhas respostas, R7 Perfil | `#pa-pesquisas`, `#pa-preferencias`, `#pa-responder`, `#pa-revisao`, `#pa-concluida`, `#pa-respostas`, `#pa-perfil` |
 
