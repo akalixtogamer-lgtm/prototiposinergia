@@ -8,11 +8,13 @@ Relatório de solicitações recebido em 21/10/2026 (4 áudios da cliente). Cada
 
 | Código | Solicitação | Onde aparece no sistema | Telas no Figma |
 | --- | --- | --- | --- |
-| S1 | Proteção anti-vazamento (DRM) | Material protegido dentro da sala: marca d'água individual, pausa fora da tela, bloqueio de captura, impressão e clique direito, registro de acesso | FG-ADM-02 Materiais, FG-SALA-01/02 |
-| S2 | Ambiente de focus group (chat de vídeo) | `#adm-focus`, `#adm-sala`, `#pa-focus`, `#pa-sala`, `#eq-focus`, `#eq-sala`, página pública `#focusgroup` | FG-ADM-01, FG-PA-01, FG-SALA-01/02, Site · Focus group |
+| S1 | Proteção anti-vazamento (DRM) | Material protegido dentro da sala: marca d'água individual, pausa fora da tela, bloqueio de captura, impressão e clique direito, registro de acesso | FG-ADM-03 Materiais e registro, FG-SALA-01/02, FG-SALA-03 Proteção em ação |
+| S2 | Ambiente de focus group (chat de vídeo) | `#adm-focus`, `#adm-sala`, `#pa-focus`, `#pa-sala`, `#eq-focus`, `#eq-sala`, página pública `#focusgroup` | FG-ADM-01 Lista, FG-ADM-02 Agendar, FG-PA-01 Debates, FG-PA-02 Termo de sigilo, FG-SALA-01/02, Site · Focus group online |
 | S3 | Apresentação de materiais no chat | Controles da moderação na sala (`#adm-sala`) | FG-SALA-01 |
-| S4 | Integração com as ferramentas | Aba Focus group no projeto, esteira `#eq-transcricoes`, insights em `#cl-resultados` e `#cl-resultado` | FG-EQ-01, FG-CL-01 |
-| S5 | Controle de acesso rigoroso | Login recusa entrevistadores; área do Agente desativada; perfil Equipe interna; Usuários e Cadastros | FG-LOGIN-01, A8, A7 |
+| S4 | Integração com as ferramentas | Aba Focus group no projeto, esteira `#eq-transcricoes`, insights em `#cl-resultados` e `#cl-resultado` | FG-EQ-01 Esteira, FG-CL-01 Insights do cliente |
+| S5 | Controle de acesso rigoroso | Login recusa entrevistadores; área do Agente desativada; perfil Equipe interna; Usuários e Cadastros | FG-LOGIN-01, A8 (MEIO), A7 (FIM), seção Agente marcada como desativada |
+
+No Figma, tudo está na seção "Solicitações da cliente · relatório 21/10/2026 (S1–S5)" da página Protótipo, com o componente Etiqueta de solicitação (Etapa = INÍCIO, MEIO ou FIM).
 
 Etapas do fluxo mostradas nas telas: **1 · INÍCIO** agendar e convidar → **2 · MEIO** sala ao vivo → **3 · FIM** transcrição e análise.
 
