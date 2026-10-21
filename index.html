@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sinergia Surveys</title>
+<meta name="description" content="Sinergia Research & Intelligence — site e sistema de pesquisas (protótipo navegável).">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/logo-sinergia.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: faixa verde-escura da marca no topo, palco de cinema (carrossel) e conteúdo em coluna de 1200px; área logada com menu lateral. Tokens do design system Sinergia. */
+:root{
+  --green-950:#073302; --green-900:#0e4212; --green-800:#1b5423; --green-700:#236a36; --green-600:#2c8149; --green-200:#bfe9cb; --green-50:#eefbf2;
+  --sand-50:#fdf6ea; --sand-200:#f3d6ab; --sand-400:#edb161; --sand-800:#814c24;
+  --blue-50:#edf7fe; --blue-800:#024263; --red-50:#fef0ee; --red-800:#7f211d;
+  --bg:#ffffff; --bg-subtle:#f9fbf9; --surface:#ffffff; --muted:#f3f6f4; --line:#dbdfdb; --line-strong:#9ea39e;
+  --fg:#1c1f1c; --fg-2:#5a5f5b; --fg-3:#6f7570; --brand:#236a36; --action:#2c8149; --action-hover:#236a36; --on-action:#ffffff;
+  --accent:#edb161; --on-accent:#073302; --brand-soft:#eefbf2; --ok-bg:#eefbf2; --ok-fg:#1b5423; --warn-bg:#fdf6ea; --warn-fg:#814c24; --info-bg:#edf7fe; --info-fg:#024263;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --r-sm:4px; --r-md:6px; --r-lg:12px; --max:1200px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121512; --bg-subtle:#161a16; --surface:#1b201b; --muted:#222822; --line:#2f362f; --line-strong:#4a524b;
+  --fg:#eef2ee; --fg-2:#b7bfb8; --fg-3:#949c95; --brand:#98d7aa; --action:#46a064; --action-hover:#6cbc83; --on-action:#071a09;
+  --brand-soft:#16301c; --ok-bg:#16301c; --ok-fg:#bfe9cb; --warn-bg:#33270f; --warn-fg:#f3d6ab; --info-bg:#0f2a3a; --info-fg:#b4daf5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121512; --bg-subtle:#161a16; --surface:#1b201b; --muted:#222822; --line:#2f362f; --line-strong:#4a524b;
+  --fg:#eef2ee; --fg-2:#b7bfb8; --fg-3:#949c95; --brand:#98d7aa; --action:#46a064; --action-hover:#6cbc83; --on-action:#071a09;
+  --brand-soft:#16301c; --ok-bg:#16301c; --ok-fg:#bfe9cb; --warn-bg:#33270f; --warn-fg:#f3d6ab; --info-bg:#0f2a3a; --info-fg:#b4daf5; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--green-950)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.2vw,3.25rem)} h2{font-size:clamp(1.6rem,2.8vw,2.1rem)} h3{font-size:1.3rem}
+p{margin:0} a{color:var(--brand)} a:hover{color:var(--action-hover)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 .75rem/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brand)}
+.lead{font-size:1.15rem;color:var(--fg-2);max-width:62ch}
+.muted{color:var(--fg-2)} .small{font-size:.875rem} .tnum{font-variant-numeric:tabular-nums}
+
+/* Botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 .95rem/1.2 var(--sans);padding:12px 20px;border-radius:var(--r-md);border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s}
+.btn-primary{background:var(--action);color:var(--on-action)} .btn-primary:hover{background:var(--action-hover);color:var(--on-action)}
+.btn-accent{background:var(--accent);color:var(--on-accent)} .btn-accent:hover{background:var(--sand-200);color:var(--on-accent)}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--line-strong)} .btn-ghost:hover{border-color:var(--fg);color:var(--fg)}
+.btn-sm{padding:7px 12px;font-size:.85rem}
+.linkbtn{background:none;border:0;padding:0;font:600 .875rem var(--sans);color:var(--brand);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* Cabeçalho do site */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--green-950);color:#fff}
+.site-head .wrap{display:flex;align-items:center;gap:24px;min-height:72px}
+.logo{display:block;line-height:0;flex:none} .logo img{height:56px;width:auto;display:block}
+.nav{display:flex;gap:4px;margin-left:auto;align-items:center;flex-wrap:wrap}
+.nav a{color:#dbefe0;text-decoration:none;font:500 .92rem var(--sans);padding:8px 12px;border-radius:var(--r-sm)}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav a[aria-current="page"]{color:#fff;box-shadow:inset 0 -2px 0 var(--accent)}
+.nav .btn-accent{margin-left:8px;color:var(--on-accent)}
+.menu-toggle{display:none;margin-left:auto;background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:var(--r-sm);padding:8px 12px;font:500 .9rem var(--sans);cursor:pointer}
+@media (max-width:860px){
+  .menu-toggle{display:inline-flex}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--green-950);flex-direction:column;align-items:stretch;padding:8px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));border-top:1px solid rgba(255,255,255,.1)}
+  .nav.open{display:flex} .nav .btn-accent{margin:8px 0 0}
+}
+
+/* Hero: carrossel de cenas de cinema */
+.stage{background:#050806;color:#fff;position:relative;overflow:hidden}
+.slides{position:relative;aspect-ratio:21/9;max-height:560px;width:100%}
+@media (max-width:720px){.slides{aspect-ratio:4/5;max-height:none}}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;visibility:hidden}
+.slide.on{opacity:1;visibility:visible}
+.slide svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.18;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,10,4,.85) 0%,rgba(3,10,4,.55) 45%,rgba(3,10,4,0) 75%),linear-gradient(0deg,rgba(3,10,4,.7),rgba(3,10,4,0) 40%)}
+@media (max-width:720px){.shade{background:linear-gradient(0deg,rgba(3,10,4,.92) 10%,rgba(3,10,4,.35) 60%,rgba(3,10,4,.1))}}
+.caption{position:absolute;inset:auto 0 0 0;padding-block:clamp(28px,6vw,72px)}
+.caption .inner{max-width:560px;display:grid;gap:14px}
+.caption .tag{font:500 .72rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sand-200)}
+.caption h1{color:#fff;font-size:clamp(1.9rem,4.4vw,3.4rem)}
+.caption p{color:#d9e6dc;font-size:1.05rem;max-width:46ch}
+.caption .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.caption .btn-ghost{color:#fff;border-color:rgba(255,255,255,.5)} .caption .btn-ghost:hover{border-color:#fff;color:#fff}
+.slate{position:absolute;top:18px;right:max(16px,env(safe-area-inset-right,0px));font:500 .7rem var(--mono);letter-spacing:.1em;color:rgba(255,255,255,.7);display:flex;gap:14px;align-items:center}
+.slate b{color:#fff;font-weight:500}
+.ctrl{position:absolute;bottom:20px;right:max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:10px;z-index:3}
+.ctrl button.arrow{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(0,0,0,.25);color:#fff;font-size:1.1rem;cursor:pointer}
+.ctrl button.arrow:hover{background:rgba(255,255,255,.15)}
+.dots{display:flex;gap:6px}
+.dots button{width:26px;height:4px;border-radius:2px;border:0;background:rgba(255,255,255,.35);cursor:pointer;padding:0}
+.dots button[aria-current="true"]{background:var(--accent)}
+@media (max-width:720px){.ctrl{bottom:auto;top:14px;left:max(16px,env(safe-area-inset-left,0px));right:auto}.slate{display:none}}
+
+/* Seções */
+.section{padding-block:clamp(48px,7vw,88px)}
+.section.alt{background:var(--bg-subtle);border-block:1px solid var(--line)}
+.sec-head{display:grid;gap:12px;margin-bottom:36px;max-width:720px}
+.grid{display:grid;gap:20px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))} .g2{grid-template-columns:repeat(2,minmax(0,1fr))} .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.g3,.g2,.g4{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.phase{border-top:3px solid var(--action);border-radius:0 0 var(--r-lg) var(--r-lg)}
+.phase .num{font:500 .75rem var(--mono);letter-spacing:.08em;color:var(--fg-3)}
+.phase .service{font:600 .95rem var(--sans);color:var(--brand)}
+.reel{display:flex;gap:0;margin:28px 0 0;font:500 .72rem var(--mono);letter-spacing:.06em;color:var(--fg-3);text-transform:uppercase}
+.reel span{flex:1;border-top:1px dashed var(--line-strong);padding-top:8px}
+.seals{display:flex;flex-wrap:wrap;gap:10px}
+.seal{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px 6px 8px;font:500 .85rem var(--sans)}
+.seal i{width:22px;height:22px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font:600 .7rem var(--mono);font-style:normal}
+.band{background:var(--green-950);color:#fff}
+.band .wrap{padding-block:clamp(40px,6vw,64px);display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.band h2{color:#fff;max-width:20ch} .band p{color:#cfe3d4;max-width:52ch;margin-top:10px}
+.stat{font:600 2.6rem/1 var(--serif);color:var(--brand)}
+.quote{font:italic 400 1.35rem/1.5 var(--serif);color:var(--fg);max-width:40ch}
+
+/* Página interna (topo) */
+.page-hero{background:var(--bg-subtle);border-bottom:1px solid var(--line)}
+.page-hero .wrap{padding-block:clamp(40px,6vw,72px);display:grid;gap:14px}
+.crumbs{font:500 .78rem var(--mono);color:var(--fg-3);display:flex;gap:8px;flex-wrap:wrap}
+.crumbs a{color:var(--fg-3);text-decoration:none} .crumbs a:hover{color:var(--brand)}
+
+/* Formulários */
+form{display:grid;gap:16px}
+.field{display:grid;gap:6px;min-width:0}
+label{font:500 .875rem var(--sans);color:var(--fg)}
+input,select,textarea{font:400 1rem var(--sans);color:var(--fg);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-md);padding:11px 12px;width:100%}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--action);outline-offset:0;border-color:var(--action)}
+.check{display:flex;gap:10px;align-items:flex-start;font:400 .9rem var(--sans);color:var(--fg-2)} .check input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--action)}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px} @media (max-width:560px){.row2{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,3vw,32px)}
+
+/* Login */
+.split{display:grid;grid-template-columns:1fr 1fr;min-height:620px}
+.split .art{position:relative;background:var(--green-950);color:#fff;overflow:hidden}
+.split .art svg{position:absolute;inset:0;width:100%;height:100%}
+.split .art .txt{position:relative;padding:clamp(28px,5vw,56px);display:grid;gap:14px;align-content:end;height:100%}
+.split .art h2{color:#fff;max-width:16ch} .split .art p{color:#cfe3d4}
+.split .form-side{display:grid;place-items:center;padding-block:48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.split .form-side>div{width:min(420px,100%);display:grid;gap:18px}
+@media (max-width:820px){.split{grid-template-columns:minmax(0,1fr)}.split .art{min-height:260px}}
+.profiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px} @media (max-width:900px){.profiles{grid-template-columns:repeat(2,minmax(0,1fr))}} @media (max-width:480px){.profiles{grid-template-columns:minmax(0,1fr)}}
+.profile{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;display:grid;gap:8px;align-content:start}
+.profile:hover{border-color:var(--action)} .profile:focus-visible{outline:2px solid var(--accent)}
+.profile b{font:600 1.15rem var(--serif)} .profile span{font-size:.9rem;color:var(--fg-2)}
+.ico{width:40px;height:40px;border-radius:var(--r-md);background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}
+.ico svg{width:22px;height:22px}
+
+/* Área logada */
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:calc(100vh - 72px)}
+.side{background:var(--bg-subtle);border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:4px}
+.side .who{padding:6px 10px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.side .who .eyebrow{color:var(--fg-3)} .side .who b{display:block;font:600 1rem var(--sans);margin-top:4px}
+.side a{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:var(--r-md);color:var(--fg);text-decoration:none;font:500 .92rem var(--sans)}
+.side a:hover{background:var(--muted);color:var(--fg)}
+.side a[aria-current="page"]{background:var(--brand-soft);color:var(--brand)}
+.side a svg{width:18px;height:18px;flex:none}
+.side .grp{font:500 .7rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);padding:14px 10px 4px}
+.side .sub{padding-left:38px;font-weight:400;font-size:.88rem}
+.side .end{margin-top:auto;border-top:1px solid var(--line);padding-top:10px}
+.main{padding-block:28px 56px;padding-left:max(16px,clamp(16px,3vw,40px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:24px;align-content:start;min-width:0}
+.main-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.main-head h1{font-size:clamp(1.7rem,3vw,2.2rem)}
+@media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.side{flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}.side .who,.side .grp{display:none}.side .sub{padding-left:10px}.side .end{margin-top:0;border-top:0;padding-top:0}}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px} @media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;display:grid;gap:4px}
+.kpi .v{font:600 2rem/1.1 var(--serif);font-variant-numeric:tabular-nums} .kpi .l{font-size:.85rem;color:var(--fg-2)}
+.tablebox{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);text-align:left;padding:12px 16px;background:var(--bg-subtle);border-bottom:1px solid var(--line)}
+td{padding:14px 16px;border-bottom:1px solid var(--line);font-size:.92rem;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td .s{display:block;font-size:.8rem;color:var(--fg-3)}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 .75rem var(--sans);padding:3px 10px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-ok{background:var(--ok-bg);color:var(--ok-fg)} .p-warn{background:var(--warn-bg);color:var(--warn-fg)} .p-info{background:var(--info-bg);color:var(--info-fg)} .p-neu{background:var(--muted);color:var(--fg-2)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs a{padding:10px 14px;font:500 .9rem var(--sans);color:var(--fg-2);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs a[aria-current="page"]{color:var(--brand);border-color:var(--action)}
+.bars{display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:12px;align-items:center;font-size:.9rem}
+.bar .t{height:12px;background:var(--muted);border-radius:6px;overflow:hidden} .bar .t i{display:block;height:100%;background:var(--action);border-radius:6px}
+.bar .t i.hl{background:var(--accent)}
+.bar b{font:500 .85rem var(--mono);text-align:right}
+@media (max-width:520px){.bar{grid-template-columns:100px minmax(0,1fr) 40px}}
+.drop{border:1.5px dashed var(--line-strong);border-radius:var(--r-lg);padding:28px;display:grid;gap:8px;place-items:center;text-align:center;color:var(--fg-2);background:var(--bg-subtle)}
+.list{display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
+.list .it{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.list .it:last-child{border-bottom:0}
+.list .it>div{min-width:0}
+.embed{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--surface)}
+.embed .bar-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;background:var(--bg-subtle);border-bottom:1px solid var(--line);font:500 .75rem var(--mono);color:var(--fg-3);flex-wrap:wrap}
+.embed .body{padding:24px;display:grid;gap:18px}
+.q{display:grid;gap:10px} .q legend{font:600 1rem var(--sans);margin-bottom:6px} fieldset{border:0;padding:0;margin:0}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative} .opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt span{display:inline-block;padding:8px 14px;border:1px solid var(--line-strong);border-radius:999px;font-size:.9rem;cursor:pointer}
+.opt input:checked+span{background:var(--brand-soft);border-color:var(--action);color:var(--brand)}
+.opt input:focus-visible+span{outline:2px solid var(--accent)}
+.progress{height:6px;background:var(--muted);border-radius:3px;overflow:hidden} .progress i{display:block;height:100%;background:var(--action)}
+.note{background:var(--info-bg);color:var(--info-fg);border-radius:var(--r-md);padding:12px 14px;font-size:.88rem}
+.lock{background:var(--warn-bg);color:var(--warn-fg);border-radius:var(--r-md);padding:12px 14px;font-size:.88rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 .78rem var(--sans);padding:4px 10px;border-radius:999px;background:var(--muted);color:var(--fg-2)}
+.agent{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font:600 .72rem var(--sans);align-items:center;justify-content:center;border:2px solid var(--surface);margin-left:-6px}
+.agent:first-child{margin-left:0}
+.matrix td{text-align:center} .matrix td:first-child{text-align:left}
+.ok{color:var(--action);font-weight:600}
+
+/* Rodapé e aviso */
+footer{background:var(--green-950);color:#b9d3bf;font-size:.9rem}
+footer .wrap{padding-block:40px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px}
+footer h4{font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#fff;margin:0 0 10px}
+footer a{color:#b9d3bf;text-decoration:none;display:block;padding:3px 0} footer a:hover{color:#fff}
+footer .base{border-top:1px solid rgba(255,255,255,.1)} footer .base .wrap{display:flex;justify-content:space-between;padding-block:18px;font-size:.8rem;flex-wrap:wrap;gap:8px}
+@media (max-width:760px){footer .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);padding:12px 18px;border-radius:var(--r-md);font:500 .92rem var(--sans);opacity:0;transition:.25s;z-index:50;max-width:calc(100% - 32px);pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== Sistema (área logada) — fiel ao protótipo Figma: menu lateral 236px, conteúdo 1140px ===== */
+.in-app #siteHead,.in-app #footer{display:none}
+.in-app::before{background:var(--surface)}
+.sys{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh;background:var(--bg-subtle)}
+.sys-side{background:var(--surface);border-right:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow:auto;display:flex;flex-direction:column;padding:18px 12px;gap:2px}
+.brand{display:block;background:var(--green-950);border-radius:var(--r-md);padding:6px 10px;margin:0 2px;line-height:0}
+.brand img{height:44px;width:auto}
+.who{padding:14px 10px;border-bottom:1px solid var(--line);margin:12px 0 8px;display:grid;gap:2px}
+.who .eyebrow{color:var(--fg-3)} .who b{font:600 1rem var(--sans)}
+.sw{padding:0 6px 12px;display:grid;gap:6px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.sw .eyebrow{color:var(--fg-3);font-size:.68rem}
+.seg{display:flex;gap:2px;background:var(--muted);border-radius:var(--r-md);padding:3px}
+.seg button{flex:1;border:0;background:transparent;font:500 .76rem var(--sans);color:var(--fg-2);padding:6px 4px;border-radius:4px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--brand);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.sys-side nav{display:grid;gap:2px}
+.sys-side nav a,.sidebtn{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:var(--r-md);color:var(--fg);text-decoration:none;font:500 .92rem var(--sans);background:none;border:0;cursor:pointer;text-align:left;width:100%}
+.sys-side nav a:hover,.sidebtn:hover{background:var(--muted);color:var(--fg)}
+.sys-side nav a[aria-current="page"]{background:var(--brand-soft);color:var(--brand)}
+.sys-side svg{width:18px;height:18px;flex:none}
+.side-end{margin-top:auto;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:2px}
+.side-end a{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:var(--r-md);color:var(--fg-2);text-decoration:none;font:500 .88rem var(--sans)}
+.side-end a:hover{background:var(--muted)}
+.sidebtn{color:var(--fg-2);font-size:.88rem}
+.sys-main{padding-block:28px 64px;padding-left:32px;padding-right:max(32px,env(safe-area-inset-right,0px));display:grid;gap:22px;align-content:start;min-width:0;max-width:1204px;width:100%}
+.sys-main h1{font-size:2.1rem}
+.sys-main .main-head p{margin-top:4px}
+.back{justify-self:start}
+@media (max-width:900px){
+ .sys{grid-template-columns:minmax(0,1fr)}
+ .sys-side{position:static;height:auto;flex-direction:column;border-right:0;border-bottom:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px))}
+ .who{margin:10px 0 6px;padding:8px 4px}
+ .sys-side nav{display:flex;overflow-x:auto;gap:4px}
+ .sys-side nav a{white-space:nowrap;width:auto}
+ .side-end{flex-direction:row;display:flex;flex-wrap:wrap;margin-top:6px}
+ .side-end a,.side-end .sidebtn{width:auto}
+ .sys-main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filters .grow{flex:1 1 260px;min-width:0}
+.filters select{width:auto;min-width:170px;flex:0 1 220px}
+.filters .lbl{font-size:.9rem;color:var(--fg-2)}
+.chipbtn{border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);font:500 .85rem var(--sans);padding:7px 14px;border-radius:999px;cursor:pointer}
+.chipbtn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chipbtn.g[aria-pressed="true"]{background:var(--brand-soft);color:var(--brand);border-color:var(--action)}
+.kpis.k3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:700px){.kpis.k3{grid-template-columns:minmax(0,1fr)}}
+.kpi .v{font-size:2.1rem}
+.acts{white-space:nowrap} .acts .linkbtn{margin-right:10px}
+.linkbtn.danger{color:var(--red-800)}
+:root[data-theme="dark"] .linkbtn.danger{color:#f6a39c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .linkbtn.danger{color:#f6a39c}}
+.btn-danger{background:#ba3630;color:#fff} .btn-danger:hover{background:#7f211d;color:#fff}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.empty{padding:28px;text-align:center;color:var(--fg-2)}
+.tabs button{padding:10px 14px;font:500 .9rem var(--sans);color:var(--fg-2);background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--brand);border-color:var(--action)}
+.p-acc{background:var(--warn-bg);color:var(--warn-fg)}
+.vbars{display:flex;gap:clamp(8px,2.4vw,28px);height:240px;align-items:stretch;padding:4px 8px 0}
+.vb{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.vb span{font:500 .78rem var(--mono);color:var(--fg-2)}
+.vb .col{flex:1;width:100%;display:flex;align-items:flex-end}
+.vb i{display:block;width:100%;background:var(--action);border-radius:4px 4px 0 0;min-height:2px}
+.vb i.hl{background:var(--accent)}
+.vb em{font:500 .78rem var(--mono);font-style:normal;color:var(--fg-3)}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tile{position:relative;border-radius:var(--r-md);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 12px;overflow:hidden;flex:none}
+.tile b{font:600 1rem/1.2 var(--serif);color:#fff} .tile small{font:500 .7rem var(--sans);color:rgba(255,255,255,.82)}
+.tile.t0{background:linear-gradient(135deg,#2c8149,#0e4212)} .tile.t1{background:linear-gradient(135deg,#0e6a9b,#024263)} .tile.t2{background:linear-gradient(135deg,#ca7e31,#814c24)} .tile.t3{background:linear-gradient(135deg,#236a36,#073302)} .tile.t4{background:linear-gradient(135deg,#46a064,#1b5423)}
+.tile.sm{width:140px;height:62px}
+.row-item{display:flex;gap:16px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.row-item:last-child{border-bottom:0}
+.row-item .info{flex:1 1 260px;min-width:0;display:grid;gap:4px}
+.row-item .info b{font:600 1rem var(--sans)}
+.row-item .end{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pbar{height:8px;background:var(--muted);border-radius:4px;overflow:hidden;width:260px;max-width:100%} .pbar i{display:block;height:100%;background:var(--action);border-radius:4px}
+.pbar.wide{width:100%}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:15px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pcard .tile{height:120px;width:100%}
+.pcard .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.pcard .top b{font:600 1rem/1.3 var(--sans)}
+.pcard .btn{margin-top:auto}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 40px}
+.meta dt{font-size:.85rem;color:var(--fg-2)} .meta dd{margin:2px 0 0;font-weight:600}
+@media (max-width:600px){.meta{grid-template-columns:minmax(0,1fr)}}
+.orient{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px}
+.orient b{display:block;margin-bottom:6px} .orient ol{margin:0;padding-left:20px;color:var(--fg-2);display:grid;gap:4px}
+.resumo{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 20px;font-size:.92rem}
+.resumo .pbar{flex:1 1 200px}
+.two{display:grid;grid-template-columns:minmax(0,460px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:minmax(0,1fr)}}
+.embedbox{border:1.5px dashed var(--line-strong);border-radius:var(--r-md);min-height:240px;display:grid;place-items:center;text-align:center;padding:20px;color:var(--fg-2);background:var(--bg-subtle)}
+.embedbox.on{border-style:solid;place-items:stretch;text-align:left;display:grid;gap:18px;align-content:start;background:var(--surface)}
+.eh{display:flex;justify-content:space-between;gap:10px;font:500 .75rem var(--mono);color:var(--fg-3)}
+.radio-list{display:grid;gap:6px}
+.radio-list label{display:flex;gap:10px;align-items:center;font:400 .95rem var(--sans);cursor:pointer}
+.radio-list input{width:16px;height:16px;accent-color:var(--action)}
+.check-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.check-row:last-of-type{border-bottom:0}
+.check-row label{display:flex;gap:10px;align-items:center;font:400 .95rem var(--sans);cursor:pointer}
+.check-row input{width:18px;height:18px;accent-color:var(--action)}
+.toggle{position:relative;width:42px;height:24px;flex:none}
+.toggle input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.toggle span{position:absolute;inset:0;background:var(--line-strong);border-radius:12px;transition:.15s;pointer-events:none}
+.toggle span::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.15s}
+.toggle input:checked+span{background:var(--action)} .toggle input:checked+span::after{left:21px}
+.toggle input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0}
+.posters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.posters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.poster{all:unset;box-sizing:border-box;cursor:pointer;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px;display:grid;gap:8px;background:var(--surface)}
+.poster:hover{border-color:var(--action)} .poster:focus-visible{outline:2px solid var(--accent)}
+.poster[aria-checked="true"]{border-color:var(--action);box-shadow:0 0 0 2px var(--action) inset}
+.poster .tile{height:170px;width:100%}
+.poster .tile b{font-size:1.5rem}
+.poster .rd{display:flex;gap:8px;align-items:center;font-weight:600}
+.poster .rd i{width:16px;height:16px;border-radius:50%;border:2px solid var(--line-strong);display:inline-block}
+.poster[aria-checked="true"] .rd i{border-color:var(--action);background:radial-gradient(var(--action) 45%,transparent 50%)}
+.answers{display:grid;gap:8px}
+.answer{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);font:400 1rem var(--sans)}
+.answer:hover{border-color:var(--action)} .answer:focus-visible{outline:2px solid var(--accent)}
+.answer[aria-checked="true"]{border-color:var(--action);background:var(--brand-soft);color:var(--brand);font-weight:600}
+.answer i{width:16px;height:16px;border-radius:50%;border:2px solid var(--line-strong);flex:none}
+.answer[aria-checked="true"] i{border-color:var(--action);background:radial-gradient(var(--action) 45%,transparent 50%)}
+.nav-q{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.done{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:36px 20px;display:grid;justify-items:center;gap:10px;text-align:center}
+.done .ok-ico{width:72px;height:72px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}
+.done .ok-ico svg{width:36px;height:36px}
+.center-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.permbox{display:flex;gap:6px;flex-wrap:wrap}
+.permbox label{display:inline-flex;gap:6px;align-items:center;font:500 .8rem var(--sans);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 6px;cursor:pointer}
+.permbox input{width:15px;height:15px;accent-color:var(--action);margin:0}
+.permbox label:has(input:checked){background:var(--brand-soft);border-color:var(--action);color:var(--brand)}
+.permbox label:has(input:disabled){opacity:.5;cursor:not-allowed}
+.matrix input{width:18px;height:18px;accent-color:var(--action)}
+.unsaved{font:500 .85rem var(--sans);color:var(--warn-fg);background:var(--warn-bg);padding:6px 10px;border-radius:var(--r-md)}
+.err{background:var(--red-50);color:var(--red-800);border-radius:var(--r-md);padding:10px 12px;font-size:.9rem}
+:root[data-theme="dark"] .err{background:#3a1715;color:#f6c4bf}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .err{background:#3a1715;color:#f6c4bf}}
+/* Login */
+.ltabs{display:grid;grid-template-columns:1fr 1fr;background:var(--muted);border-radius:var(--r-md);padding:4px;gap:4px}
+.ltabs button{border:0;background:transparent;padding:10px;border-radius:4px;font:600 .92rem var(--sans);color:var(--fg-2);cursor:pointer;display:flex;gap:8px;align-items:center;justify-content:center}
+.ltabs button svg{width:18px;height:18px}
+.ltabs button[aria-selected="true"]{background:var(--surface);color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.demo{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:8px}
+.demo button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 12px;border:1px solid var(--line);border-radius:var(--r-md);font-size:.88rem;flex-wrap:wrap}
+.demo button:hover{border-color:var(--action)} .demo button:focus-visible{outline:2px solid var(--accent)}
+.demo small{color:var(--fg-3)}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(10,20,12,.55);z-index:60;display:grid;place-items:center;padding:16px}
+.modal{background:var(--surface);color:var(--fg);border-radius:var(--r-lg);width:min(720px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal .mh{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.modal .mh h2{font-size:1.4rem}
+.modal .x{border:0;background:none;font-size:1.6rem;line-height:1;color:var(--fg-2);cursor:pointer;padding:4px 8px}
+.modal .mb{padding:18px 20px;overflow:auto;display:grid;gap:14px}
+.modal .mf{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--line);flex-wrap:wrap}
+.modal form{gap:14px}
+.choose{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px} @media (max-width:760px){.choose{grid-template-columns:minmax(0,1fr)}}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="site-head" id="siteHead">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="Sinergia Research &amp; Intelligence, página inicial"><img src="assets/logo-sinergia.png" alt="Sinergia Research &amp; Intelligence"></a>
+    <button class="menu-toggle" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Principal"></nav>
+  </div>
+</header>
+
+<main id="view" tabindex="-1"></main>
+
+<footer id="footer">
+  <div class="wrap">
+    <div>
+      <img src="assets/logo-sinergia.png" alt="Sinergia Research &amp; Intelligence" style="height:52px;width:auto">
+      <p style="margin-top:12px;max-width:36ch">Pesquisa de mercado e opinião pública desde 1986. Especialistas em cinema e audiovisual.</p>
+    </div>
+    <div><h4>Serviços</h4><a href="#cinema">Cinema</a><a href="#cat">CAT</a><a href="#servicos">Seja nosso cliente</a></div>
+    <div><h4>Sinergia</h4><a href="#cia">Sobre a empresa</a><a href="#pesquisa">Pesquisa aberta</a><a href="#cadastro">Cadastro de participante</a></div>
+    <div><h4>Acesso</h4><a href="#login">Entrar</a><p style="margin-top:8px">Membro fundador da ANEP · Código ICC/ESOMAR · LGPD</p></div>
+  </div>
+  <div class="base"><div class="wrap"><span>© 2026 Sinergia Research &amp; Intelligence</span><span>Protótipo navegável · dados de exemplo</span></div></div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const view=$('#view');
+const I={
+ shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>',
+ build:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg>',
+ user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>',
+ clip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/></svg>',
+ chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20h16M7 16v-5M12 16V7M17 16v-8"/></svg>',
+ folder:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>',
+ cog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>',
+ play:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg>',
+ box:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"/></svg>',
+ out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 4H5v16h5M15 8l4 4-4 4M9 12h10"/></svg>'
+};
+
+/* ---------- Cenas de cinema geradas (imagens genéricas, sem direitos) ---------- */
+function stars(n,w,h,seed){let s=seed,o='';const r=()=>(s=(s*9301+49297)%233280)/233280;for(let i=0;i<n;i++)o+=`<circle cx="${(r()*w).toFixed(0)}" cy="${(r()*h).toFixed(0)}" r="${(r()*1.4+.3).toFixed(2)}" fill="#fff" opacity="${(r()*.7+.2).toFixed(2)}"/>`;return o}
+const scenes=[
+ // Sala de cinema com feixe do projetor
+ ()=>`<svg viewBox="0 0 1680 720" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="a1" cx="62%" cy="40%" r="55%"><stop offset="0" stop-color="#2a3a2c"/><stop offset="1" stop-color="#050806"/></radialGradient><linearGradient id="a2" x1="0" x2="1"><stop offset="0" stop-color="#fff6dc" stop-opacity=".0"/><stop offset=".55" stop-color="#fff6dc" stop-opacity=".18"/><stop offset="1" stop-color="#fff6dc" stop-opacity=".35"/></linearGradient><linearGradient id="a3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e7c1"/><stop offset="1" stop-color="#c9a76a"/></linearGradient></defs>
+ <rect width="1680" height="720" fill="url(#a1)"/><rect x="860" y="110" width="640" height="300" rx="4" fill="url(#a3)"/><rect x="860" y="110" width="640" height="300" fill="#fff" opacity=".12"/>
+ <path d="M300 60 L860 110 L860 410 L300 90Z" fill="url(#a2)"/><circle cx="300" cy="75" r="9" fill="#fff8e0"/>
+ ${Array.from({length:6},(_,r)=>Array.from({length:22},(_,c)=>`<rect x="${380+c*58-r*22}" y="${470+r*44}" width="46" height="${40+r*4}" rx="10" fill="#1a0f0d" stroke="#3a1f18" stroke-width="2"/>`).join('')).join('')}
+ <g fill="#030503">${Array.from({length:7},(_,i)=>`<circle cx="${700+i*120}" cy="${452+(i%2)*10}" r="20"/><rect x="${682+i*120}" y="${465+(i%2)*10}" width="36" height="40" rx="12"/>`).join('')}</g></svg>`,
+ // Estrada no deserto ao pôr do sol
+ ()=>`<svg viewBox="0 0 1680 720" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="b1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b1a3a"/><stop offset=".45" stop-color="#c9542f"/><stop offset=".62" stop-color="#f3b261"/><stop offset=".63" stop-color="#3b2216"/><stop offset="1" stop-color="#140a06"/></linearGradient></defs>
+ <rect width="1680" height="720" fill="url(#b1)"/><circle cx="1100" cy="430" r="110" fill="#ffd89a" opacity=".95"/><rect y="452" width="1680" height="270" fill="#2a170e"/>
+ <path d="M0 452 L180 380 L300 420 L420 340 L520 400 L640 360 L760 452Z M900 452 L1020 400 L1120 430 L1260 360 L1400 410 L1520 370 L1680 420 L1680 452Z" fill="#1d0f0a"/>
+ <path d="M1060 452 L1140 452 L1500 720 L700 720Z" fill="#120906"/><path d="M1098 470 L1102 470 L1110 520 L1092 520Z M1094 560 L1106 560 L1122 650 L1078 650Z" fill="#f3d6ab" opacity=".8"/>
+ <g fill="#0a0503"><rect x="500" y="420" width="18" height="40"/><path d="M470 430 Q509 360 548 430Z"/><rect x="1380" y="380" width="14" height="80"/><rect x="1360" y="400" width="10" height="30" rx="5"/><rect x="1400" y="392" width="10" height="34" rx="5"/></g>
+ <g fill="#050302"><rect x="1150" y="560" width="190" height="46" rx="12"/><rect x="1180" y="532" width="110" height="36" rx="10"/><circle cx="1190" cy="610" r="18"/><circle cx="1300" cy="610" r="18"/></g></svg>`,
+ // Cidade à noite com chuva e neon
+ ()=>`<svg viewBox="0 0 1680 720" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05131c"/><stop offset="1" stop-color="#0b2a33"/></linearGradient><linearGradient id="c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e6a9b" stop-opacity=".5"/><stop offset="1" stop-color="#0e6a9b" stop-opacity="0"/></linearGradient></defs>
+ <rect width="1680" height="720" fill="url(#c1)"/>
+ ${[[0,260,180],[170,180,140],[300,300,120],[410,140,200],[600,220,150],[740,90,170],[900,200,130],[1020,120,190],[1200,240,140],[1330,60,160],[1480,180,200]].map(([x,y,w],i)=>`<rect x="${x}" y="${y}" width="${w}" height="${720-y}" fill="${i%2?'#081a22':'#0a2029'}"/>`+Array.from({length:18},(_,k)=>`<rect x="${x+12+(k%4)*(w/4.4)}" y="${y+20+Math.floor(k/4)*46}" width="${w/8}" height="14" fill="${(k*7+i)%5===0?'#edb161':'#60a7d6'}" opacity="${(k*13+i)%3===0?'.75':'.18'}"/>`).join('')).join('')}
+ <rect x="760" y="300" width="230" height="56" rx="6" fill="none" stroke="#6cbc83" stroke-width="5" opacity=".9"/><text x="875" y="338" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="28" fill="#98d7aa">CINEMA</text>
+ <rect y="600" width="1680" height="120" fill="#04090c"/><rect y="600" width="1680" height="120" fill="url(#c2)"/>
+ <g stroke="#b4daf5" stroke-width="1.4" opacity=".35">${Array.from({length:90},(_,i)=>`<line x1="${(i*97)%1680}" y1="${(i*53)%600}" x2="${(i*97)%1680-12}" y2="${(i*53)%600+42}"/>`).join('')}</g>
+ <g fill="#020406"><circle cx="420" cy="520" r="16"/><path d="M398 536 h44 l8 66 h-60z"/><path d="M370 512 q50 -48 100 0z" fill="#03080a"/></g></svg>`,
+ // Ficção científica: planeta e nave
+ ()=>`<svg viewBox="0 0 1680 720" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="d1" cx="70%" cy="80%" r="70%"><stop offset="0" stop-color="#103a2a"/><stop offset="1" stop-color="#02050a"/></radialGradient><radialGradient id="d2" cx="35%" cy="35%" r="70%"><stop offset="0" stop-color="#98d7aa"/><stop offset=".55" stop-color="#2c8149"/><stop offset="1" stop-color="#062a12"/></radialGradient></defs>
+ <rect width="1680" height="720" fill="url(#d1)"/>${stars(220,1680,720,7)}
+ <circle cx="1220" cy="760" r="430" fill="url(#d2)"/><circle cx="1220" cy="760" r="440" fill="none" stroke="#bfe9cb" stroke-width="3" opacity=".35"/>
+ <ellipse cx="1220" cy="560" rx="620" ry="70" fill="none" stroke="#edb161" stroke-width="4" opacity=".55" transform="rotate(-8 1220 560)"/>
+ <circle cx="1450" cy="160" r="34" fill="#f3d6ab" opacity=".85"/>
+ <g transform="translate(760 250) rotate(-14)"><path d="M0 20 L120 0 L150 20 L120 40 Z" fill="#dbdfdb"/><path d="M40 6 L70 -24 L90 3Z M40 34 L70 64 L90 37Z" fill="#9ea39e"/><path d="M0 14 L-80 20 L0 26Z" fill="#edb161" opacity=".9"/></g></svg>`,
+ // Suspense: floresta ao luar
+ ()=>`<svg viewBox="0 0 1680 720" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="e1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1a24"/><stop offset="1" stop-color="#1f3326"/></linearGradient><radialGradient id="e2" cx="72%" cy="28%" r="30%"><stop offset="0" stop-color="#e9ece9" stop-opacity=".55"/><stop offset="1" stop-color="#e9ece9" stop-opacity="0"/></radialGradient></defs>
+ <rect width="1680" height="720" fill="url(#e1)"/><rect width="1680" height="720" fill="url(#e2)"/><circle cx="1210" cy="200" r="70" fill="#f3f6f4"/>${stars(60,1680,320,3)}
+ ${Array.from({length:26},(_,i)=>{const x=(i*71)%1680,h=330+((i*37)%220),c=i%3?'#08120c':'#0c1a12';return `<path d="M${x} 720 L${x} ${720-h} L${x-40} ${720-h+120} L${x} ${720-h+90} L${x-55} ${720-h+230} L${x} ${720-h+200} L${x-70} ${720-h+340} L${x+70} ${720-h+340} L${x+10} ${720-h+200} L${x+55} ${720-h+230} L${x+10} ${720-h+90} L${x+40} ${720-h+120} L${x+10} ${720-h} L${x+10} 720Z" fill="${c}"/>`}).join('')}
+ <rect y="640" width="1680" height="80" fill="#e9ece9" opacity=".08"/><g fill="#030604"><circle cx="980" cy="560" r="13"/><path d="M966 572 h28 l6 70 h-40z"/></g>
+ <path d="M1000 600 L1300 520 L1300 680Z" fill="#fdf6ea" opacity=".12"/></svg>`
+];
+const slidesData=[
+ {tag:'Teste de Roteiro · Desenvolvimento',t:'A plateia certa vê o seu filme antes de todo mundo.',p:'Avaliamos ideia, conceito e roteiro antes da produção ir para o set, reduzindo o risco financeiro desde o início.',genre:'Drama'},
+ {tag:'Teste de Posicionamento · Marketability',t:'Encontre o ângulo que leva o público até a sala.',p:'Testamos combinações de elementos do filme para descobrir o apelo comercial mais forte antes da divulgação.',genre:'Road movie'},
+ {tag:'Teste de Comunicação · Lançamento',t:'Trailer, cartaz e campanha validados antes da estreia.',p:'Medimos a reação a peças publicitárias, trailers e artes antes do início oficial da campanha.',genre:'Noir urbano'},
+ {tag:'Segurança e sigilo',t:'Material inédito protegido do primeiro clique à estreia.',p:'Termo de sigilo assinado digitalmente, acesso restrito e operação conforme ICC/ESOMAR e LGPD.',genre:'Ficção científica'},
+ {tag:'Recrutamento e triagem',t:'O espectador médio real, e não a bolha do cinema.',p:'Filtros de elegibilidade afastam parentes de produtores, cinéfilos extremos e estudantes de cinema da amostra.',genre:'Suspense'}
+];
+
+function pageHero(crumbs,eyebrow,title,lead){
+ return `<section class="page-hero"><div class="wrap"><div class="crumbs">${crumbs.map(([h,l])=>h?`<a href="#${h}">${l}</a><span>/</span>`:`<span>${l}</span>`).join('')}</div><span class="eyebrow">${eyebrow}</span><h1>${title}</h1>${lead?`<p class="lead">${lead}</p>`:''}</div></section>`;
+}
+const seals=`<div class="seals"><span class="seal"><i>A</i>Membro fundador da ANEP</span><span class="seal"><i>E</i>Código ICC/ESOMAR</span><span class="seal"><i>L</i>Conforme a LGPD</span><span class="seal"><i>86</i>Desde 1986</span></div>`;
+const phases=`<div class="grid g3">
+ <article class="card phase"><span class="num">FASE 1 · DESENVOLVIMENTO</span><h3>Antes do set</h3><span class="service">Teste de Script / Roteiro</span><p class="muted">Avaliação da ideia, do conceito ou do roteiro completo antes da produção ir para o set, mitigando riscos financeiros primários.</p></article>
+ <article class="card phase"><span class="num">FASE 2 · MARKETABILITY</span><h3>Antes da divulgação</h3><span class="service">Teste de Posicionamento</span><p class="muted">Estudo de combinações de elementos do filme para encontrar o ângulo de maior apelo comercial.</p></article>
+ <article class="card phase"><span class="num">FASE 3 · LANÇAMENTO</span><h3>Antes da campanha</h3><span class="service">Teste de Comunicação</span><p class="muted">Validação de peças publicitárias, trailers, artes e cartazes antes do início oficial da campanha.</p></article>
+</div><div class="reel" aria-hidden="true"><span>Roteiro</span><span>Filmagem e montagem</span><span>Estreia</span></div>`;
+const ctaBand=`<section class="band"><div class="wrap"><div><h2>Tem um filme em desenvolvimento?</h2><p>Converse com um especialista e receba uma proposta de estudo de viabilidade para o seu projeto.</p></div><a class="btn btn-accent" href="#servicos">Fale com um Especialista</a></div></section>`;
+
+const V={};
+V.home=()=>`
+<section class="stage" aria-roledescription="carrossel" aria-label="Destaques">
+ <div class="slides" id="slides">${slidesData.map((s,i)=>`<div class="slide${i===0?' on':''}" role="group" aria-roledescription="slide" aria-label="${i+1} de ${slidesData.length}" ${i?'aria-hidden="true"':''}>${scenes[i]()}<div class="grain"></div><div class="shade"></div>
+  <div class="caption"><div class="wrap"><div class="inner"><span class="tag">${s.tag}</span><h1>${s.t}</h1><p>${s.p}</p><div class="row"><a class="btn btn-accent" href="#servicos" tabindex="${i?-1:0}">Fale com um Especialista</a><a class="btn btn-ghost" href="#cinema" tabindex="${i?-1:0}">Conheça os testes de cinema</a></div></div></div></div></div>`).join('')}</div>
+ <div class="slate" aria-hidden="true"><span>CENA <b id="sceneNo">01</b>/05</span><span id="genre">${slidesData[0].genre}</span><span>21:9</span></div>
+ <div class="ctrl"><button class="arrow" id="prev" aria-label="Slide anterior">‹</button><div class="dots" id="dots">${slidesData.map((_,i)=>`<button aria-label="Ir para o slide ${i+1}" ${i===0?'aria-current="true"':''} data-i="${i}"></button>`).join('')}</div><button class="arrow" id="next" aria-label="Próximo slide">›</button><button class="arrow" id="pause" aria-label="Pausar carrossel">❚❚</button></div>
+</section>
+<section class="section"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow">Linha de serviços de cinema</span><h2>Uma pesquisa para cada momento da vida do filme</h2><p class="lead">Do roteiro à estreia, a Sinergia mede o que o público sente antes que o mercado descubra.</p></div>
+ ${phases}
+</div></section>
+<section class="section alt"><div class="wrap grid g2" style="align-items:center;gap:40px">
+ <div style="display:grid;gap:18px"><span class="eyebrow">Por que a Sinergia</span><h2>Quarenta anos ouvindo o público brasileiro</h2><p class="muted">Agência full-service: captação de campo, processamento de dados e análise quantitativa e qualitativa feitas pela própria equipe. É assim que grandes estúdios e produtoras auditam seus números com segurança.</p>${seals}</div>
+ <div class="grid g2"><div class="card"><span class="stat tnum">1986</span><span class="muted small">Ano de fundação</span></div><div class="card"><span class="stat">3</span><span class="muted small">Fases do filme cobertas</span></div><div class="card"><span class="stat">ANEP</span><span class="muted small">Membro fundador</span></div><div class="card"><span class="stat">100%</span><span class="muted small">Campo, dados e análise internos</span></div></div>
+</div></section>
+<section class="section"><div class="wrap grid g2" style="gap:40px;align-items:center">
+ <div style="display:grid;gap:14px"><span class="eyebrow">Pesquisa aberta</span><h2>Quer dar sua opinião sobre filmes?</h2><p class="muted">Cadastre-se no painel de participantes, responda às pesquisas abertas e seja convidado para sessões e testes de trailer.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-primary" href="#pesquisa">Responder pesquisa aberta</a><a class="btn btn-ghost" href="#cadastro">Quero participar</a></div></div>
+ <blockquote class="quote" style="margin:0">“A pergunta certa, para a amostra certa, gera a decisão certa.”<span class="small muted" style="display:block;font:400 .85rem var(--sans);margin-top:10px">Princípio de trabalho da Sinergia</span></blockquote>
+</div></section>${ctaBand}`;
+
+V.servicos=()=>pageHero([['home','Home'],[null,'Serviços']],'Serviços · Seja nosso cliente','Pesquisa sob medida para o seu negócio','Duas linhas de atuação, a mesma exigência de método e sigilo. Escolha a área e fale com um especialista.')+`
+<section class="section"><div class="wrap">
+ <div class="grid g2">
+  <a class="card" href="#cinema" style="text-decoration:none;color:inherit"><span class="eyebrow">Cinema e audiovisual</span><h2>Cinema</h2><p class="muted">Testes de roteiro, de posicionamento e de comunicação para produtoras, distribuidoras e majors.</p><span class="linkbtn">Ver testes de cinema →</span></a>
+  <a class="card" href="#cat" style="text-decoration:none;color:inherit"><span class="eyebrow">Mercado corporativo</span><h2>CAT</h2><p class="muted">Pesquisas Ad Hoc e B2B para empresas de outros setores, com a mesma estrutura full-service.</p><span class="linkbtn">Ver serviços CAT →</span></a>
+ </div>
+</div></section>
+<section class="section alt" id="contato"><div class="wrap grid g2" style="gap:40px">
+ <div style="display:grid;gap:14px;align-content:start"><span class="eyebrow">Seja nosso cliente</span><h2>Solicite um estudo de viabilidade para seu filme</h2><p class="muted">Conte o momento do projeto. Um especialista responde em até dois dias úteis com uma proposta. Toda conversa é coberta por acordo de confidencialidade.</p>${seals}</div>
+ <form class="panel" data-msg="Pedido enviado. Um especialista entra em contato em até dois dias úteis.">
+  <div class="row2"><div class="field"><label for="c-nome">Nome</label><input id="c-nome" required value="Rafael Mendes"></div><div class="field"><label for="c-emp">Empresa</label><input id="c-emp" required value="Produtora Sol"></div></div>
+  <div class="row2"><div class="field"><label for="c-mail">E-mail</label><input id="c-mail" type="email" required value="rafael@produtorasol.com.br"></div><div class="field"><label for="c-fase">Fase do filme</label><select id="c-fase"><option>Desenvolvimento (roteiro)</option><option>Marketability (posicionamento)</option><option>Lançamento (comunicação)</option><option>Outro / corporativo</option></select></div></div>
+  <div class="field"><label for="c-msg">Sobre o projeto</label><textarea id="c-msg">Longa de comédia dramática, roteiro na 3ª versão. Queremos testar o conceito com o público de 25 a 45 anos.</textarea></div>
+  <button class="btn btn-primary" type="submit">Fale com um Especialista</button>
+ </form>
+</div></section>`;
+
+V.cinema=()=>pageHero([['home','Home'],['servicos','Serviços'],[null,'Cinema']],'Cinema e audiovisual','Pesquisa para quem decide o destino de um filme','Uma unidade de negócios dedicada à indústria audiovisual nacional e internacional.')+`
+<section class="section"><div class="wrap" style="display:grid;gap:28px">${seals}${phases}</div></section>
+<section class="section alt"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow">Como protegemos o seu filme</span><h2>Roteiros e cortes valem milhões. Tratamos cada um assim.</h2></div>
+ <div class="grid g3">
+  <div class="card"><div class="ico">${I.lock}</div><h3>Termo de sigilo antes de tudo</h3><p class="muted">O participante só recebe instruções e link de acesso depois de assinar o termo de confidencialidade.</p></div>
+  <div class="card"><div class="ico">${I.shield}</div><h3>Acesso restrito</h3><p class="muted">Marca d'água, restrição de acesso e registro de quem viu cada material, prontos para auditorias de estúdios.</p></div>
+  <div class="card"><div class="ico">${I.user}</div><h3>Amostra sem bolha</h3><p class="muted">Triagem que afasta parentes de produtores, cinéfilos extremos e estudantes de cinema para achar o espectador médio real.</p></div>
+ </div>
+</div></section>${ctaBand}`;
+
+V.cat=()=>pageHero([['home','Home'],['servicos','Serviços'],[null,'CAT']],'Mercado corporativo','CAT','Pesquisas Ad Hoc e B2B para empresas fora do audiovisual, com captação de campo, processamento e análise feitos pela equipe Sinergia.')+`
+<section class="section"><div class="wrap grid g3">
+ <div class="card"><h3>Ad Hoc</h3><p class="muted">Estudos sob medida para uma decisão específica: lançamento de produto, preço, marca.</p></div>
+ <div class="card"><h3>B2B</h3><p class="muted">Pesquisa com tomadores de decisão de empresas, com recrutamento qualificado e sigilo.</p></div>
+ <div class="card"><h3>Tracking e opinião</h3><p class="muted">Acompanhamento contínuo de marca e comunicação, além de pesquisas de opinião pública.</p></div>
+</div></section>${ctaBand}`;
+
+V.cia=()=>pageHero([['home','Home'],[null,'CIA']],'Sobre a empresa','Sinergia Research &amp; Intelligence','Fundada em 1986, uma das empresas mais tradicionais de pesquisa de mercado e opinião pública do Brasil.')+`
+<section class="section"><div class="wrap grid g2" style="gap:40px">
+ <div style="display:grid;gap:16px"><h2>Full-service de verdade</h2><p class="muted">A Sinergia gerencia internamente toda a cadeia da pesquisa: captação de campo, processamento de dados e análise quantitativa e qualitativa. Atua no mercado corporativo, com Ad Hoc e B2B, e mantém uma unidade altamente especializada em cinema nacional e internacional.</p><p class="muted">Ao longo de quatro décadas, migrou de metodologias físicas, com papel e caneta, para ecossistemas híbridos baseados em computadores e plataformas web.</p>${seals}</div>
+ <div class="list">
+  <div class="it"><div><b>1986</b><p class="muted small">Fundação da Sinergia</p></div></div>
+  <div class="it"><div><b>Membro fundador da ANEP</b><p class="muted small">Associação Nacional de Empresas de Pesquisa</p></div></div>
+  <div class="it"><div><b>Código ICC/ESOMAR</b><p class="muted small">Ética e práticas globais de pesquisa</p></div></div>
+  <div class="it"><div><b>Fornecedor homologado</b><p class="muted small">Atende às vistorias de segurança de estúdios internacionais</p></div></div>
+ </div>
+</div></section>${ctaBand}`;
+
+const surveyForm=(id,msg)=>`<form class="embed" data-msg="${msg}" id="${id}">
+ <div class="bar-top"><span>SURVEYMONKEY · EMBED</span><span>Pergunta 1–3 de 8</span></div>
+ <div class="body">
+  <div class="progress" aria-hidden="true"><i style="width:38%"></i></div>
+  <fieldset class="q"><legend>Quantas vezes você foi ao cinema nos últimos 3 meses?</legend><div class="opts">${['Nenhuma','1 vez','2 a 3 vezes','4 ou mais'].map((o,i)=>`<label class="opt"><input type="radio" name="${id}-f" ${i===2?'checked':''}><span>${o}</span></label>`).join('')}</div></fieldset>
+  <fieldset class="q"><legend>Quais gêneros você costuma assistir?</legend><div class="opts">${['Comédia','Drama','Ação','Suspense','Terror','Animação','Documentário'].map((o,i)=>`<label class="opt"><input type="checkbox" ${i<2?'checked':''}><span>${o}</span></label>`).join('')}</div></fieldset>
+  <fieldset class="q"><legend>Você trabalha ou estuda na área de cinema ou audiovisual?</legend><div class="opts">${['Sim','Não'].map((o,i)=>`<label class="opt"><input type="radio" name="${id}-w" ${i?'checked':''}><span>${o}</span></label>`).join('')}</div></fieldset>
+  <div><button class="btn btn-primary" type="submit">Enviar respostas</button></div>
+ </div></form>`;
+
+V.pesquisa=()=>pageHero([['home','Home'],[null,'Pesquisa aberta']],'Pesquisa aberta','Sua opinião sobre cinema','Responda em cerca de 3 minutos. As respostas são anônimas e tratadas conforme a LGPD.')+`
+<section class="section"><div class="wrap grid g2" style="gap:40px;align-items:start">
+ ${surveyForm('aberta','Respostas enviadas. Obrigado por participar.')}
+ <div style="display:grid;gap:16px"><div class="card"><span class="eyebrow">Quer participar de mais estudos?</span><h3>Faça parte do painel de participantes</h3><p class="muted">Com o cadastro, você recebe convites para sessões, testes de trailer e grupos de conversa.</p><a class="btn btn-primary" href="#cadastro" style="justify-self:start">Cadastrar como participante</a></div><p class="note">Esta pesquisa aparece incorporada (embed) do SurveyMonkey. A mesma pesquisa fica disponível na área do participante.</p></div>
+</div></section>`;
+
+V.cadastro=()=>pageHero([['home','Home'],['pesquisa','Pesquisa aberta'],[null,'Cadastro']],'Cadastro de participante','Entre para o painel Sinergia','Depois do cadastro você recebe os convites de pesquisa no seu e-mail.')+`
+<section class="section"><div class="wrap" style="max-width:760px">
+ <form class="panel" data-form="cadastro">
+  <div class="field"><label for="p-nome">Nome completo</label><input id="p-nome" required value="Ana Ribeiro"></div>
+  <div class="row2"><div class="field"><label for="p-mail">E-mail</label><input id="p-mail" type="email" required value="ana.ribeiro@email.com"></div><div class="field"><label for="p-cid">Cidade</label><input id="p-cid" value="Rio de Janeiro"></div></div>
+  <div class="row2"><div class="field"><label for="p-idade">Faixa etária</label><select id="p-idade"><option>18 a 24</option><option selected>25 a 34</option><option>35 a 44</option><option>45 ou mais</option></select></div><div class="field"><label for="p-senha">Senha</label><input id="p-senha" type="password" value="exemplo123"></div></div>
+  <label class="check"><input type="checkbox" id="p-nda" required checked><span>Li e aceito o termo de confidencialidade (NDA). Entendo que não posso divulgar nenhum material exibido nas pesquisas.</span></label>
+  <label class="check"><input type="checkbox" id="p-lgpd" required checked><span>Concordo com o uso das minhas respostas de forma anônima, conforme a LGPD.</span></label>
+  <button class="btn btn-primary" type="submit" style="justify-self:start">Criar conta</button>
+ </form>
+</div></section>`;
+
+const loginArt=`<svg viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="la" x1="0" x2="1"><stop offset="0" stop-color="#f3d6ab" stop-opacity="0"/><stop offset="1" stop-color="#f3d6ab" stop-opacity=".22"/></linearGradient></defs><rect width="600" height="700" fill="#073302"/><path d="M-40 120 L600 40 L600 330 Z" fill="url(#la)"/><circle cx="-30" cy="122" r="10" fill="#fdf6ea"/>${Array.from({length:5},(_,r)=>Array.from({length:12},(_,c)=>`<rect x="${c*56-r*18}" y="${470+r*46}" width="44" height="40" rx="10" fill="#0e4212" stroke="#1b5423"/>`).join('')).join('')}</svg>`;
+
+const PART={},FORM={};
+
+/* ======================= SISTEMA SINERGIA ======================= */
+Object.assign(I,{
+ list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg>',
+ mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+ users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M16 4.5a3.5 3.5 0 010 7M18 14.6c1.8.7 3 2.6 3.5 5.4"/></svg>',
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 11l9-7 9 7M5 9.5V20h14V9.5"/></svg>',
+ hist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 12a9 9 0 103-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg>',
+ globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg>',
+ reset:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4v6h6M20 20v-6h-6M5.5 15a7.5 7.5 0 0013 2M18.5 9a7.5 7.5 0 00-13-2"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+});
+
+/* ---------- Dados ---------- */
+const KEY='sinergia-sistema-v1';
+function seed(){return {v:1,session:null,ui:{},
+ users:[
+  {id:'u1',nome:'Helena Prado',email:'helena@sinergia.com.br',admin:true,perms:[],tel:'(21) 99876-1200'},
+  {id:'u2',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',perms:['agente','participante'],codigo:'P-1075',tel:'(21) 98765-4321'},
+  {id:'u3',nome:'Marina Costa',email:'marina@cinemaalfa.com.br',perms:['cliente'],empresa:'Cinema Alfa',tel:'(21) 3322-1100'},
+  {id:'u4',nome:'Ana Ribeiro',email:'ana.ribeiro@email.com',perms:['participante'],codigo:'P-1027',tel:'(21) 99111-2233'},
+  {id:'u5',nome:'Rafael Mendes',email:'demo@sinergia.com.br',perms:['agente','cliente','participante'],empresa:'Cinema Alfa',codigo:'P-1099',tel:'(21) 97000-1234'}
+ ],
+ clientes:[
+  {id:'c1',nome:'Cinema Alfa',contato:'Marina Costa',email:'marina@cinemaalfa.com.br',seg:'Exibição'},
+  {id:'c2',nome:'Cia Beta',contato:'Otávio Reis',email:'otavio@ciabeta.com',seg:'Streaming'},
+  {id:'c3',nome:'Distribuidora Gama',contato:'Sílvia Mota',email:'silvia@gamafilmes.com',seg:'Distribuição'},
+  {id:'c4',nome:'Cinema Delta',contato:'Paulo Freitas',email:'paulo@cinemadelta.com.br',seg:'Exibição'},
+  {id:'c5',nome:'Cia Epsilon',contato:'Renata Luz',email:'renata@epsilon.com',seg:'Venda de ingressos'}],
+ agentes:[
+  {id:'a1',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',regiao:'Zona Sul e Centro',tel:'(21) 98765-4321'},
+  {id:'a2',nome:'Yasmin Lopes',email:'yasmin@sinergia.com.br',regiao:'Online',tel:'(21) 98111-0000'},
+  {id:'a3',nome:'Victor Alves',email:'victor@sinergia.com.br',regiao:'Barra e Zona Oeste',tel:'(21) 98222-0000'},
+  {id:'a4',nome:'Rafael Mendes',email:'demo@sinergia.com.br',regiao:'Online',tel:'(21) 97000-1234'}],
+ participantes:[
+  {id:'r1',cod:'P-1027',nome:'Ana Ribeiro',email:'ana.ribeiro@email.com',cidade:'Rio de Janeiro'},
+  {id:'r2',cod:'P-1031',nome:'Bruno Souza',email:'bruno.souza@email.com',cidade:'Niterói'},
+  {id:'r3',cod:'P-1044',nome:'Luiza Martins',email:'luiza.m@email.com',cidade:'Rio de Janeiro'},
+  {id:'r4',cod:'P-1052',nome:'Diego Alves',email:'diego.alves@email.com',cidade:'São Gonçalo'},
+  {id:'r5',cod:'P-1060',nome:'Paula Nunes',email:'paula.nunes@email.com',cidade:'Rio de Janeiro'},
+  {id:'r6',cod:'P-1075',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',cidade:'Rio de Janeiro'},
+  {id:'r7',cod:'P-1099',nome:'Rafael Mendes',email:'demo@sinergia.com.br',cidade:'Rio de Janeiro'}],
+ projetos:[
+  {id:'pj1',nome:'Lançamentos 2026',cliente:'Cinema Alfa',status:'Em andamento',desc:'Medir a recepção dos lançamentos do semestre nas salas do cliente.',resp:'Helena Prado',prazo:'15/12/2026'},
+  {id:'pj2',nome:'Consumo de streaming',cliente:'Cia Beta',status:'Em andamento',desc:'Entender hábitos de quem assiste em casa.',resp:'Helena Prado',prazo:'30/11/2026'},
+  {id:'pj3',nome:'Trailers e campanhas',cliente:'Distribuidora Gama',status:'Em andamento',desc:'Testar trailers antes da campanha nacional.',resp:'Marcos Vieira',prazo:'10/11/2026'},
+  {id:'pj4',nome:'Perfil de público',cliente:'Cinema Delta',status:'Em andamento',desc:'Traçar o perfil de quem frequenta as salas.',resp:'Marcos Vieira',prazo:'20/12/2026'},
+  {id:'pj5',nome:'Bilheteria contínua',cliente:'Cia Epsilon',status:'Planejado',desc:'Acompanhar satisfação na compra de ingressos.',resp:'Helena Prado',prazo:'31/12/2026'}],
+ pesquisas:[
+  {id:'p1',nome:'Satisfação — Lançamento Filme A',projeto:'pj1',cliente:'Cinema Alfa',tipo:'Padrão',status:'Ativa',resp:124,agente:'João Tadeu',local:'Cinema Centro',modo:'Presencial',data:'30/09/2026',prazo:'25/10/2026',feitas:18,meta:50},
+  {id:'p2',nome:'Hábitos de consumo — Streaming',projeto:'pj2',cliente:'Cia Beta',tipo:'Padrão',status:'Ativa',resp:0,agente:'João Tadeu',local:'Shopping Tijuca',modo:'Presencial',data:'01/10/2026',prazo:'30/10/2026',feitas:0,meta:40},
+  {id:'p3',nome:'Avaliação de trailer',projeto:'pj3',cliente:'Distribuidora Gama',tipo:'Personalizada',status:'Ativa',resp:87,agente:'Rafael Mendes',local:'Sala virtual',modo:'Online',data:'03/10/2026',prazo:'28/10/2026',feitas:9,meta:20},
+  {id:'p4',nome:'Perfil de público — Cinema 2026',projeto:'pj4',cliente:'Cinema Delta',tipo:'Padrão',status:'Pausada',resp:45,agente:'Victor Alves',local:'Cinema Barra',modo:'Presencial',data:'05/10/2026',prazo:'20/11/2026',feitas:45,meta:80},
+  {id:'p5',nome:'Pesquisa contínua — Bilheteria',projeto:'pj5',cliente:'Cia Epsilon',tipo:'Padrão',status:'Encerrada',resp:310,agente:'Yasmin Lopes',local:'Online',modo:'Online',data:'12/08/2026',prazo:'31/08/2026',feitas:310,meta:300},
+  {id:'p6',nome:'Pesquisa Pós-Sessão',projeto:'pj1',cliente:'Cinema Alfa',tipo:'Padrão',status:'Ativa',resp:12,agente:'João Tadeu',local:'Cinema Botafogo',modo:'Presencial',data:'02/10/2026',prazo:'31/10/2026',feitas:12,meta:30},
+  {id:'p7',nome:'Pesquisa de Público',projeto:'pj4',cliente:'Cinema Delta',tipo:'Padrão',status:'Encerrada',resp:60,agente:'João Tadeu',local:'Cinema Barra',modo:'Presencial',data:'04/10/2026',prazo:'10/10/2026',feitas:60,meta:60},
+  {id:'p8',nome:'Hábitos de consumo — 2º ciclo',projeto:'pj2',cliente:'Cia Beta',tipo:'Personalizada',status:'Rascunho',resp:0,agente:'Yasmin Lopes',local:'Online',modo:'Online',data:'—',prazo:'15/12/2026',feitas:0,meta:60}],
+ convites:[
+  {id:'cv1',pid:'p1',cod:'P-1027',data:'08/10/2026',status:'Enviado'},
+  {id:'cv2',pid:'p3',cod:'P-1027',data:'09/10/2026',status:'Aberto'},
+  {id:'cv3',pid:'p5',cod:'P-1027',data:'12/08/2026',status:'Respondido'},
+  {id:'cv4',pid:'p1',cod:'P-1031',data:'08/10/2026',status:'Respondido'},
+  {id:'cv5',pid:'p3',cod:'P-1044',data:'09/10/2026',status:'Respondido'},
+  {id:'cv6',pid:'p4',cod:'P-1052',data:'06/10/2026',status:'Enviado'},
+  {id:'cv7',pid:'p1',cod:'P-1060',data:'10/10/2026',status:'Aberto'},
+  {id:'cv8',pid:'p2',cod:'P-1075',data:'15/10/2026',status:'Enviado'},
+  {id:'cv9',pid:'p1',cod:'P-1099',data:'18/10/2026',status:'Enviado'},
+  {id:'cv10',pid:'p3',cod:'P-1099',data:'18/10/2026',status:'Enviado'}],
+ arquivos:[
+  {id:'f1',nome:'respostas_filmeA_semana39.csv',projeto:'pj1',tam:'184 KB',data:'02/10/2026',linhas:124,status:'Importado'},
+  {id:'f2',nome:'pos_sessao_botafogo.xlsx',projeto:'pj1',tam:'61 KB',data:'09/10/2026',linhas:12,status:'Importado'},
+  {id:'f3',nome:'trailer_A_B_grupo_focal.pdf',projeto:'pj3',tam:'1,2 MB',data:'11/10/2026',linhas:'—',status:'Importado'}],
+ recursos:{
+  p1:[{t:'Roteiro de abordagem (PDF)',ok:true},{t:'Tablet com SurveyMonkey carregado',ok:false},{t:'Crachá de identificação',ok:true}],
+  p6:[{t:'Roteiro de abordagem (PDF)',ok:false},{t:'Lista de sessões do dia',ok:true}],
+  p3:[{t:'Link da sala virtual testado',ok:true},{t:'Trailers A e B com marca d\'água',ok:false}]},
+ matrix:{
+  gerenciar_pesquisas:{admin:1},gerenciar_projetos:{admin:1},gerenciar_convites:{admin:1},importar_resultados:{admin:1},
+  ver_resultados:{admin:1,cliente:1},ver_projetos:{admin:1,cliente:1},gerenciar_cadastros:{admin:1},gerenciar_usuarios:{admin:1},
+  aplicar:{agente:1},recursos:{admin:1,agente:1},responder:{participante:1}},
+ prog:{
+  u4:{p3:{step:1,total:4,ans:['Comédia'],start:Date.now()-300000},p5:{done:true,data:'14/08/2026',total:6,ans:['Comédia','Filme B','Com amigos','90–120 min','2000','Streaming'],tempo:9}}},
+ prefs:{u4:{p3:{nome:'',etapas:4,generos:['Comédia','Drama'],imagens:true,pular:false,resumo:true}}},
+ respostas:[]
+}}
+let S=null;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||S.v!==1)S=seed();
+let UI=S.ui||(S.ui={});
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+/* ---------- Utilidades ---------- */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hoje=()=>{const d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`};
+const toISO=d=>{const m=/^(\d\d)\/(\d\d)\/(\d{4})$/.exec(d||'');return m?`${m[3]}-${m[2]}-${m[1]}`:''};
+const fromISO=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(d||'');return m?`${m[3]}/${m[2]}/${m[1]}`:'—'};
+const nid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const pct=(a,b)=>b?Math.round(a/b*100)+'%':'0%';
+const me=()=>S.session&&S.users.find(u=>u.id===S.session.uid);
+const P=id=>S.pesquisas.find(p=>p.id===id);
+const projNome=id=>(S.projetos.find(p=>p.id===id)||{}).nome||'—';
+const partBy=cod=>S.participantes.find(p=>p.cod===cod);
+const opts=(list,sel)=>list.map(o=>{const [v,l]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}"${String(v)===String(sel)?' selected':''}>${esc(l)}</option>`}).join('');
+const TONE={Ativa:'ok',Pausada:'acc',Encerrada:'info',Rascunho:'neu',Pendente:'acc','Em andamento':'info','Concluída':'ok','Não iniciada':'neu',Enviado:'info',Aberto:'acc',Respondido:'ok',Cancelado:'neu',Importado:'ok',Processando:'acc',Planejado:'neu',Administrador:'info',Usuário:'neu'};
+const pill=s=>`<span class="pill p-${TONE[s]||'neu'}">${esc(s)}</span>`;
+const hashN=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0);
+const tile=(t,sub,cls='sm')=>`<div class="tile ${cls} t${hashN(t)%5}" aria-hidden="true"><b>${esc(t)}</b><small>${esc(sub)}</small></div>`;
+const kpis=a=>`<div class="kpis${a.length===3?' k3':''}">${a.map(([l,v])=>`<div class="kpi"><span class="l">${l}</span><span class="v tnum">${v}</span></div>`).join('')}</div>`;
+const vbars=v=>{const m=Math.max(...v,1);return `<div class="vbars" role="img" aria-label="Respostas por semana: ${v.join(', ')}">${v.map((x,i)=>`<div class="vb"><span>${x}</span><div class="col"><i class="${i===v.length-1?'hl':''}" style="height:${Math.max(1,Math.round(x/m*100))}%"></i></div><em>S${i+1}</em></div>`).join('')}</div>`};
+const emptyRow=(n,t)=>`<tr><td colspan="${n}" class="empty">${t}</td></tr>`;
+const head=(t,s,a='',back)=>`${back?`<a class="btn btn-ghost btn-sm back" href="#${back[0]}">← ${back[1]}</a>`:''}<div class="main-head"><div><h1>${t}</h1>${s?`<p class="muted">${s}</p>`:''}</div>${a?`<div style="display:flex;gap:10px;flex-wrap:wrap">${a}</div>`:''}</div>`;
+const field=(id,label,val='',type='text',extra='')=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" name="${id}" type="${type}" value="${esc(val)}" ${extra}></div>`;
+const sel=(id,label,list,val,extra='')=>`<div class="field"><label for="${id}">${label}</label><select id="${id}" name="${id}" ${extra}>${opts(list,val)}</select></div>`;
+const statusCampo=p=>p.feitas>=p.meta?'Concluída':p.feitas>0?'Em andamento':'Não iniciada';
+const agentesNomes=()=>[...new Set([...S.agentes.map(a=>a.nome),...S.users.filter(u=>u.perms.includes('agente')).map(u=>u.nome)])];
+const nextCod=()=>{const n=Math.max(1000,...S.participantes.map(p=>+p.cod.slice(2)||0))+1;return 'P-'+n};
+const baseWeeks=[118,101,116,98,113,96], alfaWeeks=[26,21,25,22,24,18];
+
+/* ---------- Perfis, menus e permissões ---------- */
+const ROLE={admin:'Administrador',agente:'Agente',cliente:'Cliente Empresa',participante:'Participante'};
+const ROLE_SHORT={agente:'Agente',cliente:'Cliente',participante:'Participante'};
+const ROLE_DESC={agente:'Aplica pesquisas em campo e organiza os recursos.',cliente:'Acompanha resultados e projetos da sua empresa.',participante:'Responde às pesquisas enviadas para você.'};
+const ROLE_ICO={agente:'clip',cliente:'build',participante:'user'};
+const MENU={
+ admin:[['adm-pesquisas','Pesquisas','list'],['adm-projetos','Projetos','folder'],['adm-convites','Convites','mail'],['adm-resultados','Resultados','chart'],['adm-cadastros','Cadastros','users'],['adm-usuarios','Usuários e permissões','lock']],
+ agente:[['ag-pesquisas','Minhas pesquisas','list','aplicar'],['ag-aplicar','Aplicar pesquisa','play','aplicar'],['ag-recursos','Recursos','box','recursos'],['ag-perfil','Perfil','user']],
+ cliente:[['cl-resultados','Resultados','chart','ver_resultados'],['cl-projetos','Projetos','folder','ver_projetos'],['cl-perfil','Perfil','user']],
+ participante:[['pa-pesquisas','Minhas pesquisas','home','responder'],['pa-respostas','Minhas respostas','hist','responder'],['pa-perfil','Perfil','user']]};
+const PARENT={'adm-projeto':'adm-projetos','ag-detalhes':'ag-pesquisas','cl-projeto':'cl-projetos','pa-preferencias':'pa-pesquisas','pa-responder':'pa-pesquisas','pa-revisao':'pa-pesquisas','pa-concluida':'pa-pesquisas'};
+const CAP={'ag-detalhes':'aplicar','cl-projeto':'ver_projetos','pa-preferencias':'responder','pa-responder':'responder','pa-revisao':'responder','pa-concluida':'responder'};
+const MATRIX_ROWS=[['gerenciar_pesquisas','Gerenciar pesquisas (padrão e personalizadas)'],['gerenciar_projetos','Gerenciar projetos e arquivos do projeto'],['gerenciar_convites','Gerenciar convites'],['importar_resultados','Importar e gerenciar resultados'],['ver_resultados','Visualizar resultados'],['ver_projetos','Visualizar projetos da própria empresa'],['gerenciar_cadastros','Gerenciar clientes, agentes e participantes'],['gerenciar_usuarios','Gerenciar usuários e permissões'],['aplicar','Aplicar pesquisa (SurveyMonkey Embed)'],['recursos','Gerenciar recursos da pesquisa'],['responder','Responder pesquisa']];
+const routeRole=r=>r.startsWith('adm-')?'admin':r.startsWith('ag-')?'agente':r.startsWith('cl-')?'cliente':r.startsWith('pa-')?'participante':null;
+const can=(role,cap)=>!cap||!!(S.matrix[cap]||{})[role];
+const capOf=r=>{const m=Object.values(MENU).flat().find(x=>x[0]===r);return m?m[3]:CAP[r]};
+function homeOf(role){if(role==='admin')return 'adm-pesquisas';const it=MENU[role].find(([,, ,c])=>can(role,c));return it?it[0]:MENU[role][MENU[role].length-1][0]}
+function firstRoute(){const u=me();if(!u)return 'login';if(S.session.mode==='admin')return 'adm-pesquisas';if(u.perms.length>1&&!S.session.role)return 'navegar';const role=u.perms.includes(S.session.role)?S.session.role:u.perms[0];return role?homeOf(role):'login'}
+function guard(r){
+ if(r==='navegar'){const u=me();if(!u||S.session.mode!=='user')return 'login';return r}
+ const role=routeRole(r);if(!role)return r;
+ const u=me();if(!u){toast('Entre com sua conta para acessar.');return 'login'}
+ if(role==='admin'){if(S.session.mode!=='admin'){toast('Área exclusiva do administrador.');return firstRoute()}return r}
+ if(S.session.mode==='admin'){toast('Para navegar como '+ROLE[role]+', entre pela opção Usuário.');return 'adm-pesquisas'}
+ if(!u.perms.includes(role)){toast('Sua conta não tem permissão de '+ROLE[role]+'.');S.session.role=null;return u.perms.length?firstRoute():'login'}
+ const c=capOf(r);if(c&&!can(role,c)){toast('Essa função está desativada para o perfil '+ROLE[role]+'.');const h=homeOf(role);return h===r?role.slice(0,2)+'-perfil':h}
+ if(S.session.role!==role){S.session.role=role;save()}
+ return r}
+
+function side(r){
+ const u=me(),role=routeRole(r),act=PARENT[r]||r;
+ const items=MENU[role].filter(x=>role==='admin'||can(role,x[3]));
+ const sw=S.session.mode==='user'&&u.perms.length>1?`<div class="sw"><span class="eyebrow">Navegar como</span><div class="seg" role="group" aria-label="Trocar perfil">${['agente','cliente','participante'].filter(p=>u.perms.includes(p)).map(p=>`<button type="button" data-act="switch" data-role="${p}" aria-pressed="${p===role}">${ROLE_SHORT[p]}</button>`).join('')}</div></div>`:'';
+ return `<aside class="sys-side" aria-label="Menu ${ROLE[role]}"><a class="brand" href="#home" aria-label="Ir para o site"><img src="assets/logo-sinergia.png" alt="Sinergia Research &amp; Intelligence"></a>
+ <div class="who"><span class="eyebrow">${ROLE[role]}</span><b>${esc(u.nome)}</b>${role==='cliente'&&u.empresa?`<span class="small muted">${esc(u.empresa)}</span>`:''}${role==='participante'&&u.codigo?`<span class="small muted tnum">${u.codigo}</span>`:''}</div>${sw}
+ <nav>${items.map(([h,l,ic])=>`<a href="#${h}"${h===act?' aria-current="page"':''}>${I[ic]}${l}</a>`).join('')}</nav>
+ <div class="side-end"><a href="#home">${I.globe}Voltar ao site</a>${role==='admin'?`<button type="button" class="sidebtn" data-act="reset">${I.reset}Restaurar dados de exemplo</button>`:''}<button type="button" class="sidebtn" data-act="logout">${I.out}Sair</button></div></aside>`}
+const sys=(r,c)=>`<div class="sys">${side(r)}<div class="sys-main">${c}</div></div>`;
+
+/* ---------- Modal ---------- */
+function openModal(title,body,foot,mount){closeModal();const w=document.createElement('div');w.className='modal-bg';
+ w.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mh"><h2 id="mt">${title}</h2><button type="button" class="x" data-act="close" aria-label="Fechar">×</button></div><div class="mb">${body}</div>${foot?`<div class="mf">${foot}</div>`:''}</div>`;
+ document.body.appendChild(w);w.addEventListener('mousedown',e=>{if(e.target===w)closeModal()});
+ const f=w.querySelector('.mb input:not([type=hidden]),.mb select,.mb textarea')||w.querySelector('.mf .btn');f&&f.focus();mount&&mount(w)}
+function closeModal(){document.querySelectorAll('.modal-bg').forEach(m=>m.remove())}
+function confirmBox(title,text,label,fn){openModal(title,`<p class="muted">${text}</p>`,`<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button type="button" class="btn btn-danger" id="cfm">${label}</button>`,m=>{m.querySelector('#cfm').onclick=()=>{closeModal();fn()}})}
+const formData=f=>Object.fromEntries(new FormData(f).entries());
+
+/* ---------- Resultado de uma pesquisa (modal compartilhado) ---------- */
+function distOf(p){const i=S.pesquisas.indexOf(p),base=[.46,.35,.13,.06].map((x,k)=>x+(k===i%4?.04:k===(i+1)%4?-.04:0));
+ const labels=['Cinema','Streaming','TV aberta ou a cabo','Mídia física'],n0=Math.max(0,p.resp-S.respostas.filter(r=>r.pid===p.id).length);
+ const c=base.map(x=>Math.round(x*n0));S.respostas.filter(r=>r.pid===p.id).forEach(r=>{const k=labels.indexOf(r.onde);if(k>=0)c[k]++});
+ const tot=c.reduce((a,b)=>a+b,0);return {labels,c,tot}}
+function modalResultado(id){const p=P(id);if(!p)return;const d=distOf(p);
+ openModal(esc(p.nome),`<p class="muted">${esc(p.cliente)} · ${esc(projNome(p.projeto))} · ${p.tipo} · ${p.modo}</p>
+ ${kpis([['Respondentes',p.resp],['Entrevistas em campo',`${p.feitas}/${p.meta}`],['Situação',pill(p.status)]])}
+ <div class="panel" style="display:grid;gap:14px"><div><h3>Onde você assiste filmes?</h3><p class="small muted">n = ${d.tot}${d.tot?` · margem ±${(98/Math.sqrt(d.tot)).toFixed(1).replace('.',',')} p.p. (95%)`:''}</p></div>
+ <div class="bars">${d.labels.map((l,k)=>{const v=d.tot?Math.round(d.c[k]/d.tot*100):0;return `<div class="bar"><span>${l}</span><span class="t"><i class="${k===0?'hl':''}" style="width:${v}%"></i></span><b>${v}%</b></div>`}).join('')}</div></div>`,
+ `<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
+
+/* ======================= LOGIN ======================= */
+V.login=()=>{const tab=UI.loginTab||'usuario',pre=UI.prefill||'';
+ const demos=tab==='admin'?S.users.filter(u=>u.admin):S.users.filter(u=>!u.admin&&u.perms.length);
+ return `<section class="split"><div class="art">${loginArt}<div class="txt"><span class="eyebrow" style="color:var(--sand-200)">Área restrita</span><h2>Seu ambiente blindado de pesquisa.</h2><p>Administradores gerenciam o sistema. Usuários navegam como agente, cliente ou participante, conforme as permissões da conta.</p></div></div>
+ <div class="form-side"><div><span class="eyebrow">Login</span><h1 style="font-size:2rem">Entrar na Sinergia</h1>
+ <div class="ltabs" role="tablist" aria-label="Tipo de acesso"><button type="button" role="tab" aria-selected="${tab==='admin'}" data-act="login-tab" data-tab="admin">${I.shield}Administrador</button><button type="button" role="tab" aria-selected="${tab==='usuario'}" data-act="login-tab" data-tab="usuario">${I.user}Usuário</button></div>
+ <p class="small muted">${tab==='admin'?'Gerencia pesquisas, projetos, convites, cadastros, usuários e permissões.':'Agentes, clientes e participantes entram aqui. Você navega pelas áreas liberadas pelo administrador.'}</p>
+ <form data-form="login" novalidate>
+  <div class="field"><label for="l-mail">E-mail</label><input id="l-mail" name="email" type="email" autocomplete="username" required value="${esc(pre)}"></div>
+  <div class="field"><label for="l-senha">Senha</label><input id="l-senha" name="senha" type="password" autocomplete="current-password" required></div>
+  <div id="l-err" class="err" hidden></div>
+  <button class="linkbtn" type="button" data-toast="Enviamos um link para redefinir a senha no e-mail informado." style="justify-self:start">Esqueci minha senha</button>
+  <button class="btn btn-primary" type="submit">Entrar como ${tab==='admin'?'administrador':'usuário'}</button>
+ </form>
+ <div class="demo"><span class="eyebrow" style="color:var(--fg-3)">Contas de demonstração · qualquer senha com 4+ caracteres</span>
+ ${demos.map(u=>`<button type="button" data-act="demo" data-email="${esc(u.email)}"><span><b>${esc(u.nome)}</b> <small>${esc(u.email)}</small></span><small>${u.admin?'Administrador':u.perms.map(p=>ROLE_SHORT[p]).join(' · ')}</small></button>`).join('')}</div>
+ ${tab==='usuario'?'<p class="small muted">Ainda não participa? <a href="#cadastro">Cadastre-se como participante</a></p>':''}
+ </div></div></section>`};
+FORM.login=f=>{const d=formData(f),err=f.querySelector('#l-err'),tab=UI.loginTab||'usuario';
+ const fail=m=>{err.textContent=m;err.hidden=false};
+ const u=S.users.find(x=>x.email.toLowerCase()===(d.email||'').trim().toLowerCase());
+ if(!u)return fail('Não encontramos uma conta com esse e-mail. Confira o endereço ou use uma conta de demonstração.');
+ if((d.senha||'').length<4)return fail('Senha incorreta. Neste protótipo, use qualquer senha com 4 ou mais caracteres.');
+ if(tab==='admin'&&!u.admin)return fail('Esta conta não é de administrador. Entre pela opção Usuário.');
+ if(tab==='usuario'&&u.admin)return fail('Contas de administrador entram pela opção Administrador.');
+ if(tab==='usuario'&&!u.perms.length)return fail('Sua conta ainda não tem permissões de navegação. Peça ao administrador para liberar o acesso.');
+ S.session={uid:u.id,mode:tab==='admin'?'admin':'user',role:u.perms.length===1?u.perms[0]:null};UI.prefill='';save();
+ toast(`Olá, ${u.nome.split(' ')[0]}.`);location.hash=firstRoute()};
+
+V.navegar=()=>{const u=me();return pageHero([['home','Site'],[null,'Navegar como']],'Olá, '+esc(u.nome.split(' ')[0]),'Como você vai navegar agora?',`Sua conta tem acesso a ${u.perms.length} áreas. Você pode trocar a qualquer momento pelo menu lateral.`)+
+ `<section class="section"><div class="wrap" style="display:grid;gap:20px"><div class="choose">${['agente','cliente','participante'].filter(p=>u.perms.includes(p)).map(p=>`<button type="button" class="profile" data-act="switch" data-role="${p}"><div class="ico">${I[ROLE_ICO[p]]}</div><b>${ROLE[p]}</b><span>${ROLE_DESC[p]}</span></button>`).join('')}</div>
+ <button type="button" class="linkbtn" data-act="logout" style="justify-self:start">Sair da conta</button></div></section>`};
+
+/* ======================= ADMINISTRADOR ======================= */
+function pesqForm(p){p=p||{};const proj=p.projeto||UI.novaProj||'';const cli=p.cliente||(S.projetos.find(x=>x.id===proj)||{}).cliente||S.clientes[0]?.nome;
+ const projs=S.projetos.filter(x=>x.cliente===cli);
+ openModal(p.id?'Editar pesquisa':'Nova pesquisa',`<form id="f-pesq" data-form="pesquisa" data-id="${p.id||''}">
+ ${field('nome','Nome da pesquisa',p.nome||'','text','required placeholder="Ex.: Satisfação — Lançamento Filme B"')}
+ <div class="row2">${sel('cliente','Cliente',S.clientes.map(c=>c.nome),cli,'data-live-modal="cliente"')}${sel('projeto','Projeto',projs.map(x=>[x.id,x.nome]),proj||projs[0]?.id)}</div>
+ <div class="row2">${sel('tipo','Tipo',['Padrão','Personalizada'],p.tipo||'Padrão')}${sel('status','Status',['Rascunho','Ativa','Pausada','Encerrada'],p.status||'Rascunho')}</div>
+ <div class="row2">${sel('agente','Agente em campo',agentesNomes(),p.agente||agentesNomes()[0])}${field('local','Local de aplicação',p.local||'','text','placeholder="Ex.: Cinema Botafogo ou Online"')}</div>
+ <div class="row2">${sel('modo','Modalidade',['Presencial','Online'],p.modo||'Presencial')}${field('meta','Meta de entrevistas',p.meta||50,'number','min="1" required')}</div>
+ ${field('prazo','Prazo',toISO(p.prazo)||'','date')}
+ <p class="small muted">Personalizada: quem responde escolhe gêneros e nº de etapas.</p>
+ <div class="err" id="pf-err" hidden></div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-pesq">Salvar pesquisa</button>`,
+ m=>{const c=m.querySelector('#cliente'),pj=m.querySelector('#projeto');c.onchange=()=>{const l=S.projetos.filter(x=>x.cliente===c.value);pj.innerHTML=l.length?opts(l.map(x=>[x.id,x.nome])):'<option value="">Sem projetos para este cliente</option>'}})}
+FORM.pesquisa=f=>{const d=formData(f),id=f.dataset.id;
+ if(!d.nome.trim()||!d.projeto){const e=f.querySelector('#pf-err');e.textContent=!d.projeto?'Crie um projeto para este cliente antes de cadastrar a pesquisa.':'Dê um nome à pesquisa.';e.hidden=false;return}
+ const v={nome:d.nome.trim(),cliente:d.cliente,projeto:d.projeto,tipo:d.tipo,status:d.status,agente:d.agente,local:d.local||'A definir',modo:d.modo,meta:+d.meta||1,prazo:fromISO(d.prazo)};
+ if(id)Object.assign(P(id),v);else S.pesquisas.unshift({id:nid('p'),resp:0,feitas:0,data:hoje(),...v});
+ UI.novaProj='';save();closeModal();toast(id?'Pesquisa atualizada.':'Pesquisa criada.');refresh()};
+
+V['adm-pesquisas']=r=>{const ativ=S.pesquisas.filter(p=>p.status==='Ativa').length,cv=S.convites.filter(c=>c.status!=='Cancelado'),rs=cv.filter(c=>c.status==='Respondido').length;
+ return sys(r,head('Pesquisas','Crie, edite e acompanhe todas as pesquisas do sistema.',`<button type="button" class="btn btn-ghost" data-act="goto" data-to="adm-resultados" data-set="resTab:importar">Importar resultados</button><button type="button" class="btn btn-primary" data-act="nova-pesquisa">+ Nova pesquisa</button>`)
+ +kpis([['Pesquisas ativas',ativ],['Convites enviados',cv.length],['Taxa de conclusão dos convites',pct(rs,cv.length)]])
+ +`<div class="filters"><input class="grow" type="search" data-live="pesq" data-key="pq" placeholder="Buscar por pesquisa ou cliente" aria-label="Buscar por pesquisa ou cliente" value="${esc(UI.pq||'')}"><select data-live="pesq" data-key="pst" aria-label="Filtrar por status">${opts([['','Todos os status'],'Ativa','Pausada','Encerrada','Rascunho'],UI.pst||'')}</select><select data-live="pesq" data-key="ptp" aria-label="Filtrar por tipo">${opts([['','Padrão e personalizada'],'Padrão','Personalizada'],UI.ptp||'')}</select></div><div id="part-pesq">${PART.pesq()}</div>`)};
+PART.pesq=()=>{const q=(UI.pq||'').toLowerCase(),rows=S.pesquisas.filter(p=>(!q||(p.nome+' '+p.cliente).toLowerCase().includes(q))&&(!UI.pst||p.status===UI.pst)&&(!UI.ptp||p.tipo===UI.ptp));
+ return `<div class="tablebox"><table><thead><tr><th>Nome</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Respondentes</th><th>Ações</th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.nome)}</b><span class="s">${esc(projNome(p.projeto))}</span></td><td>${esc(p.cliente)}</td><td>${p.tipo}</td><td>${pill(p.status)}</td><td class="tnum">${p.resp}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-pesquisa" data-id="${p.id}">Editar</button><button type="button" class="linkbtn" data-act="convidar" data-id="${p.id}">Convidar</button><button type="button" class="linkbtn" data-act="resultado" data-id="${p.id}">Resultados</button><button type="button" class="linkbtn danger" data-act="excluir-pesquisa" data-id="${p.id}">Excluir</button></td></tr>`).join('')||emptyRow(6,'Nenhuma pesquisa com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${rows.length} de ${S.pesquisas.length} pesquisas</p>`};
+
+function filtroRes(scope){const pq=UI[scope+'Pesq']||'',md=UI[scope+'Modo']||'';return {pq,md,list:x=>x.filter(p=>(!pq||p.id===pq)&&(!md||p.modo===md))}}
+function painelResultados(scope,base,weeksBase){const f=filtroRes(scope),list=f.list(base),per=UI[scope+'Per']||'6';
+ const allResp=base.reduce((a,p)=>a+p.resp,0)||1,share=list.reduce((a,p)=>a+p.resp,0)/allResp;
+ const cv=S.convites.filter(c=>list.some(p=>p.id===c.pid)&&c.status!=='Cancelado'),rs=cv.filter(c=>c.status==='Respondido').length;
+ const w=weeksBase.map(v=>Math.round(v*share)).slice(per==='4'?2:0);
+ return `<div class="filters"><span class="lbl">Período</span><select data-live="${scope}" data-key="${scope}Per" aria-label="Período">${opts([['6','Últimas 6 semanas'],['4','Últimas 4 semanas']],per)}</select><span class="lbl">Pesquisa</span><select data-live="${scope}" data-key="${scope}Pesq" aria-label="Pesquisa">${opts([['','Todas'],...base.map(p=>[p.id,p.nome])],f.pq)}</select>
+ ${[['','Todos'],['Online','Online'],['Presencial','Presencial']].map(([v,l])=>`<button type="button" class="chipbtn" data-act="set" data-k="${scope}Modo" data-v="${v}" aria-pressed="${f.md===v}">${l}</button>`).join('')}</div>
+ ${kpis([['Pesquisas ativas',list.filter(p=>p.status==='Ativa').length],['Pesquisas concluídas',list.filter(p=>p.status==='Encerrada').length],['Respondentes (todos)',list.reduce((a,p)=>a+p.resp,0)],['Taxa de resposta dos convites',pct(rs,cv.length)]])}
+ <div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Respostas por semana</h3><span class="small muted">Barra areia: semana atual</span></div>${vbars(w)}</div>
+ <div class="panel" style="padding:0"><div style="padding:18px 20px 4px"><h3>Pesquisas</h3></div>${list.map(p=>`<div class="row-item"><div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(p.cliente)} · n = ${p.resp}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="resultado" data-id="${p.id}">Abrir pesquisa</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa com esses filtros.</p>'}</div>`}
+V['adm-resultados']=r=>{const tab=UI.resTab||'painel';
+ return sys(r,head('Resultados','Acompanhe as respostas e importe arquivos de coleta externa.')+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='painel'}" data-act="set" data-k="resTab" data-v="painel">Painel</button><button type="button" role="tab" aria-selected="${tab==='importar'}" data-act="set" data-k="resTab" data-v="importar">Importar arquivos</button></div>`+
+ (tab==='painel'?`<div id="part-adm" style="display:grid;gap:22px">${PART.adm()}</div>`:importarView()))};
+PART.adm=()=>painelResultados('adm',S.pesquisas,baseWeeks);
+function importarView(){const pj=UI.impProj||S.projetos[0]?.id;
+ return `<div class="panel" style="display:grid;gap:14px">${sel('imp-proj','Projeto de destino',S.projetos.map(p=>[p.id,p.nome+' · '+p.cliente]),pj,'data-act-change="impProj"')}
+ <label class="drop" for="imp-file"><b>Arraste arquivos aqui ou clique para enviar</b><span class="small">CSV, XLSX ou PDF de coletas externas. Arquivos CSV têm as linhas contadas na hora.</span><input id="imp-file" type="file" multiple hidden accept=".csv,.xlsx,.xls,.pdf,.txt"></label></div>
+ <div id="part-arq">${PART.arq()}</div>`}
+PART.arq=(pj)=>{const rows=S.arquivos.filter(a=>!pj||a.projeto===pj);
+ return `<div class="tablebox"><table><thead><tr><th>Arquivo</th>${pj?'':'<th>Projeto</th>'}<th>Tamanho</th><th>Enviado em</th><th>Linhas</th><th>Status</th></tr></thead><tbody>${rows.map(a=>`<tr><td><b>${esc(a.nome)}</b></td>${pj?'':`<td>${esc(projNome(a.projeto))}</td>`}<td class="tnum">${a.tam}</td><td class="tnum">${a.data}</td><td class="tnum">${a.linhas}</td><td>${pill(a.status)}</td></tr>`).join('')||emptyRow(6,'Nenhum arquivo importado ainda.')}</tbody></table></div>`};
+function importar(files,pj){const fmt=b=>b>1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(b/1024))+' KB';
+ [...files].forEach(f=>{const a={id:nid('f'),nome:f.name,projeto:pj,tam:fmt(f.size),data:hoje(),linhas:'—',status:'Processando'};S.arquivos.unshift(a);
+  const fin=n=>{a.linhas=n;a.status='Importado';save();const el=document.getElementById('part-arq');if(el)el.innerHTML=PART.arq(el.dataset.pj||undefined)};
+  if(/\.(csv|txt)$/i.test(f.name)){const rd=new FileReader();rd.onload=()=>setTimeout(()=>fin(Math.max(0,String(rd.result).split(/\r?\n/).filter(Boolean).length-1)),900);rd.onerror=()=>fin('—');rd.readAsText(f)}else setTimeout(()=>fin('—'),1200)});
+ save();toast(`${files.length} arquivo(s) em processamento.`);const el=document.getElementById('part-arq');if(el)el.innerHTML=PART.arq(el.dataset.pj||undefined)}
+
+V['adm-projetos']=r=>sys(r,head('Projetos de pesquisa','Cada projeto reúne as pesquisas e os arquivos de um cliente.','<button type="button" class="btn btn-primary" data-act="novo-projeto">+ Novo projeto</button>')+
+ `<div class="grid g3">${S.projetos.map(p=>projCard(p,'adm')).join('')}</div>`);
+const projCard=(p,sc)=>`<article class="card"><div class="ph" style="align-items:flex-start"><div><h3 style="font-size:1.15rem">${esc(p.nome)}</h3><span class="small muted">${esc(p.cliente)}</span></div>${pill(p.status)}</div><p class="muted small">${esc(p.desc)}</p><dl class="meta" style="gap:8px 24px"><div><dt>Responsável</dt><dd>${esc(p.resp)}</dd></div><div><dt>Prazo</dt><dd class="tnum">${p.prazo}</dd></div></dl><button type="button" class="btn btn-ghost" style="margin-top:auto" data-act="abrir-projeto" data-id="${p.id}" data-sc="${sc}">Abrir projeto</button></article>`;
+function projForm(){openModal('Novo projeto',`<form id="f-proj" data-form="projeto">${field('pnome','Nome do projeto','','text','required')}<div class="row2">${sel('pcli','Cliente',S.clientes.map(c=>c.nome),S.clientes[0]?.nome)}${sel('presp','Responsável',['Helena Prado','Marcos Vieira'],'Helena Prado')}</div><div class="field"><label for="pdesc">Objetivo</label><textarea id="pdesc" name="pdesc" required></textarea></div><div class="row2">${field('pprazo','Prazo','','date')}${sel('pst','Status',['Planejado','Em andamento'],'Planejado')}</div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-proj">Criar projeto</button>`)}
+FORM.projeto=f=>{const d=formData(f);if(!d.pnome.trim())return;S.projetos.unshift({id:nid('pj'),nome:d.pnome.trim(),cliente:d.pcli,resp:d.presp,desc:d.pdesc.trim()||'—',prazo:fromISO(d.pprazo),status:d.pst});save();closeModal();toast('Projeto criado.');refresh()};
+
+function projetoView(r,sc){const pj=S.projetos.find(p=>p.id===UI.proj)||S.projetos[0];if(!pj)return sys(r,'<p class="empty">Nenhum projeto.</p>');
+ const tab=UI.projTab||'catalogo',adm=sc==='adm';
+ return sys(r,head(esc(pj.nome),adm?`${esc(pj.cliente)} · responsável ${esc(pj.resp)} · prazo ${pj.prazo}`:esc(pj.desc),adm?`<button type="button" class="btn btn-primary" data-act="nova-pesquisa" data-proj="${pj.id}">+ Nova pesquisa</button>`:'',[adm?'adm-projetos':'cl-projetos','Projetos'])+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='catalogo'}" data-act="set" data-k="projTab" data-v="catalogo">Catálogo de pesquisas</button><button type="button" role="tab" aria-selected="${tab==='arquivos'}" data-act="set" data-k="projTab" data-v="arquivos">Arquivos</button></div>`+
+ (tab==='catalogo'?`<div class="filters"><input class="grow" type="search" data-live="cat" data-key="catq" placeholder="Buscar pesquisas" aria-label="Buscar pesquisas" value="${esc(UI.catq||'')}"><select data-live="cat" data-key="catag" aria-label="Agente">${opts([['','Todos os agentes'],...agentesNomes()],UI.catag||'')}</select></div><div id="part-cat">${PART.cat()}</div>`
+ :`${adm?`<label class="drop" for="imp-file" data-proj="${pj.id}"><b>Enviar arquivos para este projeto</b><span class="small">CSV, XLSX ou PDF.</span><input id="imp-file" type="file" multiple hidden></label>`:''}<div id="part-arq" data-pj="${pj.id}">${PART.arq(pj.id)}</div>`))}
+PART.cat=()=>{const pj=S.projetos.find(p=>p.id===UI.proj)||S.projetos[0],q=(UI.catq||'').toLowerCase();
+ const l=S.pesquisas.filter(p=>p.projeto===pj.id&&(!q||p.nome.toLowerCase().includes(q))&&(!UI.catag||p.agente===UI.catag));
+ return `<div class="panel" style="padding:0">${l.map(p=>`<div class="row-item">${tile(pj.nome.split(' ')[0],pj.cliente)}<div class="info"><span class="eyebrow" style="color:var(--fg-3)">${esc(pj.nome)}</span><b>${esc(p.nome)}</b><span class="small muted">${esc(p.agente)} · ${p.data}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="resultado" data-id="${p.id}">Ver resultados</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa neste projeto ainda.</p>'}</div>`};
+V['adm-projeto']=r=>projetoView(r,'adm');
+
+V['adm-convites']=r=>sys(r,head('Convites','Envie pesquisas aos participantes e acompanhe quem já respondeu.','<button type="button" class="btn btn-primary" data-act="novo-convite">+ Novo convite</button>')+
+ `<div class="filters"><input class="grow" type="search" data-live="conv" data-key="cq" placeholder="Buscar por participante ou pesquisa" aria-label="Buscar convites" value="${esc(UI.cq||'')}">${['','Enviado','Aberto','Respondido','Cancelado'].map(s=>`<button type="button" class="chipbtn" data-act="set" data-k="cst" data-v="${s}" aria-pressed="${(UI.cst||'')===s}">${s||'Todos'} ${s?S.convites.filter(c=>c.status===s).length:S.convites.length}</button>`).join('')}</div><div id="part-conv">${PART.conv()}</div>`);
+PART.conv=()=>{const q=(UI.cq||'').toLowerCase(),l=S.convites.filter(c=>{const p=P(c.pid),pa=partBy(c.cod)||{};return (!UI.cst||c.status===UI.cst)&&(!q||((p?.nome||'')+' '+(pa.nome||'')+' '+c.cod).toLowerCase().includes(q))});
+ return `<div class="tablebox"><table><thead><tr><th>Pesquisa</th><th>Participante</th><th>Enviado em</th><th>Status</th><th>Ações</th></tr></thead><tbody>${l.map(c=>{const p=P(c.pid),pa=partBy(c.cod)||{nome:'—',email:''};return `<tr><td>${esc(p?.nome||'Pesquisa removida')}</td><td><b>${esc(pa.nome)}</b><span class="s">${c.cod} · ${esc(pa.email)}</span></td><td class="tnum">${c.data}</td><td>${pill(c.status)}</td><td class="acts">${c.status==='Respondido'||c.status==='Cancelado'?'<span class="muted">—</span>':`<button type="button" class="linkbtn" data-act="reenviar" data-id="${c.id}">Reenviar</button><button type="button" class="linkbtn danger" data-act="cancelar-convite" data-id="${c.id}">Cancelar</button>`}</td></tr>`}).join('')||emptyRow(5,'Nenhum convite com esses filtros.')}</tbody></table></div>`};
+function conviteForm(pid){const ps=S.pesquisas.filter(p=>p.status==='Ativa'||p.status==='Pausada');
+ openModal('Novo convite',`<form id="f-conv" data-form="convite">${sel('cpid','Pesquisa',ps.map(p=>[p.id,p.nome]),pid||ps[0]?.id)}${sel('ccod','Participante',S.participantes.map(p=>[p.cod,`${p.nome} · ${p.cod}`]),S.participantes[0]?.cod)}<p class="small muted">O participante recebe o convite por e-mail e só vê o material depois de aceitar o termo de sigilo.</p><div class="err" id="cv-err" hidden></div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-conv">Enviar convite</button>`)}
+FORM.convite=f=>{const d=formData(f);if(S.convites.some(c=>c.pid===d.cpid&&c.cod===d.ccod&&c.status!=='Cancelado')){const e=f.querySelector('#cv-err');e.textContent='Esse participante já tem um convite ativo para essa pesquisa.';e.hidden=false;return}
+ S.convites.unshift({id:nid('cv'),pid:d.cpid,cod:d.ccod,data:hoje(),status:'Enviado'});save();closeModal();toast('Convite enviado.');refresh()};
+
+const CAD={clientes:{t:'Clientes',s:'cliente',cols:[['nome','Nome da empresa'],['contato','Contato'],['email','E-mail'],['seg','Segmento']]},agentes:{t:'Agentes',s:'agente',cols:[['nome','Nome'],['email','E-mail'],['regiao','Região de atuação'],['tel','Telefone']]},participantes:{t:'Participantes',s:'participante',cols:[['cod','Código'],['nome','Nome'],['email','E-mail'],['cidade','Cidade']]}};
+V['adm-cadastros']=r=>{const t=UI.cadTab||'clientes',c=CAD[t];
+ return sys(r,head('Cadastros','Clientes, agentes e participantes usados nas pesquisas.',`<button type="button" class="btn btn-primary" data-act="cad-add">+ Adicionar ${c.s}</button>`)+
+ `<div class="tabs" role="tablist">${Object.entries(CAD).map(([k,v])=>`<button type="button" role="tab" aria-selected="${k===t}" data-act="set" data-k="cadTab" data-v="${k}">${v.t} ${S[k].length}</button>`).join('')}</div>
+ <input type="search" data-live="cad" data-key="cadq" placeholder="Buscar em ${c.t.toLowerCase()}" aria-label="Buscar" value="${esc(UI.cadq||'')}"><div id="part-cad">${PART.cad()}</div>`)};
+PART.cad=()=>{const t=UI.cadTab||'clientes',c=CAD[t],q=(UI.cadq||'').toLowerCase(),l=S[t].filter(x=>!q||c.cols.some(([k])=>String(x[k]||'').toLowerCase().includes(q)));
+ return `<div class="tablebox"><table><thead><tr>${c.cols.map(([,l])=>`<th>${l}</th>`).join('')}<th>Ações</th></tr></thead><tbody>${l.map(x=>`<tr>${c.cols.map(([k],i)=>`<td${i===0?' style="font-weight:600"':''}>${esc(x[k]||'—')}</td>`).join('')}<td class="acts"><button type="button" class="linkbtn" data-act="cad-edit" data-id="${x.id}">Editar</button><button type="button" class="linkbtn danger" data-act="cad-del" data-id="${x.id}">Excluir</button></td></tr>`).join('')||emptyRow(c.cols.length+1,'Nenhum cadastro encontrado.')}</tbody></table></div>`};
+function cadForm(id){const t=UI.cadTab||'clientes',c=CAD[t],x=id?S[t].find(i=>i.id===id):{};
+ openModal((id?'Editar ':'Adicionar ')+c.s,`<form id="f-cad" data-form="cad" data-id="${id||''}">${c.cols.map(([k,l])=>k==='cod'?field('cad-'+k,l+' (gerado automaticamente se vazio)',x[k]||'','text','pattern="P-\\d{4}" placeholder="P-0000"'):field('cad-'+k,l,x[k]||'',k==='email'?'email':'text',k==='nome'?'required':'')).join('')}</form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-cad">Salvar</button>`)}
+FORM.cad=f=>{const t=UI.cadTab||'clientes',d=formData(f),v={};CAD[t].cols.forEach(([k])=>v[k]=(d['cad-'+k]||'').trim());if(!v.nome)return;if(t==='participantes'&&!v.cod)v.cod=nextCod();
+ const id=f.dataset.id;if(id)Object.assign(S[t].find(i=>i.id===id),v);else S[t].unshift({id:nid(t[0]),...v});save();closeModal();toast('Cadastro salvo.');refresh()};
+
+V['adm-usuarios']=r=>{const t=UI.usrTab||'usuarios';
+ return sys(r,head('Usuários e permissões','Defina o tipo de acesso de cada conta e o que cada perfil pode fazer.',t==='usuarios'?'<button type="button" class="btn btn-primary" data-act="novo-usuario">+ Novo usuário</button>':'')+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${t==='usuarios'}" data-act="set" data-k="usrTab" data-v="usuarios">Usuários</button><button type="button" role="tab" aria-selected="${t==='perm'}" data-act="set" data-k="usrTab" data-v="perm">Permissões por perfil</button></div>`+
+ (t==='usuarios'?`<p class="note">O login tem duas entradas: <b>Administrador</b> e <b>Usuário</b>. Marque abaixo como cada usuário pode navegar. Quem tem mais de uma permissão troca de perfil pelo menu lateral.</p>
+ <div class="tablebox"><table><thead><tr><th>Usuário</th><th>Acesso</th><th>Navega como</th><th>Empresa / código</th><th>Ações</th></tr></thead><tbody>${S.users.map(u=>`<tr><td><b>${esc(u.nome)}</b><span class="s">${esc(u.email)}</span></td><td>${pill(u.admin?'Administrador':'Usuário')}</td><td>${u.admin?'<span class="small muted">Acesso total pela área do administrador</span>':`<div class="permbox">${['agente','cliente','participante'].map(p=>`<label><input type="checkbox" data-act-change="perm" data-uid="${u.id}" data-p="${p}" ${u.perms.includes(p)?'checked':''}>${ROLE_SHORT[p]}</label>`).join('')}</div>${u.perms.length?'':'<span class="s" style="color:var(--warn-fg)">Sem permissões: não consegue entrar</span>'}`}</td><td class="small">${u.perms.includes('cliente')?esc(u.empresa||'—'):''}${u.perms.includes('cliente')&&u.perms.includes('participante')?'<br>':''}${u.perms.includes('participante')?`<span class="tnum">${u.codigo||'—'}</span>`:''}${u.admin?'—':''}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-usuario" data-id="${u.id}">Editar</button>${u.id===S.session.uid?'':`<button type="button" class="linkbtn danger" data-act="remover-usuario" data-id="${u.id}">Remover</button>`}</td></tr>`).join('')}</tbody></table></div>`
+ :matrixView()))}
+function matrixView(){const d=UI.mx||JSON.parse(JSON.stringify(S.matrix)),dirty=!!UI.mx;
+ return `<div class="tablebox"><table class="matrix"><thead><tr><th>Permissão</th><th>Administrador</th><th>Agente</th><th>Cliente Empresa</th><th>Participante</th></tr></thead><tbody>${MATRIX_ROWS.map(([k,l])=>`<tr><td>${l}</td>${['admin','agente','cliente','participante'].map(role=>{const lock=k==='gerenciar_usuarios'||role==='admin';return `<td><input type="checkbox" aria-label="${l} — ${ROLE[role]}" data-act-change="mx" data-k="${k}" data-r="${role}" ${(d[k]||{})[role]?'checked':''} ${lock?'disabled':''}></td>`}).join('')}</tr>`).join('')}</tbody></table></div>
+ <p class="small muted">“Gerenciar usuários e permissões” fica sempre com o Administrador, para ninguém perder o acesso ao sistema. As colunas de Agente, Cliente e Participante liberam ou escondem itens do menu desses perfis.</p>
+ <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-act="salvar-mx" ${dirty?'':'disabled'}>Salvar permissões</button>${dirty?'<span class="unsaved">Alterações não salvas</span><button type="button" class="linkbtn" data-act="descartar-mx">Descartar</button>':''}</div>`}
+function userForm(id){const u=id?S.users.find(x=>x.id===id):{perms:['participante']},adm=!!u.admin;
+ openModal(id?'Editar usuário':'Novo usuário',`<form id="f-usr" data-form="usuario" data-id="${id||''}">${field('unome','Nome',u.nome||'','text','required')}${field('umail','E-mail',u.email||'','email','required')}
+ <fieldset class="field"><legend style="font:500 .875rem var(--sans);margin-bottom:6px">Tipo de acesso</legend><div class="permbox"><label><input type="radio" name="uacc" value="usuario" ${adm?'':'checked'}>Usuário</label><label><input type="radio" name="uacc" value="admin" ${adm?'checked':''} ${id===S.session.uid?'disabled':''}>Administrador</label></div></fieldset>
+ <fieldset class="field" id="u-perms" ${adm?'hidden':''}><legend style="font:500 .875rem var(--sans);margin-bottom:6px">Navega como</legend><div class="permbox">${['agente','cliente','participante'].map(p=>`<label><input type="checkbox" name="up-${p}" ${u.perms?.includes(p)?'checked':''}>${ROLE[p]}</label>`).join('')}</div></fieldset>
+ <div class="row2" id="u-extra" ${adm?'hidden':''}>${sel('uemp','Empresa (para Cliente)',S.clientes.map(c=>c.nome),u.empresa||S.clientes[0]?.nome)}${field('ucod','Código de participante',u.codigo||'','text','placeholder="Gerado automaticamente"')}</div>
+ <div class="err" id="u-err" hidden></div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-usr">Salvar usuário</button>`,
+ m=>m.querySelectorAll('[name=uacc]').forEach(x=>x.onchange=()=>{const a=m.querySelector('[name=uacc]:checked').value==='admin';m.querySelector('#u-perms').hidden=a;m.querySelector('#u-extra').hidden=a}))}
+FORM.usuario=f=>{const d=formData(f),id=f.dataset.id,e=f.querySelector('#u-err'),email=d.umail.trim().toLowerCase();
+ if(!d.unome.trim()||!/^\S+@\S+\.\S+$/.test(email)){e.textContent='Preencha nome e um e-mail válido.';e.hidden=false;return}
+ if(S.users.some(u=>u.email.toLowerCase()===email&&u.id!==id)){e.textContent='Já existe um usuário com esse e-mail.';e.hidden=false;return}
+ const adm=id===S.session.uid?true:(d.uacc==='admin'),perms=adm?[]:['agente','cliente','participante'].filter(p=>d['up-'+p]);
+ const u=id?S.users.find(x=>x.id===id):{id:nid('u')};Object.assign(u,{nome:d.unome.trim(),email,admin:adm,perms,empresa:perms.includes('cliente')?d.uemp:u.empresa});
+ if(perms.includes('participante')){u.codigo=(d.ucod||'').trim()||u.codigo||nextCod();if(!partBy(u.codigo))S.participantes.push({id:nid('r'),cod:u.codigo,nome:u.nome,email,cidade:'—'})}
+ if(perms.includes('agente')&&!S.agentes.some(a=>a.nome===u.nome))S.agentes.push({id:nid('a'),nome:u.nome,email,regiao:'—',tel:''});
+ if(!id)S.users.push(u);save();closeModal();toast(id?'Usuário atualizado.':'Usuário criado. Ele entra pela opção Usuário no login.');refresh()};
+
+/* ======================= AGENTE ======================= */
+const minhasCampo=()=>{const u=me();return S.pesquisas.filter(p=>p.agente===u.nome&&p.status!=='Rascunho')};
+const orient=(t,l)=>`<div class="orient"><b>${t}</b><ol>${l.map(x=>`<li>${x}</li>`).join('')}</ol></div>`;
+V['ag-pesquisas']=r=>sys(r,head('Minhas pesquisas','Pesquisas atribuídas a você para aplicação em campo.')+
+ `<div class="filters"><input class="grow" type="search" data-live="agl" data-key="agq" placeholder="Buscar pesquisa ou local" aria-label="Buscar pesquisa ou local" value="${esc(UI.agq||'')}"><select data-live="agl" data-key="agst" aria-label="Status">${opts([['','Todos os status'],'Não iniciada','Em andamento','Concluída'],UI.agst||'')}</select><select data-live="agl" data-key="agord" aria-label="Ordenar">${opts([['asc','Data: mais antiga'],['desc','Data: mais recente']],UI.agord||'asc')}</select></div>
+ <div id="part-agl">${PART.agl()}</div>`+orient('Orientações',['Verifique o público-alvo antes de iniciar.','Confirme o local e o horário.','Use os recursos da pesquisa.']));
+PART.agl=()=>{const q=(UI.agq||'').toLowerCase(),k=d=>toISO(d)||'9';let l=minhasCampo().filter(p=>(!q||(p.nome+' '+p.local).toLowerCase().includes(q))&&(!UI.agst||statusCampo(p)===UI.agst)).sort((a,b)=>k(a.data).localeCompare(k(b.data)));if(UI.agord==='desc')l.reverse();
+ return `<div class="panel" style="padding:0">${l.map(p=>{const st=statusCampo(p);return `<div class="row-item">${tile(p.nome.split(' ')[0],p.local)}<div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(p.local)} · ${p.data}</span><div class="pbar"><i style="width:${Math.min(100,Math.round(p.feitas/p.meta*100))}%"></i></div><span class="small muted tnum">${p.feitas} de ${p.meta} entrevistas</span></div><div class="end">${pill(st)}<button type="button" class="btn btn-ghost btn-sm" data-act="ag-det" data-id="${p.id}">Ver detalhes</button>${st==='Concluída'?'<button type="button" class="btn btn-ghost btn-sm" disabled>Concluída</button>':`<button type="button" class="btn btn-primary btn-sm" data-act="ag-apl" data-id="${p.id}">Aplicar pesquisa</button>`}</div></div>`}).join('')||'<p class="empty">Nenhuma pesquisa atribuída a você com esses filtros.</p>'}</div>`};
+const agP=()=>P(UI.agPesq)&&minhasCampo().includes(P(UI.agPesq))?P(UI.agPesq):minhasCampo().find(p=>statusCampo(p)!=='Concluída')||minhasCampo()[0];
+V['ag-detalhes']=r=>{const p=agP();if(!p)return sys(r,head('Detalhes da pesquisa','Nenhuma pesquisa atribuída.','',['ag-pesquisas','Voltar às pesquisas']));
+ return sys(r,head('Detalhes da pesquisa',esc(p.nome),'',['ag-pesquisas','Voltar às pesquisas'])+
+ `<div class="panel" style="display:grid;gap:16px"><h3>Informações da pesquisa</h3><dl class="meta"><div><dt>Nome da pesquisa</dt><dd>${esc(p.nome)}</dd></div><div><dt>Meta</dt><dd class="tnum">${p.meta} entrevistas</dd></div><div><dt>Local de aplicação</dt><dd>${esc(p.local)}</dd></div><div><dt>Entrevistas realizadas</dt><dd class="tnum">${p.feitas}</dd></div><div><dt>Data da pesquisa</dt><dd class="tnum">${p.data}</dd></div><div><dt>Situação</dt><dd>${pill(statusCampo(p))}</dd></div></dl></div>`+
+ orient('Orientações para o agente',['Verifique o local e o horário de aplicação.','Confira a identificação do participante.','Siga as instruções recebidas da equipe.'])+
+ `<div style="display:flex;gap:10px;flex-wrap:wrap">${statusCampo(p)==='Concluída'?'':`<button type="button" class="btn btn-primary" data-act="ag-apl" data-id="${p.id}">Aplicar pesquisa</button>`}<button type="button" class="btn btn-ghost" data-act="ag-rec" data-id="${p.id}">Ver recursos</button></div>`)};
+const AGQ=[['Qual gênero de filme você mais gosta?',['Ação','Comédia','Romance','Ficção científica']],['Com quem você costuma assistir?',['Sozinho','Com amigos','Com a família','Com o par']],['Onde você assiste filmes?',['Cinema','Streaming','TV aberta ou a cabo','Mídia física']]];
+V['ag-aplicar']=r=>{const p=agP();if(!p)return sys(r,head('Aplicar pesquisa','Nenhuma pesquisa atribuída a você.'));
+ const on=UI.agOn&&UI.agOnPid===p.id,ab=minhasCampo().filter(x=>statusCampo(x)!=='Concluída');
+ return sys(r,head('Aplicar pesquisa',esc(p.nome),'',['ag-pesquisas','Voltar às pesquisas'])+
+ (ab.length>1?`<div class="filters"><span class="lbl">Pesquisa</span><select data-act-change="agPesq" aria-label="Escolher pesquisa">${opts(ab.map(x=>[x.id,x.nome]),p.id)}</select></div>`:'')+
+ `<div class="resumo"><span>Local: <b>${esc(p.local)}</b></span><span>Data: <b class="tnum">${p.data}</b></span><span>Meta: <b class="tnum">${p.meta} entrevistas</b></span><span>Realizadas: <b class="tnum">${p.feitas}</b></span><div class="pbar"><i style="width:${Math.min(100,Math.round(p.feitas/p.meta*100))}%"></i></div></div>
+ <div class="two"><div class="panel" style="display:grid;gap:12px"><h3>Identificação do participante</h3><p class="muted small">Informe o código antes de iniciar o questionário.</p>
+ <form data-form="ag-id" style="gap:10px" novalidate><div class="field"><label for="agcod">Código / ID do participante</label><input id="agcod" name="cod" placeholder="P-0000" value="${esc(on?UI.agCod:'')}" ${on?'readonly':''} autocomplete="off"></div><span class="small muted">Formato P- seguido de 4 números.</span><div class="err" id="ag-err" hidden></div>
+ ${on?`<button type="button" class="btn btn-ghost" disabled style="justify-self:start">Questionário em andamento</button>`:'<button class="btn btn-primary" type="submit" style="justify-self:start">Iniciar questionário</button>'}</form></div>
+ <div class="panel" style="display:grid;gap:12px"><h3>Pesquisa (SurveyMonkey)</h3>${on?`<form class="embedbox on" data-form="ag-q"><div class="eh"><span>SurveyMonkey · questionário incorporado (simulação)</span><span>${esc(UI.agCod)}${partBy(UI.agCod)?' · '+esc(partBy(UI.agCod).nome):''}</span></div>
+ ${AGQ.map(([q,o],i)=>`<fieldset class="q"><legend>${q}</legend><div class="radio-list">${o.map(x=>`<label><input type="radio" name="q${i}" value="${esc(x)}" required>${x}</label>`).join('')}</div></fieldset>`).join('')}
+ <div class="err" id="agq-err" hidden></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Enviar respostas</button><button type="button" class="btn btn-ghost" data-act="ag-cancel">Cancelar entrevista</button></div></form>`
+ :`<div class="embedbox"><div><b>Questionário incorporado aqui</b><p class="small">Ele abre depois que você identificar o participante.</p></div></div>`}</div></div>
+ <button type="button" class="btn btn-ghost" style="justify-self:start" data-act="ag-det" data-id="${p.id}">Ver detalhes</button>`)};
+FORM['ag-id']=f=>{const c=(formData(f).cod||'').trim().toUpperCase(),e=f.querySelector('#ag-err');if(!/^P-\d{4}$/.test(c)){e.textContent='Código inválido. Use P- seguido de 4 números, por exemplo P-1031.';e.hidden=false;return}
+ UI.agOn=true;UI.agCod=c;UI.agOnPid=agP().id;save();refresh();toast(partBy(c)?`Participante ${partBy(c).nome} identificado.`:'Código não está no cadastro: a entrevista será registrada como avulsa.')};
+FORM['ag-q']=f=>{const d=formData(f);if(AGQ.some((_,i)=>!d['q'+i])){const e=f.querySelector('#agq-err');e.textContent='Responda às três perguntas antes de enviar.';e.hidden=false;return}
+ const p=agP();p.feitas++;p.resp++;S.respostas.push({pid:p.id,onde:d.q2,genero:d.q0,via:'agente'});
+ const cv=S.convites.find(c=>c.pid===p.id&&c.cod===UI.agCod&&c.status!=='Cancelado');if(cv)cv.status='Respondido';
+ UI.agOn=false;UI.agCod='';save();refresh();toast(`Entrevista registrada: ${p.feitas} de ${p.meta}.`)};
+V['ag-recursos']=r=>{const l=minhasCampo();const p=l.find(x=>x.id===UI.recPesq)||l[0];if(!p)return sys(r,head('Recursos da pesquisa','Nenhuma pesquisa atribuída a você.'));
+ const it=S.recursos[p.id]||(S.recursos[p.id]=[]),ok=it.filter(x=>x.ok).length;
+ return sys(r,head('Recursos da pesquisa','Confira o material de campo antes de sair para aplicar.')+
+ `<div class="filters"><span class="lbl">Pesquisa</span><select data-act-change="recPesq" aria-label="Pesquisa">${opts(l.map(x=>[x.id,x.nome]),p.id)}</select><span class="lbl tnum">${ok} de ${it.length} conferidos</span></div>
+ <div class="panel" style="display:grid;gap:4px">${it.map((x,i)=>`<div class="check-row"><label><input type="checkbox" data-act-change="rec" data-i="${i}" ${x.ok?'checked':''}>${esc(x.t)}</label><button type="button" class="linkbtn danger" data-act="rec-del" data-i="${i}">Remover</button></div>`).join('')||'<p class="empty">Nenhum item. Adicione o material que você leva para o campo.</p>'}
+ <form data-form="rec-add" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap"><input name="t" aria-label="Novo item" placeholder="Novo item, ex.: Termo de consentimento" style="flex:1 1 240px" required><button class="btn btn-ghost" type="submit">Adicionar</button></form></div>`)};
+FORM['rec-add']=f=>{const t=(formData(f).t||'').trim();if(!t)return;const l=minhasCampo(),p=l.find(x=>x.id===UI.recPesq)||l[0];(S.recursos[p.id]=S.recursos[p.id]||[]).push({t,ok:false});save();refresh();toast('Item adicionado.')};
+
+/* ---------- Perfil (comum) ---------- */
+const perfilView=r=>{const u=me();return sys(r,head('Perfil','Seus dados de contato.')+`<form class="panel" data-form="perfil" style="max-width:620px">${field('pfn','Nome',u.nome,'text','required')}${field('pfe','E-mail',u.email,'email','required')}${field('pft','Telefone',u.tel||'','tel')}<div class="err" id="pf-err2" hidden></div><button class="btn btn-primary" type="submit" style="justify-self:start">Salvar alterações</button></form>`)};
+FORM.perfil=f=>{const d=formData(f),u=me(),e=f.querySelector('#pf-err2'),email=d.pfe.trim().toLowerCase();if(S.users.some(x=>x.email.toLowerCase()===email&&x.id!==u.id)){e.textContent='Esse e-mail já está em uso por outra conta.';e.hidden=false;return}
+ const old=u.nome;Object.assign(u,{nome:d.pfn.trim()||u.nome,email,tel:d.pft.trim()});if(old!==u.nome){S.pesquisas.forEach(p=>{if(p.agente===old)p.agente=u.nome});S.agentes.forEach(a=>{if(a.nome===old)a.nome=u.nome});S.participantes.forEach(p=>{if(p.cod===u.codigo)p.nome=u.nome})}save();refresh();toast('Dados salvos.')};
+V['ag-perfil']=perfilView;V['cl-perfil']=perfilView;V['pa-perfil']=perfilView;
+
+/* ======================= CLIENTE ======================= */
+const minhasEmpresa=()=>S.pesquisas.filter(p=>p.cliente===me().empresa&&p.status!=='Rascunho');
+V['cl-resultados']=r=>sys(r,head('Resultados',`Pesquisas de ${esc(me().empresa||'sua empresa')}. Você vê só os dados da sua empresa.`)+`<div id="part-cli" style="display:grid;gap:22px">${PART.cli()}</div>`);
+PART.cli=()=>painelResultados('cli',minhasEmpresa(),me().empresa==='Cinema Alfa'?alfaWeeks:baseWeeks.map(v=>Math.round(v/5)));
+V['cl-projetos']=r=>{const l=S.projetos.filter(p=>p.cliente===me().empresa);return sys(r,head('Projetos','Projetos de pesquisa contratados pela sua empresa.')+(l.length?`<div class="grid g3">${l.map(p=>projCard(p,'cl')).join('')}</div>`:'<p class="empty panel">Sua empresa ainda não tem projetos.</p>'))};
+V['cl-projeto']=r=>{const pj=S.projetos.find(p=>p.id===UI.proj);if(!pj||pj.cliente!==me().empresa){UI.proj=(S.projetos.find(p=>p.cliente===me().empresa)||{}).id}return projetoView(r,'cl')};
+
+/* ======================= PARTICIPANTE ======================= */
+const QUESTOES=[
+ {q:'Qual gênero de filme você mais gosta?',o:['Ação','Comédia','Romance','Ficção científica','Terror','Drama']},
+ {q:'Qual desses filmes você prefere assistir?',img:true,o:['Filme A','Filme B','Filme C','Filme D'],m:['Ação · 2026 · 128 min','Comédia · 2025 · 102 min','Ficção científica · 2026 · 141 min','Drama · 2024 · 115 min']},
+ {q:'Com quem você costuma assistir?',o:['Sozinho','Com amigos','Com a família','Com o par']},
+ {q:'Qual duração você prefere?',o:['Menos de 90 min','90–120 min','Mais de 120 min']},
+ {q:'Qual década você mais curte?',o:['1980','1990','2000','2010','2020']},
+ {q:'Onde você assiste filmes?',o:['Cinema','Streaming','TV aberta ou a cabo','Mídia física']}];
+const GENEROS=['Ação','Comédia','Romance','Ficção científica','Terror','Drama','Animação','Documentário'];
+const myProg=()=>S.prog[me().id]||(S.prog[me().id]={});
+const myPrefs=()=>S.prefs[me().id]||(S.prefs[me().id]={});
+function stOf(pid){const g=myProg()[pid];return g?.done?'Concluída':g&&g.step>0?'Em andamento':'Pendente'}
+const meusConvites=()=>{const c=me().codigo;return S.convites.filter(x=>x.cod===c&&x.status!=='Cancelado'&&P(x.pid))};
+function config(pid){const p=P(pid),pr=myPrefs()[pid];if(p.tipo==='Personalizada'&&pr)return {total:pr.etapas,imagens:pr.imagens,pular:pr.pular,resumo:pr.resumo};return {total:6,imagens:true,pular:true,resumo:true}}
+const qsFor=(pid)=>{const c=config(pid);return QUESTOES.slice(0,c.total).map(q=>q.img&&!c.imagens?{...q,img:false}:q)};
+function startPesquisa(pid){const p=P(pid),cv=S.convites.find(c=>c.pid===pid&&c.cod===me().codigo&&c.status!=='Cancelado');if(cv&&cv.status==='Enviado')cv.status='Aberto';
+ UI.paPid=pid;save();if(p.tipo==='Personalizada'&&!myPrefs()[pid]&&!myProg()[pid]){location.hash='pa-preferencias';return}
+ const g=myProg()[pid];if(!g||g.done){myProg()[pid]={step:0,total:config(pid).total,ans:[],start:Date.now()}}save();location.hash='pa-responder'}
+const paCard=(p,st,cv,rec)=>{const g=myProg()[p.id];return `<article class="pcard">${tile(p.nome.split(' ')[0],p.cliente,'')}<div class="top"><b>${esc(p.nome)}</b>${pill(st)}</div><span class="small muted">${st==='Concluída'?`Concluída em ${g?.data||cv?.data}`:`Prazo: ${p.prazo}`} · ${p.tipo}</span>${st==='Concluída'?`<button type="button" class="btn btn-ghost" data-act="ver-resp" data-id="${p.id}">Ver resposta enviada</button>`:`<button type="button" class="btn btn-primary" data-act="${rec?'pa-rec':'pa-start'}" data-id="${p.id}">${st==='Em andamento'?'Continuar':'Responder pesquisa'}</button>`}</article>`};
+V['pa-pesquisas']=r=>{const cvs=meusConvites(),items=cvs.map(c=>({c,p:P(c.pid),st:stOf(c.pid)})),tab=UI.paTab||'';
+ const cont=items.find(i=>i.st==='Em andamento'),cnt=s=>items.filter(i=>i.st===s).length,l=items.filter(i=>!tab||i.st===tab);
+ const recs=S.pesquisas.filter(p=>p.status==='Ativa'&&!cvs.some(c=>c.pid===p.id)).slice(0,3);
+ return sys(r,head('Minhas pesquisas','Você vê apenas as pesquisas enviadas para você.')+
+ (cont?(()=>{const g=myProg()[cont.p.id];return `<div class="panel" style="display:grid;gap:10px"><span class="eyebrow" style="color:var(--fg-3)">Continue de onde parou</span><div class="ph" style="align-items:center"><div style="display:grid;gap:6px;flex:1 1 240px;min-width:0"><b>${esc(cont.p.nome)}</b><div class="pbar" style="width:320px"><i style="width:${Math.round(g.step/g.total*100)}%"></i></div><span class="small muted">Etapa ${g.step+1} de ${g.total}</span></div><button type="button" class="btn btn-primary" data-act="pa-start" data-id="${cont.p.id}">Continuar</button></div></div>`})():'')+
+ `<div class="tabs" role="tablist">${[['','Todas',items.length],['Pendente','Pendentes',cnt('Pendente')],['Em andamento','Em andamento',cnt('Em andamento')],['Concluída','Concluídas',cnt('Concluída')]].map(([v,l,n])=>`<button type="button" role="tab" aria-selected="${tab===v}" data-act="set" data-k="paTab" data-v="${v}">${l} (${n})</button>`).join('')}</div>
+ ${l.length?`<div class="grid g3">${l.map(i=>paCard(i.p,i.st,i.c)).join('')}</div>`:'<p class="empty panel">Nenhuma pesquisa nesta aba.</p>'}
+ ${recs.length?`<h2 style="font-size:1.5rem">Recomendações</h2><p class="muted small" style="margin-top:-12px">Pesquisas abertas que combinam com o seu perfil.</p><div class="grid g3">${recs.map(p=>paCard(p,'Pendente',null,true)).join('')}</div>`:''}`)};
+V['pa-preferencias']=r=>{const p=P(UI.paPid);if(!p)return sys(r,'<p class="empty">Escolha uma pesquisa em Minhas pesquisas.</p>');
+ const pr=myPrefs()[p.id]||(UI.prefDraft&&UI.prefDraft.pid===p.id?UI.prefDraft:(UI.prefDraft={pid:p.id,nome:'',etapas:6,generos:[],imagens:true,pular:false,resumo:true}));
+ const tg=(k,l)=>`<div class="trow"><span>${l}</span><label class="toggle"><input type="checkbox" data-act-change="pref" data-k="${k}" ${pr[k]?'checked':''} aria-label="${l}"><span></span></label></div>`;
+ return sys(r,head('Pesquisa personalizada',`Ajuste a pesquisa “${esc(p.nome)}” antes de começar.`,'',['pa-pesquisas','Minhas pesquisas'])+
+ `<div class="two" style="grid-template-columns:minmax(0,1fr) minmax(0,380px)"><div class="panel" style="display:grid;gap:18px">
+  <div class="field"><label for="prnome">Nome para sua resposta (opcional)</label><input id="prnome" data-act-input="prefnome" value="${esc(pr.nome||'')}" placeholder="Ex.: Ana"></div>
+  <div class="field"><span style="font:500 .875rem var(--sans)">Número de etapas</span><div class="opts">${[4,6].map(n=>`<button type="button" class="chipbtn g" data-act="pref-et" data-v="${n}" aria-pressed="${pr.etapas===n}">${n} etapas</button>`).join('')}</div></div>
+  <div class="field"><span style="font:500 .875rem var(--sans)">Gêneros de interesse</span><div class="opts">${GENEROS.map(g=>`<button type="button" class="chipbtn g" data-act="pref-gen" data-v="${g}" aria-pressed="${pr.generos.includes(g)}">${g}</button>`).join('')}</div></div>
+  <div>${tg('imagens','Incluir imagens nas perguntas')}${tg('pular','Permitir pular perguntas')}${tg('resumo','Mostrar resumo ao final')}</div></div>
+ <div class="panel" style="display:grid;gap:12px"><h3>Resumo</h3>${tile(p.nome.split(' ')[0],p.cliente,'')}
+  <div style="display:grid;gap:6px" class="small">${[['Etapas',pr.etapas],['Gêneros',pr.generos.length+' selecionado'+(pr.generos.length===1?'':'s')],['Imagens',pr.imagens?'sim':'não'],['Tempo estimado','~'+Math.round(pr.etapas*1.3)+' min']].map(([a,b])=>`<div class="ph"><span class="muted">${a}</span><b>${b}</b></div>`).join('')}</div>
+  <button type="button" class="btn btn-primary" data-act="pref-ini">Iniciar pesquisa</button><button type="button" class="btn btn-ghost" data-act="pref-save">Salvar rascunho</button></div></div>`)};
+function curPref(){const p=P(UI.paPid);return myPrefs()[p.id]||UI.prefDraft}
+const posterTile=(o,m,i)=>`<div class="tile t${[3,2,1,0][i]}" aria-hidden="true"><b>${o}</b><small>${m}</small></div>`;
+V['pa-responder']=r=>{const p=P(UI.paPid),g=p&&myProg()[p.id];if(!p||!g||g.done){return sys(r,head('Responder pesquisa','Escolha uma pesquisa em Minhas pesquisas.','',['pa-pesquisas','Minhas pesquisas']))}
+ const qs=qsFor(p.id),c=config(p.id),i=Math.min(g.step,qs.length-1),q=qs[i],a=g.ans[i];
+ return sys(r,`<div class="ph"><span class="muted">${esc(p.nome)} · ${p.tipo}</span><span class="small muted tnum">Etapa ${i+1} de ${qs.length}</span></div><div class="pbar wide"><i style="width:${Math.round((i+1)/qs.length*100)}%"></i></div>
+ <div class="panel" style="display:grid;gap:16px"><div><h2 style="font-size:1.6rem">${q.q}</h2><p class="muted">Escolha uma opção.</p></div>
+ ${q.img?`<div class="posters" role="radiogroup" aria-label="${q.q}">${q.o.map((o,k)=>`<button type="button" class="poster" role="radio" aria-checked="${a===o}" data-act="pa-ans" data-v="${esc(o)}">${posterTile(o,q.m[k],k)}<span class="rd"><i></i>${o}</span><span class="small muted">${q.m[k]}</span></button>`).join('')}</div>`
+ :`<div class="answers" role="radiogroup" aria-label="${q.q}">${q.o.map(o=>`<button type="button" class="answer" role="radio" aria-checked="${a===o}" data-act="pa-ans" data-v="${esc(o)}"><i></i>${o}</button>`).join('')}</div>`}
+ <div class="err" id="pa-err" hidden>Escolha uma opção para continuar${c.pular?' ou use Pular':''}.</div></div>
+ <div class="nav-q"><button type="button" class="btn btn-ghost" data-act="pa-prev">${i===0?'Sair':'Voltar'}</button><div style="display:flex;gap:8px">${c.pular?'<button type="button" class="btn btn-ghost" data-act="pa-skip">Pular</button>':''}<button type="button" class="btn btn-primary" data-act="pa-next">${UI.backToReview?'Voltar à revisão':i===qs.length-1?(c.resumo?'Revisar respostas':'Enviar respostas'):'Próxima'}</button></div></div>`)};
+V['pa-revisao']=r=>{const p=P(UI.paPid),g=p&&myProg()[p.id];if(!g||g.done)return sys(r,head('Revise suas respostas','Nada para revisar.','',['pa-pesquisas','Minhas pesquisas']));const qs=qsFor(p.id);
+ return sys(r,`<div class="ph"><h1>Revise suas respostas</h1><span class="small muted tnum">Etapa ${qs.length} de ${qs.length}</span></div><div class="pbar wide"><i style="width:100%"></i></div>
+ <div class="panel" style="padding:0">${qs.map((q,i)=>`<div class="row-item"><span class="tnum muted" style="width:20px">${i+1}.</span><div class="info"><b>${q.q}</b><span>${g.ans[i]?esc(g.ans[i]):'<span class="muted">Pulada</span>'}</span></div><button type="button" class="btn btn-ghost btn-sm" data-act="pa-edit" data-i="${i}">Editar</button></div>`).join('')}</div>
+ <div class="nav-q"><button type="button" class="btn btn-ghost" data-act="pa-edit" data-i="${qs.length-1}">Voltar</button><button type="button" class="btn btn-primary" data-act="pa-send">Enviar respostas</button></div>`)};
+function enviarParticipante(){const p=P(UI.paPid),g=myProg()[p.id],qs=qsFor(p.id);g.done=true;g.data=hoje();g.tempo=Math.max(1,Math.round((Date.now()-(g.start||Date.now()))/60000));g.total=qs.length;
+ p.resp++;const cv=S.convites.find(c=>c.pid===p.id&&c.cod===me().codigo&&c.status!=='Cancelado');if(cv)cv.status='Respondido';
+ const onde=qs.findIndex(q=>q.q.startsWith('Onde'));S.respostas.push({pid:p.id,onde:onde>=0?g.ans[onde]:null,genero:g.ans[0],via:'participante'});
+ UI.paLast=p.id;UI.backToReview=false;save();location.hash='pa-concluida'}
+V['pa-concluida']=r=>{const p=P(UI.paLast),g=p&&myProg()[p.id];if(!g)return sys(r,head('Pesquisa','Nada por aqui.','',['pa-pesquisas','Minhas pesquisas']));
+ return sys(r,`<div class="done"><div class="ok-ico">${I.check}</div><h2>A pesquisa foi concluída com sucesso</h2><p class="muted">Obrigado por responder! Veja abaixo o resumo.</p></div>`+kpis([['Etapas respondidas',`${g.ans.filter(Boolean).length} / ${g.total}`],['Tempo total',`${g.tempo} min`],['Gênero favorito',esc(g.ans[0]||'—')]])+
+ `<div class="center-row"><a class="btn btn-ghost" href="#pa-respostas">Ver minhas respostas</a><a class="btn btn-primary" href="#pa-pesquisas">Voltar ao início</a></div>`)};
+V['pa-respostas']=r=>{const f=UI.paRf||'',l=Object.entries(myProg()).filter(([pid])=>P(pid)).map(([pid,g])=>({p:P(pid),g,st:g.done?'Concluída':'Em andamento'})).filter(x=>!f||x.st===f||x.p.tipo===f);
+ return sys(r,head('Minhas respostas','Histórico das pesquisas que você começou ou concluiu.')+
+ `<div class="filters">${[['','Todas'],['Concluída','Concluídas'],['Em andamento','Em andamento'],['Personalizada','Personalizada'],['Padrão','Padrão']].map(([v,t])=>`<button type="button" class="chipbtn" data-act="set" data-k="paRf" data-v="${v}" aria-pressed="${f===v}">${t}</button>`).join('')}</div>
+ <div class="tablebox"><table><thead><tr><th>Nome</th><th>Tipo</th><th>Data</th><th>Status</th><th><span class="sr">Ação</span></th></tr></thead><tbody>${l.map(x=>`<tr><td><b>${esc(x.p.nome)}</b></td><td>${x.p.tipo}</td><td class="tnum">${x.g.done?x.g.data:hoje()}</td><td>${pill(x.st)}</td><td style="text-align:right">${x.g.done?`<button type="button" class="btn btn-ghost btn-sm" data-act="ver-resp" data-id="${x.p.id}">Ver</button>`:`<button type="button" class="btn btn-primary btn-sm" data-act="pa-start" data-id="${x.p.id}">Retomar</button>`}</td></tr>`).join('')||emptyRow(5,'Você ainda não começou nenhuma pesquisa.')}</tbody></table></div>`)};
+function verResposta(pid){const p=P(pid),g=myProg()[pid];if(!g)return;const qs=g.total?QUESTOES.slice(0,g.total):QUESTOES;
+ openModal(esc(p.nome),`<p class="muted">Enviada em ${g.data||'—'} · ${p.tipo}</p><div class="panel" style="padding:0">${qs.map((q,i)=>`<div class="row-item"><span class="muted tnum" style="width:20px">${i+1}.</span><div class="info"><b>${q.q}</b><span>${esc(g.ans[i]||'Pulada')}</span></div></div>`).join('')}</div>`,`<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
+
+/* ======================= AÇÕES ======================= */
+const ACT={
+ close:()=>closeModal(),
+ 'login-tab':el=>{UI.loginTab=el.dataset.tab;save();refresh()},
+ demo:el=>{const i=document.getElementById('l-mail'),s=document.getElementById('l-senha');i.value=el.dataset.email;s.value='demo1234';s.focus()},
+ logout:()=>{S.session=null;UI.agOn=false;save();toast('Você saiu da conta.');location.hash='login'},
+ reset:()=>confirmBox('Restaurar dados de exemplo','Pesquisas, convites, usuários e respostas voltam ao estado inicial deste protótipo. Você continua conectado.','Restaurar',()=>{const s=S.session;S=seed();S.session=s;UI=S.ui;save();toast('Dados de exemplo restaurados.');refresh()}),
+ switch:el=>{const r=el.dataset.role;S.session.role=r;save();location.hash=homeOf(r)},
+ set:el=>{UI[el.dataset.k]=el.dataset.v;save();refresh()},
+ goto:el=>{(el.dataset.set||'').split(',').filter(Boolean).forEach(kv=>{const [k,v]=kv.split(':');UI[k]=v});save();location.hash=el.dataset.to},
+ 'nova-pesquisa':el=>{UI.novaProj=el.dataset.proj||'';pesqForm()},
+ 'editar-pesquisa':el=>pesqForm(P(el.dataset.id)),
+ 'excluir-pesquisa':el=>{const p=P(el.dataset.id);confirmBox('Excluir pesquisa',`Excluir “${esc(p.nome)}”? Os convites dessa pesquisa também saem da lista. Essa ação não pode ser desfeita.`,'Excluir pesquisa',()=>{S.pesquisas=S.pesquisas.filter(x=>x!==p);S.convites=S.convites.filter(c=>c.pid!==p.id);save();toast('Pesquisa excluída.');refresh()})},
+ convidar:el=>{UI.pending='conv:'+el.dataset.id;save();location.hash='adm-convites'},
+ resultado:el=>modalResultado(el.dataset.id),
+ 'novo-projeto':()=>projForm(),
+ 'abrir-projeto':el=>{UI.proj=el.dataset.id;UI.projTab='catalogo';UI.catq='';UI.catag='';save();location.hash=el.dataset.sc==='adm'?'adm-projeto':'cl-projeto'},
+ 'novo-convite':()=>conviteForm(),
+ reenviar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.data=hoje();save();refreshPart('conv');toast('Convite reenviado.')},
+ 'cancelar-convite':el=>{const c=S.convites.find(x=>x.id===el.dataset.id);confirmBox('Cancelar convite',`O participante deixa de ver a pesquisa “${esc(P(c.pid)?.nome||'')}”.`,'Cancelar convite',()=>{c.status='Cancelado';save();refresh();toast('Convite cancelado.')})},
+ 'cad-add':()=>cadForm(),
+ 'cad-edit':el=>cadForm(el.dataset.id),
+ 'cad-del':el=>{const t=UI.cadTab||'clientes',x=S[t].find(i=>i.id===el.dataset.id);confirmBox('Excluir cadastro',`Excluir ${esc(x.nome)} de ${CAD[t].t.toLowerCase()}?`,'Excluir',()=>{S[t]=S[t].filter(i=>i!==x);save();refresh();toast('Cadastro excluído.')})},
+ 'novo-usuario':()=>userForm(),
+ 'editar-usuario':el=>userForm(el.dataset.id),
+ 'remover-usuario':el=>{const u=S.users.find(x=>x.id===el.dataset.id);confirmBox('Remover usuário',`${esc(u.nome)} perde o acesso ao sistema.`,'Remover',()=>{S.users=S.users.filter(x=>x!==u);save();refresh();toast('Usuário removido.')})},
+ 'salvar-mx':()=>{S.matrix=UI.mx;UI.mx=null;save();refresh();toast('Permissões salvas. Os menus dos perfis já seguem a nova regra.')},
+ 'descartar-mx':()=>{UI.mx=null;save();refresh()},
+ 'ag-det':el=>{UI.agPesq=el.dataset.id;save();location.hash='ag-detalhes'},
+ 'ag-apl':el=>{if(UI.agOnPid!==el.dataset.id)UI.agOn=false;UI.agPesq=el.dataset.id;save();location.hash='ag-aplicar'},
+ 'ag-rec':el=>{UI.recPesq=el.dataset.id;save();location.hash='ag-recursos'},
+ 'ag-cancel':()=>confirmBox('Cancelar entrevista','As respostas marcadas serão descartadas.','Cancelar entrevista',()=>{UI.agOn=false;UI.agCod='';save();refresh()}),
+ 'rec-del':el=>{const l=minhasCampo(),p=l.find(x=>x.id===UI.recPesq)||l[0];S.recursos[p.id].splice(+el.dataset.i,1);save();refresh()},
+ 'pa-start':el=>startPesquisa(el.dataset.id),
+ 'pa-rec':el=>{const pid=el.dataset.id;S.convites.unshift({id:nid('cv'),pid,cod:me().codigo,data:hoje(),status:'Aberto'});save();startPesquisa(pid)},
+ 'pref-et':el=>{curPref().etapas=+el.dataset.v;save();refresh()},
+ 'pref-gen':el=>{const pr=curPref(),g=el.dataset.v;pr.generos=pr.generos.includes(g)?pr.generos.filter(x=>x!==g):[...pr.generos,g];save();refresh()},
+ 'pref-save':()=>{const p=P(UI.paPid),pr={...curPref()};delete pr.pid;myPrefs()[p.id]=pr;save();toast('Rascunho salvo. Você pode iniciar quando quiser.')},
+ 'pref-ini':()=>{const p=P(UI.paPid),pr={...curPref()};delete pr.pid;if(!pr.generos.length){toast('Escolha pelo menos um gênero de interesse.');return}myPrefs()[p.id]=pr;myProg()[p.id]={step:0,total:pr.etapas,ans:[],start:Date.now()};UI.prefDraft=null;save();location.hash='pa-responder'},
+ 'pa-ans':el=>{const g=myProg()[UI.paPid];g.ans[Math.min(g.step,qsFor(UI.paPid).length-1)]=el.dataset.v;save();refresh()},
+ 'pa-next':()=>{const g=myProg()[UI.paPid],qs=qsFor(UI.paPid),i=Math.min(g.step,qs.length-1);if(!g.ans[i]){document.getElementById('pa-err').hidden=false;return}paAdvance(g,qs,i)},
+ 'pa-skip':()=>{const g=myProg()[UI.paPid],qs=qsFor(UI.paPid),i=Math.min(g.step,qs.length-1);g.ans[i]=null;paAdvance(g,qs,i)},
+ 'pa-prev':()=>{const g=myProg()[UI.paPid];if(g.step===0){save();location.hash='pa-pesquisas';return}g.step--;UI.backToReview=false;save();refresh()},
+ 'pa-edit':el=>{myProg()[UI.paPid].step=+el.dataset.i;UI.backToReview=true;save();location.hash='pa-responder'},
+ 'pa-send':()=>enviarParticipante(),
+ 'ver-resp':el=>verResposta(el.dataset.id)
+};
+function paAdvance(g,qs,i){if(UI.backToReview){UI.backToReview=false;g.step=qs.length-1;save();location.hash='pa-revisao';return}
+ if(i<qs.length-1){g.step=i+1;save();refresh();window.scrollTo(0,0);return}
+ g.step=qs.length-1;save();if(config(UI.paPid).resumo)location.hash='pa-revisao';else enviarParticipante()}
+const CHANGE={
+ perm:el=>{const u=S.users.find(x=>x.id===el.dataset.uid),p=el.dataset.p;u.perms=el.checked?[...new Set([...u.perms,p])]:u.perms.filter(x=>x!==p);
+  if(el.checked&&p==='cliente'&&!u.empresa){u.empresa=S.clientes[0]?.nome;toast(`Empresa definida como ${u.empresa}. Ajuste em Editar, se precisar.`)}
+  if(el.checked&&p==='participante'&&!u.codigo){u.codigo=nextCod();S.participantes.push({id:nid('r'),cod:u.codigo,nome:u.nome,email:u.email,cidade:'—'})}
+  if(el.checked&&p==='agente'&&!S.agentes.some(a=>a.nome===u.nome))S.agentes.push({id:nid('a'),nome:u.nome,email:u.email,regiao:'—',tel:''});
+  save();refresh();if(!(el.checked&&p==='cliente'))toast(`${u.nome}: ${el.checked?'pode':'não pode mais'} navegar como ${ROLE[p]}.`)},
+ mx:el=>{UI.mx=UI.mx||JSON.parse(JSON.stringify(S.matrix));const k=el.dataset.k;UI.mx[k]=UI.mx[k]||{};UI.mx[k][el.dataset.r]=el.checked?1:0;save();refresh()},
+ impProj:el=>{UI.impProj=el.value;save()},
+ agPesq:el=>{UI.agPesq=el.value;UI.agOn=false;save();refresh()},
+ recPesq:el=>{UI.recPesq=el.value;save();refresh()},
+ rec:el=>{const l=minhasCampo(),p=l.find(x=>x.id===UI.recPesq)||l[0];S.recursos[p.id][+el.dataset.i].ok=el.checked;save();refresh()},
+ pref:el=>{curPref()[el.dataset.k]=el.checked;save();refresh()}
+};
+const PENDING={conv:id=>conviteForm(id)};
+
+/* ======================= Integração com o site ======================= */
+FORM.cadastro=f=>{const v=id=>(f.querySelector('#'+id)?.value||'').trim(),email=v('p-mail').toLowerCase();
+ if(!/^\S+@\S+\.\S+$/.test(email)){toast('Informe um e-mail válido.');return}
+ if(S.users.some(u=>u.email.toLowerCase()===email)){toast('Já existe uma conta com esse e-mail. Entre pela opção Usuário.');UI.prefill=email;UI.loginTab='usuario';save();location.hash='login';return}
+ const cod=nextCod(),nome=v('p-nome')||'Participante';S.users.push({id:nid('u'),nome,email,perms:['participante'],codigo:cod,tel:''});S.participantes.push({id:nid('r'),cod,nome,email,cidade:v('p-cid')||'—'});
+ UI.prefill=email;UI.loginTab='usuario';save();toast(`Cadastro criado com o código ${cod}. Entre pela opção Usuário.`);location.hash='login'};
+
+/* ======================= Roteador ======================= */
+const publicNav=[['home','Home'],['servicos','Serviços'],['cia','CIA'],['pesquisa','Pesquisa aberta']];
+let timer=null,current='home';
+function renderNav(route){const u=me();
+ $('#nav').innerHTML=publicNav.map(([k,l])=>`<a href="#${k}"${(k===route||(k==='servicos'&&(route==='cat'||route==='cinema'))||(k==='pesquisa'&&route==='cadastro'))?' aria-current="page"':''}>${l}</a>`).join('')+(u?`<a class="btn btn-accent btn-sm" href="#${firstRoute()}">Minha área</a>`:`<a class="btn btn-accent btn-sm" href="#login">Login</a>`);
+ $('#footer').hidden=!!routeRole(route)}
+function runPending(){if(!UI.pending)return;const [k,v]=UI.pending.split(':');UI.pending=null;save();PENDING[k]&&PENDING[k](v)}
+function render(){clearInterval(timer);closeModal();
+ let r=(location.hash||'#home').slice(1);if(!V[r])r='home';
+ const g=guard(r);if(g!==r){location.replace('#'+g);return}
+ current=r;document.body.classList.toggle('in-app',!!routeRole(r));
+ view.innerHTML=V[r](r);renderNav(r);$('#nav').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');
+ window.scrollTo(0,0);if(r==='home')carousel();runPending()}
+function refresh(){const y=window.scrollY;view.innerHTML=V[current](current);if(current!=='home')window.scrollTo(0,y);renderNav(current);runPending()}
+function refreshPart(k){const el=document.getElementById('part-'+k);if(el&&PART[k])el.innerHTML=PART[k](el.dataset.pj||undefined)}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),3400)}
+document.addEventListener('submit',e=>{const f=e.target;e.preventDefault();if(f.dataset.form&&FORM[f.dataset.form]){FORM[f.dataset.form](f);return}toast(f.dataset.msg||'Enviado.');if(f.dataset.go)setTimeout(()=>location.hash=f.dataset.go,700)});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(a&&ACT[a.dataset.act]){e.preventDefault();ACT[a.dataset.act](a,e);return}const b=e.target.closest('[data-toast]');if(b){e.preventDefault();toast(b.dataset.toast)}});
+document.addEventListener('input',e=>{const el=e.target;if(el.dataset.live&&el.tagName==='INPUT'){UI[el.dataset.key]=el.value;save();refreshPart(el.dataset.live)}if(el.dataset.actInput==='prefnome'){curPref().nome=el.value;save()}});
+document.addEventListener('change',e=>{const el=e.target;
+ if(el.dataset.live&&el.tagName==='SELECT'){UI[el.dataset.key]=el.value;save();refreshPart(el.dataset.live);return}
+ if(el.dataset.actChange&&CHANGE[el.dataset.actChange]){CHANGE[el.dataset.actChange](el);return}
+ if(el.id==='imp-file'&&el.files.length){const pj=el.closest('[data-proj]')?.dataset.proj||UI.impProj||S.projetos[0]?.id;importar(el.files,pj);el.value=''}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+$('#menuBtn').addEventListener('click',()=>{const n=$('#nav');const o=n.classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',o)});
+
+function carousel(){
+ const slides=[...document.querySelectorAll('.slide')],dots=[...document.querySelectorAll('#dots button')];
+ let i=0,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const show=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,k)=>{s.classList.toggle('on',k===i);s.setAttribute('aria-hidden',k!==i);s.querySelectorAll('a').forEach(a=>a.tabIndex=k===i?0:-1)});dots.forEach((d,k)=>d.setAttribute('aria-current',k===i?'true':'false'));$('#sceneNo').textContent=String(i+1).padStart(2,'0');$('#genre').textContent=slidesData[i].genre};
+ const start=()=>{clearInterval(timer);if(playing)timer=setInterval(()=>show(i+1),6000)};
+ $('#next').onclick=()=>{show(i+1);start()};$('#prev').onclick=()=>{show(i-1);start()};
+ dots.forEach(d=>d.onclick=()=>{show(+d.dataset.i);start()});
+ const pb=$('#pause');const sync=()=>{pb.textContent=playing?'❚❚':'▶';pb.setAttribute('aria-label',playing?'Pausar carrossel':'Retomar carrossel')};sync();
+ pb.onclick=()=>{playing=!playing;sync();start()};
+ const st=$('.stage');st.addEventListener('mouseenter',()=>clearInterval(timer));st.addEventListener('mouseleave',start);
+ let x0=null;st.addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});st.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40){show(i+(dx<0?1:-1));start()}x0=null});
+ show(0);start();
+}
+addEventListener('hashchange',render);render();
+})();
+</script>
+
+</body>
+</html>
