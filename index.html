@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sinergia Surveys</title>
-<meta name="description" content="Sinergia Research & Intelligence — site e sistema de pesquisas (protótipo navegável).">
-<meta name="robots" content="noindex, nofollow">
-<link rel="icon" type="image/png" href="assets/logo-sinergia.png">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -386,9 +378,34 @@ footer .base{border-top:1px solid rgba(255,255,255,.1)} footer .base .wrap{displ
 .sys>*,.sys-main>*{min-width:0}
 .tablebox{position:relative}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* rev. 21/10: breadcrumb, alerta de prazo, recomendações */
+nav.crumbs{display:block;margin-bottom:-8px}
+nav.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+nav.crumbs li{display:inline-flex;gap:6px;align-items:center;min-width:0}
+nav.crumbs li+li::before{content:"/";color:var(--line-strong)}
+nav.crumbs [aria-current]{color:var(--fg);font-weight:500}
+nav.crumbs a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong)}
+.form-side nav.crumbs{margin-bottom:6px}
+.lg{font:500 .875rem var(--sans);margin-bottom:6px}
+.due{display:inline-flex;align-items:center;gap:6px;font:600 .78rem var(--sans);padding:3px 10px 3px 8px;border-radius:999px;justify-self:start;align-self:flex-start;width:max-content;max-width:100%}
+.due svg{width:14px;height:14px;flex:none}
+.due.late{background:var(--red-50);color:var(--red-800)}
+.due.soon{background:var(--warn-bg);color:var(--warn-fg);box-shadow:inset 0 0 0 1px var(--sand-400)}
+.due.near{background:var(--warn-bg);color:var(--warn-fg)}
+.due.ok{background:var(--muted);color:var(--fg-2);font-weight:500}
+.row-item.is-late{box-shadow:inset 4px 0 0 #b3261e}
+.row-item.is-soon{box-shadow:inset 4px 0 0 var(--sand-400)}
+.pcard.is-late{border-color:#e3a49e;box-shadow:inset 0 4px 0 #b3261e}
+.pcard.is-soon{border-color:var(--sand-400);box-shadow:inset 0 4px 0 var(--sand-400)}
+.alertbar{display:flex;gap:10px;align-items:flex-start;background:var(--red-50);color:var(--red-800);border:1px solid #e3a49e;border-radius:var(--r-md);padding:12px 14px;font:400 .9rem var(--sans)}
+.alertbar svg{width:20px;height:20px;flex:none;margin-top:1px}
+.why{margin:0;padding:0;list-style:none;display:grid;gap:4px;font:400 .85rem var(--sans);color:var(--fg-2)}
+.why li::before{content:"✓ ";color:var(--action);font-weight:600}
+.btn svg{width:16px;height:16px}
+textarea{font:400 .85rem var(--mono)}
+[hidden]{display:none!important}
 </style>
-</head>
-<body>
+
 <header class="site-head" id="siteHead">
   <div class="wrap">
     <a class="logo" href="#home" aria-label="Sinergia Research &amp; Intelligence, página inicial"><img src="assets/logo-sinergia.png" alt="Sinergia Research &amp; Intelligence"></a>
@@ -590,7 +607,7 @@ const loginArt=`<svg viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice">
 
 const PART={},FORM={};
 
-/* ======================= SISTEMA SINERGIA ======================= */
+/* ======================= SISTEMA SINERGIA (rev. 21/10/2026) ======================= */
 Object.assign(I,{
  list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg>',
  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
@@ -599,64 +616,80 @@ Object.assign(I,{
  hist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 12a9 9 0 103-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg>',
  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg>',
  reset:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4v6h6M20 20v-6h-6M5.5 15a7.5 7.5 0 0013 2M18.5 9a7.5 7.5 0 00-13-2"/></svg>',
- check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.01"/></svg>',
+ upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7 9l5-5 5 5M4 16v4h16v-4"/></svg>'
 });
 
+/* ---------- Datas ---------- */
+const pad=n=>String(n).padStart(2,'0');
+const fmt=d=>`${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+const hoje=()=>fmt(new Date());
+const rel=n=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+n);return fmt(d)};
+const toISO=d=>{const m=/^(\d\d)\/(\d\d)\/(\d{4})$/.exec(d||'');return m?`${m[3]}-${m[2]}-${m[1]}`:''};
+const fromISO=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(d||'');return m?`${m[3]}/${m[2]}/${m[1]}`:'—'};
+const dias=d=>{const i=toISO(d);if(!i)return null;const a=new Date(i+'T12:00:00'),b=new Date();b.setHours(12,0,0,0);return Math.round((a-b)/864e5)};
+
 /* ---------- Dados ---------- */
-const KEY='sinergia-sistema-v1';
-function seed(){return {v:1,session:null,ui:{},
+const KEY='sinergia-sistema-v2';
+function seed(){return {v:2,session:null,ui:{},
  users:[
   {id:'u1',nome:'Helena Prado',email:'helena@sinergia.com.br',admin:true,perms:[],tel:'(21) 99876-1200'},
   {id:'u2',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',perms:['agente','participante'],codigo:'P-1075',tel:'(21) 98765-4321'},
   {id:'u3',nome:'Marina Costa',email:'marina@cinemaalfa.com.br',perms:['cliente'],empresa:'Cinema Alfa',tel:'(21) 3322-1100'},
-  {id:'u4',nome:'Ana Ribeiro',email:'ana.ribeiro@email.com',perms:['participante'],codigo:'P-1027',tel:'(21) 99111-2233'},
-  {id:'u5',nome:'Rafael Mendes',email:'demo@sinergia.com.br',perms:['agente','cliente','participante'],empresa:'Cinema Alfa',codigo:'P-1099',tel:'(21) 97000-1234'}
+  {id:'u4',nome:'Ana Ribeiro',email:'ana.ribeiro@email.com',perms:['participante'],codigo:'P-1027',tel:'(21) 99111-2233',generos:['Comédia','Drama']},
+  {id:'u5',nome:'Rafael Mendes',email:'demo@sinergia.com.br',perms:['agente','cliente','participante'],empresa:'Cinema Alfa',codigo:'P-1099',tel:'(21) 97000-1234',generos:['Ação','Ficção científica']}
  ],
  clientes:[
-  {id:'c1',nome:'Cinema Alfa',contato:'Marina Costa',email:'marina@cinemaalfa.com.br',seg:'Exibição'},
-  {id:'c2',nome:'Cia Beta',contato:'Otávio Reis',email:'otavio@ciabeta.com',seg:'Streaming'},
-  {id:'c3',nome:'Distribuidora Gama',contato:'Sílvia Mota',email:'silvia@gamafilmes.com',seg:'Distribuição'},
-  {id:'c4',nome:'Cinema Delta',contato:'Paulo Freitas',email:'paulo@cinemadelta.com.br',seg:'Exibição'},
-  {id:'c5',nome:'Cia Epsilon',contato:'Renata Luz',email:'renata@epsilon.com',seg:'Venda de ingressos'}],
+  {id:'c1',nome:'Cinema Alfa',contato:'Marina Costa',email:'marina@cinemaalfa.com.br',seg:'Exibição',criado:'12/03/2025'},
+  {id:'c2',nome:'Cia Beta',contato:'Otávio Reis',email:'otavio@ciabeta.com',seg:'Streaming',criado:'02/06/2025'},
+  {id:'c3',nome:'Distribuidora Gama',contato:'Sílvia Mota',email:'silvia@gamafilmes.com',seg:'Distribuição',criado:'18/08/2025'},
+  {id:'c4',nome:'Cinema Delta',contato:'Paulo Freitas',email:'paulo@cinemadelta.com.br',seg:'Exibição',criado:'05/11/2025'},
+  {id:'c5',nome:'Cia Epsilon',contato:'Renata Luz',email:'renata@epsilon.com',seg:'Venda de ingressos',criado:'20/01/2026'}],
  agentes:[
-  {id:'a1',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',regiao:'Zona Sul e Centro',tel:'(21) 98765-4321'},
-  {id:'a2',nome:'Yasmin Lopes',email:'yasmin@sinergia.com.br',regiao:'Online',tel:'(21) 98111-0000'},
-  {id:'a3',nome:'Victor Alves',email:'victor@sinergia.com.br',regiao:'Barra e Zona Oeste',tel:'(21) 98222-0000'},
-  {id:'a4',nome:'Rafael Mendes',email:'demo@sinergia.com.br',regiao:'Online',tel:'(21) 97000-1234'}],
+  {id:'a1',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',regiao:'Zona Sul e Centro',tel:'(21) 98765-4321',criado:'10/02/2025'},
+  {id:'a2',nome:'Yasmin Lopes',email:'yasmin@sinergia.com.br',regiao:'Online',tel:'(21) 98111-0000',criado:'15/04/2025'},
+  {id:'a3',nome:'Victor Alves',email:'victor@sinergia.com.br',regiao:'Barra e Zona Oeste',tel:'(21) 98222-0000',criado:'01/09/2025'},
+  {id:'a4',nome:'Rafael Mendes',email:'demo@sinergia.com.br',regiao:'Online',tel:'(21) 97000-1234',criado:'01/10/2026'}],
  participantes:[
-  {id:'r1',cod:'P-1027',nome:'Ana Ribeiro',email:'ana.ribeiro@email.com',cidade:'Rio de Janeiro'},
-  {id:'r2',cod:'P-1031',nome:'Bruno Souza',email:'bruno.souza@email.com',cidade:'Niterói'},
-  {id:'r3',cod:'P-1044',nome:'Luiza Martins',email:'luiza.m@email.com',cidade:'Rio de Janeiro'},
-  {id:'r4',cod:'P-1052',nome:'Diego Alves',email:'diego.alves@email.com',cidade:'São Gonçalo'},
-  {id:'r5',cod:'P-1060',nome:'Paula Nunes',email:'paula.nunes@email.com',cidade:'Rio de Janeiro'},
-  {id:'r6',cod:'P-1075',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',cidade:'Rio de Janeiro'},
-  {id:'r7',cod:'P-1099',nome:'Rafael Mendes',email:'demo@sinergia.com.br',cidade:'Rio de Janeiro'}],
+  {id:'r1',cod:'P-1027',nome:'Ana Ribeiro',email:'ana.ribeiro@email.com',cidade:'Rio de Janeiro',criado:'14/05/2026'},
+  {id:'r2',cod:'P-1031',nome:'Bruno Souza',email:'bruno.souza@email.com',cidade:'Niterói',criado:'20/05/2026'},
+  {id:'r3',cod:'P-1044',nome:'Luiza Martins',email:'luiza.m@email.com',cidade:'Rio de Janeiro',criado:'03/06/2026'},
+  {id:'r4',cod:'P-1052',nome:'Diego Alves',email:'diego.alves@email.com',cidade:'São Gonçalo',criado:'22/07/2026'},
+  {id:'r5',cod:'P-1060',nome:'Paula Nunes',email:'paula.nunes@email.com',cidade:'Rio de Janeiro',criado:'09/08/2026'},
+  {id:'r6',cod:'P-1075',nome:'João Tadeu',email:'joao.tadeu@sinergia.com.br',cidade:'Rio de Janeiro',criado:'10/02/2025'},
+  {id:'r7',cod:'P-1099',nome:'Rafael Mendes',email:'demo@sinergia.com.br',cidade:'Rio de Janeiro',criado:'01/10/2026'}],
  projetos:[
   {id:'pj1',nome:'Lançamentos 2026',cliente:'Cinema Alfa',status:'Em andamento',desc:'Medir a recepção dos lançamentos do semestre nas salas do cliente.',resp:'Helena Prado',prazo:'15/12/2026'},
   {id:'pj2',nome:'Consumo de streaming',cliente:'Cia Beta',status:'Em andamento',desc:'Entender hábitos de quem assiste em casa.',resp:'Helena Prado',prazo:'30/11/2026'},
   {id:'pj3',nome:'Trailers e campanhas',cliente:'Distribuidora Gama',status:'Em andamento',desc:'Testar trailers antes da campanha nacional.',resp:'Marcos Vieira',prazo:'10/11/2026'},
   {id:'pj4',nome:'Perfil de público',cliente:'Cinema Delta',status:'Em andamento',desc:'Traçar o perfil de quem frequenta as salas.',resp:'Marcos Vieira',prazo:'20/12/2026'},
-  {id:'pj5',nome:'Bilheteria contínua',cliente:'Cia Epsilon',status:'Planejado',desc:'Acompanhar satisfação na compra de ingressos.',resp:'Helena Prado',prazo:'31/12/2026'}],
+  {id:'pj5',nome:'Bilheteria contínua',cliente:'Cia Epsilon',status:'Planejado',desc:'Acompanhar satisfação na compra de ingressos.',resp:'Helena Prado',prazo:'31/12/2026'},
+  {id:'pj6',nome:'Curtas e festivais',cliente:'Cinema Alfa',status:'Planejado',desc:'Avaliar a recepção da mostra de curtas nacionais.',resp:'Helena Prado',prazo:'28/02/2027'}],
  pesquisas:[
-  {id:'p1',nome:'Satisfação — Lançamento Filme A',projeto:'pj1',cliente:'Cinema Alfa',tipo:'Padrão',status:'Ativa',resp:124,agente:'João Tadeu',local:'Cinema Centro',modo:'Presencial',data:'30/09/2026',prazo:'25/10/2026',feitas:18,meta:50},
-  {id:'p2',nome:'Hábitos de consumo — Streaming',projeto:'pj2',cliente:'Cia Beta',tipo:'Padrão',status:'Ativa',resp:0,agente:'João Tadeu',local:'Shopping Tijuca',modo:'Presencial',data:'01/10/2026',prazo:'30/10/2026',feitas:0,meta:40},
-  {id:'p3',nome:'Avaliação de trailer',projeto:'pj3',cliente:'Distribuidora Gama',tipo:'Personalizada',status:'Ativa',resp:87,agente:'Rafael Mendes',local:'Sala virtual',modo:'Online',data:'03/10/2026',prazo:'28/10/2026',feitas:9,meta:20},
-  {id:'p4',nome:'Perfil de público — Cinema 2026',projeto:'pj4',cliente:'Cinema Delta',tipo:'Padrão',status:'Pausada',resp:45,agente:'Victor Alves',local:'Cinema Barra',modo:'Presencial',data:'05/10/2026',prazo:'20/11/2026',feitas:45,meta:80},
-  {id:'p5',nome:'Pesquisa contínua — Bilheteria',projeto:'pj5',cliente:'Cia Epsilon',tipo:'Padrão',status:'Encerrada',resp:310,agente:'Yasmin Lopes',local:'Online',modo:'Online',data:'12/08/2026',prazo:'31/08/2026',feitas:310,meta:300},
-  {id:'p6',nome:'Pesquisa Pós-Sessão',projeto:'pj1',cliente:'Cinema Alfa',tipo:'Padrão',status:'Ativa',resp:12,agente:'João Tadeu',local:'Cinema Botafogo',modo:'Presencial',data:'02/10/2026',prazo:'31/10/2026',feitas:12,meta:30},
-  {id:'p7',nome:'Pesquisa de Público',projeto:'pj4',cliente:'Cinema Delta',tipo:'Padrão',status:'Encerrada',resp:60,agente:'João Tadeu',local:'Cinema Barra',modo:'Presencial',data:'04/10/2026',prazo:'10/10/2026',feitas:60,meta:60},
-  {id:'p8',nome:'Hábitos de consumo — 2º ciclo',projeto:'pj2',cliente:'Cia Beta',tipo:'Personalizada',status:'Rascunho',resp:0,agente:'Yasmin Lopes',local:'Online',modo:'Online',data:'—',prazo:'15/12/2026',feitas:0,meta:60}],
+  {id:'p1',nome:'Satisfação — Lançamento Filme A',projeto:'pj1',cliente:'Cinema Alfa',tipo:'Padrão',status:'Ativa',resp:124,agentes:['João Tadeu'],modos:['Presencial'],local:'Cinema Centro',inicio:rel(-21),fim:rel(4),feitas:18,meta:50},
+  {id:'p2',nome:'Hábitos de consumo — Streaming',projeto:'pj2',cliente:'Cia Beta',tipo:'Padrão',status:'Ativa',resp:0,agentes:['João Tadeu'],modos:['Presencial'],local:'Shopping Tijuca',inicio:rel(-20),fim:rel(-1),feitas:0,meta:40},
+  {id:'p3',nome:'Avaliação de trailer',projeto:'pj3',cliente:'Distribuidora Gama',tipo:'Personalizada',status:'Ativa',resp:87,agentes:['Rafael Mendes','Yasmin Lopes'],modos:['Online'],local:'',inicio:rel(-18),fim:rel(7),feitas:9,meta:20},
+  {id:'p4',nome:'Perfil de público — Cinema 2026',projeto:'pj4',cliente:'Cinema Delta',tipo:'Padrão',status:'Pausada',resp:45,agentes:['Victor Alves'],modos:['Presencial'],local:'Cinema Barra',inicio:rel(-16),fim:rel(30),feitas:45,meta:80},
+  {id:'p5',nome:'Pesquisa contínua — Bilheteria',projeto:'pj5',cliente:'Cia Epsilon',tipo:'Padrão',status:'Encerrada',resp:310,agentes:[],modos:['Online'],local:'',inicio:'12/08/2026',fim:'31/08/2026',feitas:310,meta:300},
+  {id:'p6',nome:'Pesquisa Pós-Sessão',projeto:'pj1',cliente:'Cinema Alfa',tipo:'Padrão',status:'Ativa',resp:12,agentes:['João Tadeu'],modos:['Presencial','Online'],local:'Cinema Botafogo',inicio:rel(-19),fim:rel(2),feitas:12,meta:30},
+  {id:'p7',nome:'Pesquisa de Público',projeto:'pj4',cliente:'Cinema Delta',tipo:'Padrão',status:'Encerrada',resp:60,agentes:['João Tadeu'],modos:['Presencial'],local:'Cinema Barra',inicio:'04/10/2026',fim:'10/10/2026',feitas:60,meta:60},
+  {id:'p8',nome:'Hábitos de consumo — 2º ciclo',projeto:'pj2',cliente:'Cia Beta',tipo:'Personalizada',status:'Rascunho',resp:0,agentes:[],modos:['Online','Presencial'],local:'A definir',inicio:rel(40),fim:rel(55),feitas:0,meta:60},
+  {id:'p9',nome:'Teste de conceito — Comédia de verão',projeto:'pj3',cliente:'Distribuidora Gama',tipo:'Personalizada',status:'Ativa',resp:14,agentes:[],modos:['Online'],local:'',inicio:rel(-3),fim:rel(20),feitas:14,meta:120}],
  convites:[
-  {id:'cv1',pid:'p1',cod:'P-1027',data:'08/10/2026',status:'Enviado'},
-  {id:'cv2',pid:'p3',cod:'P-1027',data:'09/10/2026',status:'Aberto'},
+  {id:'cv1',pid:'p1',cod:'P-1027',data:rel(-13),status:'Enviado'},
+  {id:'cv2',pid:'p3',cod:'P-1027',data:rel(-12),status:'Aberto'},
   {id:'cv3',pid:'p5',cod:'P-1027',data:'12/08/2026',status:'Respondido'},
-  {id:'cv4',pid:'p1',cod:'P-1031',data:'08/10/2026',status:'Respondido'},
-  {id:'cv5',pid:'p3',cod:'P-1044',data:'09/10/2026',status:'Respondido'},
-  {id:'cv6',pid:'p4',cod:'P-1052',data:'06/10/2026',status:'Enviado'},
-  {id:'cv7',pid:'p1',cod:'P-1060',data:'10/10/2026',status:'Aberto'},
-  {id:'cv8',pid:'p2',cod:'P-1075',data:'15/10/2026',status:'Enviado'},
-  {id:'cv9',pid:'p1',cod:'P-1099',data:'18/10/2026',status:'Enviado'},
-  {id:'cv10',pid:'p3',cod:'P-1099',data:'18/10/2026',status:'Enviado'}],
+  {id:'cv4',pid:'p1',cod:'P-1031',data:rel(-13),status:'Respondido'},
+  {id:'cv5',pid:'p3',cod:'P-1044',data:rel(-12),status:'Respondido'},
+  {id:'cv6',pid:'p4',cod:'P-1052',data:rel(-15),status:'Enviado'},
+  {id:'cv7',pid:'p1',cod:'P-1060',data:rel(-11),status:'Aberto'},
+  {id:'cv8',pid:'p2',cod:'P-1075',data:rel(-6),status:'Enviado'},
+  {id:'cv9',pid:'p1',cod:'P-1099',data:rel(-3),status:'Enviado'},
+  {id:'cv10',pid:'p3',cod:'P-1099',data:rel(-3),status:'Enviado'},
+  {id:'cv11',pid:'p9',cod:'P-1052',data:rel(-1),status:'Solicitado'},
+  {id:'cv12',pid:'p6',cod:'P-1027',data:rel(-5),status:'Enviado'}],
  arquivos:[
   {id:'f1',nome:'respostas_filmeA_semana39.csv',projeto:'pj1',tam:'184 KB',data:'02/10/2026',linhas:124,status:'Importado'},
   {id:'f2',nome:'pos_sessao_botafogo.xlsx',projeto:'pj1',tam:'61 KB',data:'09/10/2026',linhas:12,status:'Importado'},
@@ -675,28 +708,28 @@ function seed(){return {v:1,session:null,ui:{},
  respostas:[]
 }}
 let S=null;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
-if(!S||S.v!==1)S=seed();
+if(!S||S.v!==2)S=seed();
+try{localStorage.removeItem('sinergia-sistema-v1')}catch(e){}
 let UI=S.ui||(S.ui={});
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 
 /* ---------- Utilidades ---------- */
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const hoje=()=>{const d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`};
-const toISO=d=>{const m=/^(\d\d)\/(\d\d)\/(\d{4})$/.exec(d||'');return m?`${m[3]}-${m[2]}-${m[1]}`:''};
-const fromISO=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(d||'');return m?`${m[3]}/${m[2]}/${m[1]}`:'—'};
 const nid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const pct=(a,b)=>b?Math.round(a/b*100)+'%':'0%';
 const me=()=>S.session&&S.users.find(u=>u.id===S.session.uid);
 const P=id=>S.pesquisas.find(p=>p.id===id);
-const projNome=id=>(S.projetos.find(p=>p.id===id)||{}).nome||'—';
+const PJ=id=>S.projetos.find(p=>p.id===id);
+const projNome=id=>(PJ(id)||{}).nome||'—';
 const partBy=cod=>S.participantes.find(p=>p.cod===cod);
 const opts=(list,sel)=>list.map(o=>{const [v,l]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}"${String(v)===String(sel)?' selected':''}>${esc(l)}</option>`}).join('');
-const TONE={Ativa:'ok',Pausada:'acc',Encerrada:'info',Rascunho:'neu',Pendente:'acc','Em andamento':'info','Concluída':'ok','Não iniciada':'neu',Enviado:'info',Aberto:'acc',Respondido:'ok',Cancelado:'neu',Importado:'ok',Processando:'acc',Planejado:'neu',Administrador:'info',Usuário:'neu'};
+const TONE={Ativa:'ok',Pausada:'acc',Encerrada:'info',Rascunho:'neu',Pendente:'acc','Em andamento':'info','Concluída':'ok','Não iniciada':'neu',Enviado:'info',Aberto:'acc',Respondido:'ok',Cancelado:'neu',Solicitado:'acc','Aguardando triagem':'acc',Importado:'ok',Processando:'acc',Planejado:'neu',Administrador:'info',Usuário:'neu'};
 const pill=s=>`<span class="pill p-${TONE[s]||'neu'}">${esc(s)}</span>`;
 const hashN=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0);
 const tile=(t,sub,cls='sm')=>`<div class="tile ${cls} t${hashN(t)%5}" aria-hidden="true"><b>${esc(t)}</b><small>${esc(sub)}</small></div>`;
 const kpis=a=>`<div class="kpis${a.length===3?' k3':''}">${a.map(([l,v])=>`<div class="kpi"><span class="l">${l}</span><span class="v tnum">${v}</span></div>`).join('')}</div>`;
 const vbars=v=>{const m=Math.max(...v,1);return `<div class="vbars" role="img" aria-label="Respostas por semana: ${v.join(', ')}">${v.map((x,i)=>`<div class="vb"><span>${x}</span><div class="col"><i class="${i===v.length-1?'hl':''}" style="height:${Math.max(1,Math.round(x/m*100))}%"></i></div><em>S${i+1}</em></div>`).join('')}</div>`};
+const hbars=(labels,counts)=>{const tot=counts.reduce((a,b)=>a+b,0);return `<div class="bars">${labels.map((l,k)=>{const v=tot?Math.round(counts[k]/tot*100):0;return `<div class="bar"><span>${esc(l)}</span><span class="t"><i class="${k===0?'hl':''}" style="width:${v}%"></i></span><b>${v}%</b></div>`}).join('')}</div>`};
 const emptyRow=(n,t)=>`<tr><td colspan="${n}" class="empty">${t}</td></tr>`;
 const head=(t,s,a='',back)=>`${back?`<a class="btn btn-ghost btn-sm back" href="#${back[0]}">← ${back[1]}</a>`:''}<div class="main-head"><div><h1>${t}</h1>${s?`<p class="muted">${s}</p>`:''}</div>${a?`<div style="display:flex;gap:10px;flex-wrap:wrap">${a}</div>`:''}</div>`;
 const field=(id,label,val='',type='text',extra='')=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" name="${id}" type="${type}" value="${esc(val)}" ${extra}></div>`;
@@ -704,20 +737,31 @@ const sel=(id,label,list,val,extra='')=>`<div class="field"><label for="${id}">$
 const statusCampo=p=>p.feitas>=p.meta?'Concluída':p.feitas>0?'Em andamento':'Não iniciada';
 const agentesNomes=()=>[...new Set([...S.agentes.map(a=>a.nome),...S.users.filter(u=>u.perms.includes('agente')).map(u=>u.nome)])];
 const nextCod=()=>{const n=Math.max(1000,...S.participantes.map(p=>+p.cod.slice(2)||0))+1;return 'P-'+n};
+const periodo=p=>`${p.inicio} a ${p.fim}`;
+const modoTxt=p=>p.modos.length>1?'Online e presencial':p.modos[0]||'—';
+const localTxt=p=>p.modos.includes('Presencial')?(p.local||'Local a definir')+(p.modos.includes('Online')?' + online':''):'Online';
+const agTxt=p=>p.agentes.length?p.agentes.join(', '):'Sem agente';
 const baseWeeks=[118,101,116,98,113,96], alfaWeeks=[26,21,25,22,24,18];
+function prazo(fim,done){if(done)return '';const d=dias(fim);if(d===null)return '';
+ if(d<0)return `<span class="due late">${I.alert}Prazo vencido há ${-d} dia${d===-1?'':'s'}</span>`;
+ if(d===0)return `<span class="due late">${I.alert}Vence hoje</span>`;
+ if(d<=3)return `<span class="due soon">${I.clock}Vence em ${d} dia${d===1?'':'s'}</span>`;
+ if(d<=7)return `<span class="due near">${I.clock}Vence em ${d} dias</span>`;
+ return `<span class="due ok">Prazo: ${fim}</span>`}
+const lateCls=(fim,done)=>{const d=dias(fim);return done||d===null?'':d<0||d===0?' is-late':d<=3?' is-soon':''};
 
 /* ---------- Perfis, menus e permissões ---------- */
 const ROLE={admin:'Administrador',agente:'Agente',cliente:'Cliente Empresa',participante:'Participante'};
 const ROLE_SHORT={agente:'Agente',cliente:'Cliente',participante:'Participante'};
-const ROLE_DESC={agente:'Aplica pesquisas em campo e organiza os recursos.',cliente:'Acompanha resultados e projetos da sua empresa.',participante:'Responde às pesquisas enviadas para você.'};
+const ROLE_DESC={agente:'Aplica pesquisas em campo e confere os recursos.',cliente:'Acompanha projetos e resultados da sua empresa.',participante:'Responde às pesquisas enviadas para você.'};
 const ROLE_ICO={agente:'clip',cliente:'build',participante:'user'};
 const MENU={
- admin:[['adm-pesquisas','Pesquisas','list'],['adm-projetos','Projetos','folder'],['adm-convites','Convites','mail'],['adm-resultados','Resultados','chart'],['adm-cadastros','Cadastros','users'],['adm-usuarios','Usuários e permissões','lock']],
- agente:[['ag-pesquisas','Minhas pesquisas','list','aplicar'],['ag-aplicar','Aplicar pesquisa','play','aplicar'],['ag-recursos','Recursos','box','recursos'],['ag-perfil','Perfil','user']],
- cliente:[['cl-resultados','Resultados','chart','ver_resultados'],['cl-projetos','Projetos','folder','ver_projetos'],['cl-perfil','Perfil','user']],
+ admin:[['adm-pesquisas','Pesquisas','list'],['adm-projetos','Projetos','folder'],['adm-clientes','Clientes','build'],['adm-convites','Convites','mail'],['adm-resultados','Resultados','chart'],['adm-cadastros','Cadastros','users'],['adm-usuarios','Usuários e permissões','lock']],
+ agente:[['ag-pesquisas','Minhas pesquisas','list','aplicar'],['ag-aplicar','Aplicar pesquisa','play','aplicar'],['ag-perfil','Perfil','user']],
+ cliente:[['cl-projetos','Projetos','folder','ver_projetos'],['cl-resultados','Resultados','chart','ver_resultados'],['cl-perfil','Perfil','user']],
  participante:[['pa-pesquisas','Minhas pesquisas','home','responder'],['pa-respostas','Minhas respostas','hist','responder'],['pa-perfil','Perfil','user']]};
-const PARENT={'adm-projeto':'adm-projetos','ag-detalhes':'ag-pesquisas','cl-projeto':'cl-projetos','pa-preferencias':'pa-pesquisas','pa-responder':'pa-pesquisas','pa-revisao':'pa-pesquisas','pa-concluida':'pa-pesquisas'};
-const CAP={'ag-detalhes':'aplicar','cl-projeto':'ver_projetos','pa-preferencias':'responder','pa-responder':'responder','pa-revisao':'responder','pa-concluida':'responder'};
+const PARENT={'adm-projeto':'adm-projetos','adm-cliente':'adm-clientes','ag-detalhes':'ag-pesquisas','cl-projeto':'cl-projetos','cl-resultado':'cl-projetos','pa-preferencias':'pa-pesquisas','pa-responder':'pa-pesquisas','pa-revisao':'pa-pesquisas','pa-concluida':'pa-pesquisas'};
+const CAP={'ag-detalhes':'aplicar','cl-projeto':'ver_projetos','cl-resultado':'ver_projetos','pa-preferencias':'responder','pa-responder':'responder','pa-revisao':'responder','pa-concluida':'responder'};
 const MATRIX_ROWS=[['gerenciar_pesquisas','Gerenciar pesquisas (padrão e personalizadas)'],['gerenciar_projetos','Gerenciar projetos e arquivos do projeto'],['gerenciar_convites','Gerenciar convites'],['importar_resultados','Importar e gerenciar resultados'],['ver_resultados','Visualizar resultados'],['ver_projetos','Visualizar projetos da própria empresa'],['gerenciar_cadastros','Gerenciar clientes, agentes e participantes'],['gerenciar_usuarios','Gerenciar usuários e permissões'],['aplicar','Aplicar pesquisa (SurveyMonkey Embed)'],['recursos','Gerenciar recursos da pesquisa'],['responder','Responder pesquisa']];
 const routeRole=r=>r.startsWith('adm-')?'admin':r.startsWith('ag-')?'agente':r.startsWith('cl-')?'cliente':r.startsWith('pa-')?'participante':null;
 const can=(role,cap)=>!cap||!!(S.matrix[cap]||{})[role];
@@ -725,6 +769,7 @@ const capOf=r=>{const m=Object.values(MENU).flat().find(x=>x[0]===r);return m?m[
 function homeOf(role){if(role==='admin')return 'adm-pesquisas';const it=MENU[role].find(([,, ,c])=>can(role,c));return it?it[0]:MENU[role][MENU[role].length-1][0]}
 function firstRoute(){const u=me();if(!u)return 'login';if(S.session.mode==='admin')return 'adm-pesquisas';if(u.perms.length>1&&!S.session.role)return 'navegar';const role=u.perms.includes(S.session.role)?S.session.role:u.perms[0];return role?homeOf(role):'login'}
 function guard(r){
+ if(r==='ag-recursos'){return 'ag-pesquisas'}
  if(r==='navegar'){const u=me();if(!u||S.session.mode!=='user')return 'login';return r}
  const role=routeRole(r);if(!role)return r;
  const u=me();if(!u){toast('Entre com sua conta para acessar.');return 'login'}
@@ -735,6 +780,14 @@ function guard(r){
  if(S.session.role!==role){S.session.role=role;save()}
  return r}
 
+/* ---------- Breadcrumb ---------- */
+const LABEL={'adm-pesquisas':'Pesquisas','adm-projetos':'Projetos','adm-clientes':'Clientes','adm-convites':'Convites','adm-resultados':'Resultados','adm-cadastros':'Cadastros','adm-usuarios':'Usuários e permissões','ag-pesquisas':'Minhas pesquisas','ag-detalhes':'Detalhes da pesquisa','ag-aplicar':'Aplicar pesquisa','ag-perfil':'Perfil','cl-projetos':'Projetos','cl-resultados':'Resultados','cl-perfil':'Perfil','pa-pesquisas':'Minhas pesquisas','pa-preferencias':'Pesquisa personalizada','pa-responder':'Responder','pa-revisao':'Revisão das respostas','pa-concluida':'Pesquisa concluída','pa-respostas':'Minhas respostas','pa-perfil':'Perfil'};
+const CHAIN={'adm-projeto':['adm-projetos'],'adm-cliente':['adm-clientes'],'ag-detalhes':['ag-pesquisas'],'ag-aplicar':['ag-pesquisas'],'cl-projeto':['cl-projetos'],'cl-resultado':['cl-projetos','cl-projeto'],'pa-preferencias':['pa-pesquisas'],'pa-responder':['pa-pesquisas'],'pa-revisao':['pa-pesquisas','pa-responder'],'pa-concluida':['pa-pesquisas']};
+function labelOf(r){if(LABEL[r])return LABEL[r];if(r==='adm-projeto'||r==='cl-projeto')return projNome(UI.proj);if(r==='adm-cliente')return (S.clientes.find(c=>c.id===UI.cli)||{}).nome||'Cliente';if(r==='cl-resultado')return (P(UI.resPid)||{}).nome||'Resultado';return r}
+function crumbs(r){const role=routeRole(r),chain=(CHAIN[r]||[]).filter(x=>x!==r);
+ const list=[['home','Site'],[homeOf(role),'Área '+ROLE[role]],...chain.map(x=>[x,labelOf(x)]),[null,labelOf(r)]];
+ return `<nav class="crumbs" aria-label="Você está em"><ol>${list.map(([h,l],i)=>i===list.length-1?`<li aria-current="page">${esc(l)}</li>`:`<li><a href="#${h}">${esc(l)}</a></li>`).join('')}</ol></nav>`}
+
 function side(r){
  const u=me(),role=routeRole(r),act=PARENT[r]||r;
  const items=MENU[role].filter(x=>role==='admin'||can(role,x[3]));
@@ -743,36 +796,36 @@ function side(r){
  <div class="who"><span class="eyebrow">${ROLE[role]}</span><b>${esc(u.nome)}</b>${role==='cliente'&&u.empresa?`<span class="small muted">${esc(u.empresa)}</span>`:''}${role==='participante'&&u.codigo?`<span class="small muted tnum">${u.codigo}</span>`:''}</div>${sw}
  <nav>${items.map(([h,l,ic])=>`<a href="#${h}"${h===act?' aria-current="page"':''}>${I[ic]}${l}</a>`).join('')}</nav>
  <div class="side-end"><a href="#home">${I.globe}Voltar ao site</a>${role==='admin'?`<button type="button" class="sidebtn" data-act="reset">${I.reset}Restaurar dados de exemplo</button>`:''}<button type="button" class="sidebtn" data-act="logout">${I.out}Sair</button></div></aside>`}
-const sys=(r,c)=>`<div class="sys">${side(r)}<div class="sys-main">${c}</div></div>`;
+const sys=(r,c)=>`<div class="sys">${side(r)}<div class="sys-main">${crumbs(r)}${c}</div></div>`;
 
 /* ---------- Modal ---------- */
 function openModal(title,body,foot,mount){closeModal();const w=document.createElement('div');w.className='modal-bg';
  w.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mh"><h2 id="mt">${title}</h2><button type="button" class="x" data-act="close" aria-label="Fechar">×</button></div><div class="mb">${body}</div>${foot?`<div class="mf">${foot}</div>`:''}</div>`;
  document.body.appendChild(w);w.addEventListener('mousedown',e=>{if(e.target===w)closeModal()});
- const f=w.querySelector('.mb input:not([type=hidden]),.mb select,.mb textarea')||w.querySelector('.mf .btn');f&&f.focus();mount&&mount(w)}
+ const f=w.querySelector('.mb input:not([type=hidden]):not([type=checkbox]):not([type=radio]),.mb select,.mb textarea')||w.querySelector('.mf .btn');f&&f.focus();mount&&mount(w)}
 function closeModal(){document.querySelectorAll('.modal-bg').forEach(m=>m.remove())}
 function confirmBox(title,text,label,fn){openModal(title,`<p class="muted">${text}</p>`,`<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button type="button" class="btn btn-danger" id="cfm">${label}</button>`,m=>{m.querySelector('#cfm').onclick=()=>{closeModal();fn()}})}
 const formData=f=>Object.fromEntries(new FormData(f).entries());
 
-/* ---------- Resultado de uma pesquisa (modal compartilhado) ---------- */
-function distOf(p){const i=S.pesquisas.indexOf(p),base=[.46,.35,.13,.06].map((x,k)=>x+(k===i%4?.04:k===(i+1)%4?-.04:0));
- const labels=['Cinema','Streaming','TV aberta ou a cabo','Mídia física'],n0=Math.max(0,p.resp-S.respostas.filter(r=>r.pid===p.id).length);
- const c=base.map(x=>Math.round(x*n0));S.respostas.filter(r=>r.pid===p.id).forEach(r=>{const k=labels.indexOf(r.onde);if(k>=0)c[k]++});
- const tot=c.reduce((a,b)=>a+b,0);return {labels,c,tot}}
+/* ---------- Resultados de uma pesquisa ---------- */
+const ONDE=['Cinema','Streaming','TV aberta ou a cabo','Mídia física'],GEN=['Comédia','Ação','Drama','Ficção científica','Romance'];
+function distOf(p,field='onde'){const labels=field==='onde'?ONDE:GEN,i=S.pesquisas.indexOf(p),own=S.respostas.filter(r=>r.pid===p.id);
+ const base=field==='onde'?[.46,.35,.13,.06]:[.31,.24,.2,.15,.1],adj=base.map((x,k)=>x+(k===i%base.length?.04:k===(i+1)%base.length?-.04:0));
+ const n0=Math.max(0,p.resp-own.length),c=adj.map(x=>Math.round(x*n0));c[0]+=n0-c.reduce((x,y)=>x+y,0);own.forEach(r=>{const k=labels.indexOf(field==='onde'?r.onde:r.genero);if(k>=0)c[k]++});return {labels,c,tot:c.reduce((a,b)=>a+b,0)}}
+const margem=n=>n?` · margem ±${(98/Math.sqrt(n)).toFixed(1).replace('.',',')} p.p. (95%)`:'';
 function modalResultado(id){const p=P(id);if(!p)return;const d=distOf(p);
- openModal(esc(p.nome),`<p class="muted">${esc(p.cliente)} · ${esc(projNome(p.projeto))} · ${p.tipo} · ${p.modo}</p>
+ openModal(esc(p.nome),`<p class="muted">${esc(p.cliente)} · ${esc(projNome(p.projeto))} · ${p.tipo} · ${modoTxt(p)} · ${periodo(p)}</p>
  ${kpis([['Respondentes',p.resp],['Entrevistas em campo',`${p.feitas}/${p.meta}`],['Situação',pill(p.status)]])}
- <div class="panel" style="display:grid;gap:14px"><div><h3>Onde você assiste filmes?</h3><p class="small muted">n = ${d.tot}${d.tot?` · margem ±${(98/Math.sqrt(d.tot)).toFixed(1).replace('.',',')} p.p. (95%)`:''}</p></div>
- <div class="bars">${d.labels.map((l,k)=>{const v=d.tot?Math.round(d.c[k]/d.tot*100):0;return `<div class="bar"><span>${l}</span><span class="t"><i class="${k===0?'hl':''}" style="width:${v}%"></i></span><b>${v}%</b></div>`}).join('')}</div></div>`,
+ <div class="panel" style="display:grid;gap:14px"><div><h3>Onde você assiste filmes?</h3><p class="small muted">n = ${d.tot}${margem(d.tot)}</p></div>${hbars(d.labels,d.c)}</div>`,
  `<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
 
 /* ======================= LOGIN ======================= */
 V.login=()=>{const tab=UI.loginTab||'usuario',pre=UI.prefill||'';
  const demos=tab==='admin'?S.users.filter(u=>u.admin):S.users.filter(u=>!u.admin&&u.perms.length);
  return `<section class="split"><div class="art">${loginArt}<div class="txt"><span class="eyebrow" style="color:var(--sand-200)">Área restrita</span><h2>Seu ambiente blindado de pesquisa.</h2><p>Administradores gerenciam o sistema. Usuários navegam como agente, cliente ou participante, conforme as permissões da conta.</p></div></div>
- <div class="form-side"><div><span class="eyebrow">Login</span><h1 style="font-size:2rem">Entrar na Sinergia</h1>
+ <div class="form-side"><div><nav class="crumbs" aria-label="Você está em"><ol><li><a href="#home">Site</a></li><li aria-current="page">Login</li></ol></nav><span class="eyebrow">Login</span><h1 style="font-size:2rem">Entrar na Sinergia</h1>
  <div class="ltabs" role="tablist" aria-label="Tipo de acesso"><button type="button" role="tab" aria-selected="${tab==='admin'}" data-act="login-tab" data-tab="admin">${I.shield}Administrador</button><button type="button" role="tab" aria-selected="${tab==='usuario'}" data-act="login-tab" data-tab="usuario">${I.user}Usuário</button></div>
- <p class="small muted">${tab==='admin'?'Gerencia pesquisas, projetos, convites, cadastros, usuários e permissões.':'Agentes, clientes e participantes entram aqui. Você navega pelas áreas liberadas pelo administrador.'}</p>
+ <p class="small muted">${tab==='admin'?'Gerencia pesquisas, projetos, clientes, convites, cadastros, usuários e permissões.':'Agentes, clientes e participantes entram aqui. Você navega pelas áreas liberadas pelo administrador.'}</p>
  <form data-form="login" novalidate>
   <div class="field"><label for="l-mail">E-mail</label><input id="l-mail" name="email" type="email" autocomplete="username" required value="${esc(pre)}"></div>
   <div class="field"><label for="l-senha">Senha</label><input id="l-senha" name="senha" type="password" autocomplete="current-password" required></div>
@@ -795,47 +848,60 @@ FORM.login=f=>{const d=formData(f),err=f.querySelector('#l-err'),tab=UI.loginTab
  S.session={uid:u.id,mode:tab==='admin'?'admin':'user',role:u.perms.length===1?u.perms[0]:null};UI.prefill='';save();
  toast(`Olá, ${u.nome.split(' ')[0]}.`);location.hash=firstRoute()};
 
-V.navegar=()=>{const u=me();return pageHero([['home','Site'],[null,'Navegar como']],'Olá, '+esc(u.nome.split(' ')[0]),'Como você vai navegar agora?',`Sua conta tem acesso a ${u.perms.length} áreas. Você pode trocar a qualquer momento pelo menu lateral.`)+
+V.navegar=()=>{const u=me();return pageHero([['home','Site'],['login','Login'],[null,'Navegar como']],'Olá, '+esc(u.nome.split(' ')[0]),'Como você vai navegar agora?',`Sua conta tem acesso a ${u.perms.length} áreas. Você pode trocar a qualquer momento pelo menu lateral.`)+
  `<section class="section"><div class="wrap" style="display:grid;gap:20px"><div class="choose">${['agente','cliente','participante'].filter(p=>u.perms.includes(p)).map(p=>`<button type="button" class="profile" data-act="switch" data-role="${p}"><div class="ico">${I[ROLE_ICO[p]]}</div><b>${ROLE[p]}</b><span>${ROLE_DESC[p]}</span></button>`).join('')}</div>
  <button type="button" class="linkbtn" data-act="logout" style="justify-self:start">Sair da conta</button></div></section>`};
 
 /* ======================= ADMINISTRADOR ======================= */
-function pesqForm(p){p=p||{};const proj=p.projeto||UI.novaProj||'';const cli=p.cliente||(S.projetos.find(x=>x.id===proj)||{}).cliente||S.clientes[0]?.nome;
- const projs=S.projetos.filter(x=>x.cliente===cli);
+function pesqForm(p){p=p||{};const proj=p.projeto||UI.novaProj||'';const cli=p.cliente||(PJ(proj)||{}).cliente||S.clientes[0]?.nome;
+ const projs=S.projetos.filter(x=>x.cliente===cli),modos=p.modos||['Presencial'],ags=p.agentes||[],comAg=p.id?ags.length>0:true;
  openModal(p.id?'Editar pesquisa':'Nova pesquisa',`<form id="f-pesq" data-form="pesquisa" data-id="${p.id||''}">
  ${field('nome','Nome da pesquisa',p.nome||'','text','required placeholder="Ex.: Satisfação — Lançamento Filme B"')}
- <div class="row2">${sel('cliente','Cliente',S.clientes.map(c=>c.nome),cli,'data-live-modal="cliente"')}${sel('projeto','Projeto',projs.map(x=>[x.id,x.nome]),proj||projs[0]?.id)}</div>
+ <div class="row2">${sel('cliente','Cliente',S.clientes.map(c=>c.nome),cli)}${sel('projeto','Projeto',projs.length?projs.map(x=>[x.id,x.nome]):[['','Sem projetos para este cliente']],proj||projs[0]?.id)}</div>
  <div class="row2">${sel('tipo','Tipo',['Padrão','Personalizada'],p.tipo||'Padrão')}${sel('status','Status',['Rascunho','Ativa','Pausada','Encerrada'],p.status||'Rascunho')}</div>
- <div class="row2">${sel('agente','Agente em campo',agentesNomes(),p.agente||agentesNomes()[0])}${field('local','Local de aplicação',p.local||'','text','placeholder="Ex.: Cinema Botafogo ou Online"')}</div>
- <div class="row2">${sel('modo','Modalidade',['Presencial','Online'],p.modo||'Presencial')}${field('meta','Meta de entrevistas',p.meta||50,'number','min="1" required')}</div>
- ${field('prazo','Prazo',toISO(p.prazo)||'','date')}
+ <fieldset class="field"><legend class="lg">Local de aplicação</legend><div class="permbox"><label><input type="checkbox" name="m-online" ${modos.includes('Online')?'checked':''}>Online</label><label><input type="checkbox" name="m-pres" id="m-pres" ${modos.includes('Presencial')?'checked':''}>Presencial</label></div><span class="small muted">Marque os dois para pesquisa híbrida.</span></fieldset>
+ <div id="local-box" ${modos.includes('Presencial')?'':'hidden'}>${field('local','Local presencial (cinema, sala ou endereço)',p.local||'','text','placeholder="Ex.: Cinema Botafogo"')}</div>
+ ${sel('agmode','Agente em campo',[['com','Com agente'],['sem','Sem agente (autoaplicada)']],comAg?'com':'sem')}
+ <fieldset class="field" id="ag-box" ${comAg?'':'hidden'}><legend class="lg">Agentes da pesquisa</legend><div class="permbox">${agentesNomes().map(a=>`<label><input type="checkbox" name="ag:${esc(a)}" ${ags.includes(a)?'checked':''}>${esc(a)}</label>`).join('')}</div></fieldset>
+ <div class="row2">${field('inicio','Início',toISO(p.inicio)||new Date().toISOString().slice(0,10),'date','required')}${field('fim','Fim',toISO(p.fim)||'','date','required')}</div>
+ ${field('meta','Meta de entrevistas',p.meta||50,'number','min="1" required')}
  <p class="small muted">Personalizada: quem responde escolhe gêneros e nº de etapas.</p>
  <div class="err" id="pf-err" hidden></div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-pesq">Salvar pesquisa</button>`,
- m=>{const c=m.querySelector('#cliente'),pj=m.querySelector('#projeto');c.onchange=()=>{const l=S.projetos.filter(x=>x.cliente===c.value);pj.innerHTML=l.length?opts(l.map(x=>[x.id,x.nome])):'<option value="">Sem projetos para este cliente</option>'}})}
-FORM.pesquisa=f=>{const d=formData(f),id=f.dataset.id;
- if(!d.nome.trim()||!d.projeto){const e=f.querySelector('#pf-err');e.textContent=!d.projeto?'Crie um projeto para este cliente antes de cadastrar a pesquisa.':'Dê um nome à pesquisa.';e.hidden=false;return}
- const v={nome:d.nome.trim(),cliente:d.cliente,projeto:d.projeto,tipo:d.tipo,status:d.status,agente:d.agente,local:d.local||'A definir',modo:d.modo,meta:+d.meta||1,prazo:fromISO(d.prazo)};
- if(id)Object.assign(P(id),v);else S.pesquisas.unshift({id:nid('p'),resp:0,feitas:0,data:hoje(),...v});
+ m=>{const c=m.querySelector('#cliente'),pj=m.querySelector('#projeto');c.onchange=()=>{const l=S.projetos.filter(x=>x.cliente===c.value);pj.innerHTML=l.length?opts(l.map(x=>[x.id,x.nome])):'<option value="">Sem projetos para este cliente</option>'};
+  m.querySelector('#m-pres').onchange=e=>{m.querySelector('#local-box').hidden=!e.target.checked};
+  m.querySelector('#agmode').onchange=e=>{m.querySelector('#ag-box').hidden=e.target.value!=='com'}})}
+FORM.pesquisa=f=>{const d=formData(f),id=f.dataset.id,e=f.querySelector('#pf-err'),fail=t=>{e.textContent=t;e.hidden=false};
+ const modos=[...(d['m-online']?['Online']:[]),...(d['m-pres']?['Presencial']:[])],agentes=d.agmode==='com'?Object.keys(d).filter(k=>k.startsWith('ag:')).map(k=>k.slice(3)):[];
+ if(!d.nome.trim())return fail('Dê um nome à pesquisa.');
+ if(!d.projeto)return fail('Crie um projeto para este cliente antes de cadastrar a pesquisa.');
+ if(!modos.length)return fail('Marque se a aplicação é online, presencial ou as duas.');
+ if(!d.inicio||!d.fim)return fail('Informe as datas de início e de fim.');
+ if(d.fim<d.inicio)return fail('A data de fim não pode ser antes do início.');
+ if(d.agmode==='com'&&!agentes.length)return fail('Escolha pelo menos um agente, ou marque “Sem agente”.');
+ const v={nome:d.nome.trim(),cliente:d.cliente,projeto:d.projeto,tipo:d.tipo,status:d.status,agentes,modos,local:modos.includes('Presencial')?(d.local||'').trim():'',inicio:fromISO(d.inicio),fim:fromISO(d.fim),meta:+d.meta||1};
+ if(id)Object.assign(P(id),v);else S.pesquisas.unshift({id:nid('p'),resp:0,feitas:0,...v});
  UI.novaProj='';save();closeModal();toast(id?'Pesquisa atualizada.':'Pesquisa criada.');refresh()};
 
-V['adm-pesquisas']=r=>{const ativ=S.pesquisas.filter(p=>p.status==='Ativa').length,cv=S.convites.filter(c=>c.status!=='Cancelado'),rs=cv.filter(c=>c.status==='Respondido').length;
+V['adm-pesquisas']=r=>{const ativ=S.pesquisas.filter(p=>p.status==='Ativa').length,cv=S.convites.filter(c=>c.status!=='Cancelado'&&c.status!=='Solicitado'),rs=cv.filter(c=>c.status==='Respondido').length;
  return sys(r,head('Pesquisas','Crie, edite e acompanhe todas as pesquisas do sistema.',`<button type="button" class="btn btn-ghost" data-act="goto" data-to="adm-resultados" data-set="resTab:importar">Importar resultados</button><button type="button" class="btn btn-primary" data-act="nova-pesquisa">+ Nova pesquisa</button>`)
  +kpis([['Pesquisas ativas',ativ],['Convites enviados',cv.length],['Taxa de conclusão dos convites',pct(rs,cv.length)]])
  +`<div class="filters"><input class="grow" type="search" data-live="pesq" data-key="pq" placeholder="Buscar por pesquisa ou cliente" aria-label="Buscar por pesquisa ou cliente" value="${esc(UI.pq||'')}"><select data-live="pesq" data-key="pst" aria-label="Filtrar por status">${opts([['','Todos os status'],'Ativa','Pausada','Encerrada','Rascunho'],UI.pst||'')}</select><select data-live="pesq" data-key="ptp" aria-label="Filtrar por tipo">${opts([['','Padrão e personalizada'],'Padrão','Personalizada'],UI.ptp||'')}</select></div><div id="part-pesq">${PART.pesq()}</div>`)};
 PART.pesq=()=>{const q=(UI.pq||'').toLowerCase(),rows=S.pesquisas.filter(p=>(!q||(p.nome+' '+p.cliente).toLowerCase().includes(q))&&(!UI.pst||p.status===UI.pst)&&(!UI.ptp||p.tipo===UI.ptp));
- return `<div class="tablebox"><table><thead><tr><th>Nome</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Respondentes</th><th>Ações</th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.nome)}</b><span class="s">${esc(projNome(p.projeto))}</span></td><td>${esc(p.cliente)}</td><td>${p.tipo}</td><td>${pill(p.status)}</td><td class="tnum">${p.resp}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-pesquisa" data-id="${p.id}">Editar</button><button type="button" class="linkbtn" data-act="convidar" data-id="${p.id}">Convidar</button><button type="button" class="linkbtn" data-act="resultado" data-id="${p.id}">Resultados</button><button type="button" class="linkbtn danger" data-act="excluir-pesquisa" data-id="${p.id}">Excluir</button></td></tr>`).join('')||emptyRow(6,'Nenhuma pesquisa com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${rows.length} de ${S.pesquisas.length} pesquisas</p>`};
+ return `<div class="tablebox"><table><thead><tr><th>Nome</th><th>Cliente</th><th>Tipo</th><th>Aplicação</th><th>Período</th><th>Status</th><th>Resp.</th><th>Ações</th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.nome)}</b><span class="s">${esc(projNome(p.projeto))} · ${esc(agTxt(p))}</span></td><td>${esc(p.cliente)}</td><td>${p.tipo}</td><td class="small">${modoTxt(p)}</td><td class="small tnum">${p.inicio}<br>${p.fim}</td><td>${pill(p.status)}</td><td class="tnum">${p.resp}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-pesquisa" data-id="${p.id}">Editar</button><button type="button" class="linkbtn" data-act="convidar" data-id="${p.id}">Convidar</button><button type="button" class="linkbtn" data-act="resultado" data-id="${p.id}">Resultados</button><button type="button" class="linkbtn danger" data-act="excluir-pesquisa" data-id="${p.id}">Excluir</button></td></tr>`).join('')||emptyRow(8,'Nenhuma pesquisa com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${rows.length} de ${S.pesquisas.length} pesquisas</p>`};
 
-function filtroRes(scope){const pq=UI[scope+'Pesq']||'',md=UI[scope+'Modo']||'';return {pq,md,list:x=>x.filter(p=>(!pq||p.id===pq)&&(!md||p.modo===md))}}
-function painelResultados(scope,base,weeksBase){const f=filtroRes(scope),list=f.list(base),per=UI[scope+'Per']||'6';
+function filtroRes(scope){const pq=UI[scope+'Pesq']||'',md=UI[scope+'Modo']||'';return {pq,md,list:x=>x.filter(p=>(!pq||p.id===pq)&&(!md||p.modos.includes(md)))}}
+function painelResultados(scope,base,weeksBase,abrir){const f=filtroRes(scope),list=f.list(base),per=UI[scope+'Per']||'6';
  const allResp=base.reduce((a,p)=>a+p.resp,0)||1,share=list.reduce((a,p)=>a+p.resp,0)/allResp;
- const cv=S.convites.filter(c=>list.some(p=>p.id===c.pid)&&c.status!=='Cancelado'),rs=cv.filter(c=>c.status==='Respondido').length;
+ const cv=S.convites.filter(c=>list.some(p=>p.id===c.pid)&&c.status!=='Cancelado'&&c.status!=='Solicitado'),rs=cv.filter(c=>c.status==='Respondido').length;
  const w=weeksBase.map(v=>Math.round(v*share)).slice(per==='4'?2:0);
+ const agg=ONDE.map((_,k)=>list.reduce((a,p)=>a+distOf(p).c[k],0));
  return `<div class="filters"><span class="lbl">Período</span><select data-live="${scope}" data-key="${scope}Per" aria-label="Período">${opts([['6','Últimas 6 semanas'],['4','Últimas 4 semanas']],per)}</select><span class="lbl">Pesquisa</span><select data-live="${scope}" data-key="${scope}Pesq" aria-label="Pesquisa">${opts([['','Todas'],...base.map(p=>[p.id,p.nome])],f.pq)}</select>
  ${[['','Todos'],['Online','Online'],['Presencial','Presencial']].map(([v,l])=>`<button type="button" class="chipbtn" data-act="set" data-k="${scope}Modo" data-v="${v}" aria-pressed="${f.md===v}">${l}</button>`).join('')}</div>
  ${kpis([['Pesquisas ativas',list.filter(p=>p.status==='Ativa').length],['Pesquisas concluídas',list.filter(p=>p.status==='Encerrada').length],['Respondentes (todos)',list.reduce((a,p)=>a+p.resp,0)],['Taxa de resposta dos convites',pct(rs,cv.length)]])}
- <div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Respostas por semana</h3><span class="small muted">Barra areia: semana atual</span></div>${vbars(w)}</div>
- <div class="panel" style="padding:0"><div style="padding:18px 20px 4px"><h3>Pesquisas</h3></div>${list.map(p=>`<div class="row-item"><div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(p.cliente)} · n = ${p.resp}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="resultado" data-id="${p.id}">Abrir pesquisa</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa com esses filtros.</p>'}</div>`}
+ <div class="grid g2"><div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Respostas por semana</h3><span class="small muted">Barra areia: semana atual</span></div>${vbars(w)}</div>
+ <div class="panel" style="display:grid;gap:14px"><div><h3>Onde o público assiste filmes</h3><p class="small muted">${f.pq?'Pesquisa selecionada':'Todas as pesquisas somadas'} · n = ${agg.reduce((a,b)=>a+b,0)}</p></div>${hbars(ONDE,agg)}</div></div>
+ <div class="panel" style="padding:0"><div style="padding:18px 20px 4px"><h3>Pesquisas</h3></div>${list.map(p=>`<div class="row-item"><div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(p.cliente)} · n = ${p.resp} · ${periodo(p)}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="${abrir||'resultado'}" data-id="${p.id}">Abrir pesquisa</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa com esses filtros.</p>'}</div>`}
 V['adm-resultados']=r=>{const tab=UI.resTab||'painel';
  return sys(r,head('Resultados','Acompanhe as respostas e importe arquivos de coleta externa.')+
  `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='painel'}" data-act="set" data-k="resTab" data-v="painel">Painel</button><button type="button" role="tab" aria-selected="${tab==='importar'}" data-act="set" data-k="resTab" data-v="importar">Importar arquivos</button></div>`+
@@ -847,100 +913,147 @@ function importarView(){const pj=UI.impProj||S.projetos[0]?.id;
  <div id="part-arq">${PART.arq()}</div>`}
 PART.arq=(pj)=>{const rows=S.arquivos.filter(a=>!pj||a.projeto===pj);
  return `<div class="tablebox"><table><thead><tr><th>Arquivo</th>${pj?'':'<th>Projeto</th>'}<th>Tamanho</th><th>Enviado em</th><th>Linhas</th><th>Status</th></tr></thead><tbody>${rows.map(a=>`<tr><td><b>${esc(a.nome)}</b></td>${pj?'':`<td>${esc(projNome(a.projeto))}</td>`}<td class="tnum">${a.tam}</td><td class="tnum">${a.data}</td><td class="tnum">${a.linhas}</td><td>${pill(a.status)}</td></tr>`).join('')||emptyRow(6,'Nenhum arquivo importado ainda.')}</tbody></table></div>`};
-function importar(files,pj){const fmt=b=>b>1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(b/1024))+' KB';
- [...files].forEach(f=>{const a={id:nid('f'),nome:f.name,projeto:pj,tam:fmt(f.size),data:hoje(),linhas:'—',status:'Processando'};S.arquivos.unshift(a);
+function importar(files,pj){const fmtB=b=>b>1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(b/1024))+' KB';
+ [...files].forEach(f=>{const a={id:nid('f'),nome:f.name,projeto:pj,tam:fmtB(f.size),data:hoje(),linhas:'—',status:'Processando'};S.arquivos.unshift(a);
   const fin=n=>{a.linhas=n;a.status='Importado';save();const el=document.getElementById('part-arq');if(el)el.innerHTML=PART.arq(el.dataset.pj||undefined)};
   if(/\.(csv|txt)$/i.test(f.name)){const rd=new FileReader();rd.onload=()=>setTimeout(()=>fin(Math.max(0,String(rd.result).split(/\r?\n/).filter(Boolean).length-1)),900);rd.onerror=()=>fin('—');rd.readAsText(f)}else setTimeout(()=>fin('—'),1200)});
  save();toast(`${files.length} arquivo(s) em processamento.`);const el=document.getElementById('part-arq');if(el)el.innerHTML=PART.arq(el.dataset.pj||undefined)}
 
-V['adm-projetos']=r=>sys(r,head('Projetos de pesquisa','Cada projeto reúne as pesquisas e os arquivos de um cliente.','<button type="button" class="btn btn-primary" data-act="novo-projeto">+ Novo projeto</button>')+
+/* Importar pesquisas para um projeto */
+const MODELO_CSV='nome;tipo;inicio;fim;meta\nSatisfação — Filme C;Padrão;01/11/2026;30/11/2026;80\nTeste de cartaz — Filme D;Personalizada;05/11/2026;20/11/2026;40';
+function importarPesquisasForm(pj){openModal('Importar pesquisas',`<form id="f-imp" data-form="imp-pesq">${sel('ip-proj','Projeto de destino',S.projetos.map(p=>[p.id,p.nome+' · '+p.cliente]),pj||UI.proj||S.projetos[0]?.id)}
+ <div class="field"><label for="ip-file">Arquivo CSV</label><input id="ip-file" type="file" accept=".csv,.txt"></div>
+ <div class="field"><label for="ip-txt">Ou cole as linhas aqui</label><textarea id="ip-txt" name="txt" rows="5" placeholder="${esc(MODELO_CSV)}"></textarea></div>
+ <p class="small muted">Colunas na ordem <b>nome; tipo; início; fim; meta</b>, separadas por ponto e vírgula ou vírgula. A primeira linha pode ser o cabeçalho. As pesquisas entram como <b>Rascunho</b>, sem agente, para você completar depois.</p>
+ <button type="button" class="linkbtn" data-act="ip-modelo" style="justify-self:start">Preencher com um exemplo</button><div class="err" id="ip-err" hidden></div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-imp">Importar pesquisas</button>`,
+ m=>{m.querySelector('#ip-file').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{m.querySelector('#ip-txt').value=String(rd.result)};rd.readAsText(f)}})}
+FORM['imp-pesq']=f=>{const txt=(f.querySelector('#ip-txt').value||'').trim(),pj=PJ(f.querySelector('#ip-proj').value),e=f.querySelector('#ip-err');
+ if(!txt){e.textContent='Escolha um arquivo CSV ou cole as linhas.';e.hidden=false;return}
+ const lines=txt.split(/\r?\n/).map(l=>l.trim()).filter(Boolean),ok=[],bad=[];
+ lines.forEach((l,i)=>{const c=l.split(/[;,]/).map(x=>x.trim());if(i===0&&/^nome$/i.test(c[0]))return;const [nome,tipo,ini,fim,meta]=c;
+  const dOk=x=>/^\d\d\/\d\d\/\d{4}$/.test(x||'');if(!nome||!dOk(ini)||!dOk(fim)){bad.push(i+1);return}
+  ok.push({id:nid('p'),nome,projeto:pj.id,cliente:pj.cliente,tipo:/person/i.test(tipo||'')?'Personalizada':'Padrão',status:'Rascunho',resp:0,feitas:0,agentes:[],modos:['Online'],local:'',inicio:ini,fim,meta:+meta||50})});
+ if(!ok.length){e.textContent=`Nenhuma linha válida. Confira as linhas ${bad.join(', ')||'do arquivo'}: datas no formato dd/mm/aaaa.`;e.hidden=false;return}
+ S.pesquisas.unshift(...ok);save();closeModal();toast(`${ok.length} pesquisa(s) importada(s) para ${pj.nome} como rascunho${bad.length?`; ${bad.length} linha(s) ignorada(s)`:''}.`);refresh()};
+
+const projCard=(p,sc)=>`<article class="card"><div class="ph" style="align-items:flex-start"><div><h3 style="font-size:1.15rem">${esc(p.nome)}</h3><span class="small muted">${esc(p.cliente)}</span></div>${pill(p.status)}</div><p class="muted small">${esc(p.desc)}</p><dl class="meta" style="gap:8px 24px"><div><dt>Responsável</dt><dd>${esc(p.resp)}</dd></div><div><dt>Prazo</dt><dd class="tnum">${p.prazo}</dd></div><div><dt>Pesquisas</dt><dd class="tnum">${S.pesquisas.filter(x=>x.projeto===p.id&&(sc==='adm'||x.status!=='Rascunho')).length}</dd></div></dl><button type="button" class="btn btn-ghost" style="margin-top:auto" data-act="abrir-projeto" data-id="${p.id}" data-sc="${sc}">Abrir projeto</button></article>`;
+V['adm-projetos']=r=>sys(r,head('Projetos de pesquisa','Cada projeto reúne as pesquisas e os arquivos de um cliente.',`<button type="button" class="btn btn-ghost" data-act="importar-pesquisas">${I.upload}Importar pesquisas</button><button type="button" class="btn btn-primary" data-act="novo-projeto">+ Novo projeto</button>`)+
  `<div class="grid g3">${S.projetos.map(p=>projCard(p,'adm')).join('')}</div>`);
-const projCard=(p,sc)=>`<article class="card"><div class="ph" style="align-items:flex-start"><div><h3 style="font-size:1.15rem">${esc(p.nome)}</h3><span class="small muted">${esc(p.cliente)}</span></div>${pill(p.status)}</div><p class="muted small">${esc(p.desc)}</p><dl class="meta" style="gap:8px 24px"><div><dt>Responsável</dt><dd>${esc(p.resp)}</dd></div><div><dt>Prazo</dt><dd class="tnum">${p.prazo}</dd></div></dl><button type="button" class="btn btn-ghost" style="margin-top:auto" data-act="abrir-projeto" data-id="${p.id}" data-sc="${sc}">Abrir projeto</button></article>`;
-function projForm(){openModal('Novo projeto',`<form id="f-proj" data-form="projeto">${field('pnome','Nome do projeto','','text','required')}<div class="row2">${sel('pcli','Cliente',S.clientes.map(c=>c.nome),S.clientes[0]?.nome)}${sel('presp','Responsável',['Helena Prado','Marcos Vieira'],'Helena Prado')}</div><div class="field"><label for="pdesc">Objetivo</label><textarea id="pdesc" name="pdesc" required></textarea></div><div class="row2">${field('pprazo','Prazo','','date')}${sel('pst','Status',['Planejado','Em andamento'],'Planejado')}</div></form>`,
+function projForm(cli){openModal('Novo projeto',`<form id="f-proj" data-form="projeto">${field('pnome','Nome do projeto','','text','required')}<div class="row2">${sel('pcli','Cliente',S.clientes.map(c=>c.nome),cli||S.clientes[0]?.nome)}${sel('presp','Responsável',['Helena Prado','Marcos Vieira'],'Helena Prado')}</div><div class="field"><label for="pdesc">Objetivo</label><textarea id="pdesc" name="pdesc" required></textarea></div><div class="row2">${field('pprazo','Prazo','','date')}${sel('pst','Status',['Planejado','Em andamento'],'Planejado')}</div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-proj">Criar projeto</button>`)}
 FORM.projeto=f=>{const d=formData(f);if(!d.pnome.trim())return;S.projetos.unshift({id:nid('pj'),nome:d.pnome.trim(),cliente:d.pcli,resp:d.presp,desc:d.pdesc.trim()||'—',prazo:fromISO(d.pprazo),status:d.pst});save();closeModal();toast('Projeto criado.');refresh()};
 
-function projetoView(r,sc){const pj=S.projetos.find(p=>p.id===UI.proj)||S.projetos[0];if(!pj)return sys(r,'<p class="empty">Nenhum projeto.</p>');
+function projetoView(r,sc){const pj=PJ(UI.proj)||S.projetos[0];if(!pj)return sys(r,'<p class="empty">Nenhum projeto.</p>');
  const tab=UI.projTab||'catalogo',adm=sc==='adm';
- return sys(r,head(esc(pj.nome),adm?`${esc(pj.cliente)} · responsável ${esc(pj.resp)} · prazo ${pj.prazo}`:esc(pj.desc),adm?`<button type="button" class="btn btn-primary" data-act="nova-pesquisa" data-proj="${pj.id}">+ Nova pesquisa</button>`:'',[adm?'adm-projetos':'cl-projetos','Projetos'])+
+ return sys(r,head(esc(pj.nome),adm?`${esc(pj.cliente)} · responsável ${esc(pj.resp)} · prazo ${pj.prazo}`:esc(pj.desc),adm?`<button type="button" class="btn btn-ghost" data-act="importar-pesquisas" data-proj="${pj.id}">${I.upload}Importar pesquisas</button><button type="button" class="btn btn-primary" data-act="nova-pesquisa" data-proj="${pj.id}">+ Nova pesquisa</button>`:'',[adm?'adm-projetos':'cl-projetos','Projetos'])+
  `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='catalogo'}" data-act="set" data-k="projTab" data-v="catalogo">Catálogo de pesquisas</button><button type="button" role="tab" aria-selected="${tab==='arquivos'}" data-act="set" data-k="projTab" data-v="arquivos">Arquivos</button></div>`+
- (tab==='catalogo'?`<div class="filters"><input class="grow" type="search" data-live="cat" data-key="catq" placeholder="Buscar pesquisas" aria-label="Buscar pesquisas" value="${esc(UI.catq||'')}"><select data-live="cat" data-key="catag" aria-label="Agente">${opts([['','Todos os agentes'],...agentesNomes()],UI.catag||'')}</select></div><div id="part-cat">${PART.cat()}</div>`
+ (tab==='catalogo'?`<div class="filters"><input class="grow" type="search" data-live="cat" data-key="catq" placeholder="Buscar pesquisas" aria-label="Buscar pesquisas" value="${esc(UI.catq||'')}">${adm?`<select data-live="cat" data-key="catag" aria-label="Agente">${opts([['','Todos os agentes'],['__sem','Sem agente'],...agentesNomes()],UI.catag||'')}</select>`:''}</div><div id="part-cat" data-sc="${sc}">${PART.cat(null,sc)}</div>`
  :`${adm?`<label class="drop" for="imp-file" data-proj="${pj.id}"><b>Enviar arquivos para este projeto</b><span class="small">CSV, XLSX ou PDF.</span><input id="imp-file" type="file" multiple hidden></label>`:''}<div id="part-arq" data-pj="${pj.id}">${PART.arq(pj.id)}</div>`))}
-PART.cat=()=>{const pj=S.projetos.find(p=>p.id===UI.proj)||S.projetos[0],q=(UI.catq||'').toLowerCase();
- const l=S.pesquisas.filter(p=>p.projeto===pj.id&&(!q||p.nome.toLowerCase().includes(q))&&(!UI.catag||p.agente===UI.catag));
- return `<div class="panel" style="padding:0">${l.map(p=>`<div class="row-item">${tile(pj.nome.split(' ')[0],pj.cliente)}<div class="info"><span class="eyebrow" style="color:var(--fg-3)">${esc(pj.nome)}</span><b>${esc(p.nome)}</b><span class="small muted">${esc(p.agente)} · ${p.data}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="resultado" data-id="${p.id}">Ver resultados</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa neste projeto ainda.</p>'}</div>`};
+PART.cat=(_,sc)=>{sc=sc||document.getElementById('part-cat')?.dataset.sc||'adm';const pj=PJ(UI.proj)||S.projetos[0],q=(UI.catq||'').toLowerCase(),ag=sc==='adm'?UI.catag:'';
+ const l=S.pesquisas.filter(p=>p.projeto===pj.id&&(sc==='adm'||p.status!=='Rascunho')&&(!q||p.nome.toLowerCase().includes(q))&&(!ag||(ag==='__sem'?!p.agentes.length:p.agentes.includes(ag))));
+ return `<div class="panel" style="padding:0">${l.map(p=>`<div class="row-item">${tile(pj.nome.split(' ')[0],pj.cliente)}<div class="info"><span class="eyebrow" style="color:var(--fg-3)">${esc(pj.nome)}</span><b>${esc(p.nome)}</b><span class="small muted">${esc(agTxt(p))} · ${periodo(p)} · ${modoTxt(p)}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="${sc==='cl'?'cl-res':'resultado'}" data-id="${p.id}">${sc==='cl'?'Resultado individual':'Ver resultados'}</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa neste projeto ainda.</p>'}</div>`};
 V['adm-projeto']=r=>projetoView(r,'adm');
 
-V['adm-convites']=r=>sys(r,head('Convites','Envie pesquisas aos participantes e acompanhe quem já respondeu.','<button type="button" class="btn btn-primary" data-act="novo-convite">+ Novo convite</button>')+
- `<div class="filters"><input class="grow" type="search" data-live="conv" data-key="cq" placeholder="Buscar por participante ou pesquisa" aria-label="Buscar convites" value="${esc(UI.cq||'')}">${['','Enviado','Aberto','Respondido','Cancelado'].map(s=>`<button type="button" class="chipbtn" data-act="set" data-k="cst" data-v="${s}" aria-pressed="${(UI.cst||'')===s}">${s||'Todos'} ${s?S.convites.filter(c=>c.status===s).length:S.convites.length}</button>`).join('')}</div><div id="part-conv">${PART.conv()}</div>`);
+/* Clientes (área própria do administrador) */
+const cliStats=c=>{const ps=S.projetos.filter(p=>p.cliente===c.nome),qs=S.pesquisas.filter(p=>p.cliente===c.nome);return {ps,qs,ativas:qs.filter(p=>p.status==='Ativa').length,resp:qs.reduce((a,p)=>a+p.resp,0)}};
+V['adm-clientes']=r=>sys(r,head('Clientes','Empresas atendidas pela Sinergia e os projetos de cada uma.','<button type="button" class="btn btn-primary" data-act="cli-add">+ Novo cliente</button>')+
+ `<input type="search" data-live="cli" data-key="cliq" placeholder="Buscar cliente, contato ou segmento" aria-label="Buscar clientes" value="${esc(UI.cliq||'')}"><div id="part-cli">${PART.cli()}</div>`);
+PART.cli=()=>{const q=(UI.cliq||'').toLowerCase(),l=S.clientes.filter(c=>!q||(c.nome+' '+c.contato+' '+c.seg).toLowerCase().includes(q));
+ return l.length?`<div class="grid g3">${l.map(c=>{const s=cliStats(c);return `<article class="card"><div class="ph" style="align-items:flex-start"><div><h3 style="font-size:1.15rem">${esc(c.nome)}</h3><span class="small muted">${esc(c.seg)} · cliente desde ${c.criado}</span></div></div><p class="small">${esc(c.contato)} · <span class="muted">${esc(c.email)}</span></p><div class="chips">${s.ps.map(p=>`<span class="chip">${esc(p.nome)}</span>`).join('')||'<span class="small muted">Nenhum projeto ainda</span>'}</div><dl class="meta" style="gap:8px 24px"><div><dt>Projetos</dt><dd class="tnum">${s.ps.length}</dd></div><div><dt>Pesquisas ativas</dt><dd class="tnum">${s.ativas}</dd></div></dl><button type="button" class="btn btn-ghost" style="margin-top:auto" data-act="abrir-cliente" data-id="${c.id}">Ver cliente</button></article>`}).join('')}</div>`:'<p class="empty panel">Nenhum cliente encontrado.</p>'};
+V['adm-cliente']=r=>{const c=S.clientes.find(x=>x.id===UI.cli);if(!c)return sys(r,head('Cliente','Cliente não encontrado.','',['adm-clientes','Clientes']));const s=cliStats(c),us=S.users.filter(u=>u.empresa===c.nome&&u.perms.includes('cliente'));
+ return sys(r,head(esc(c.nome),`${esc(c.seg)} · contato ${esc(c.contato)} · ${esc(c.email)} · cliente desde ${c.criado}`,`<button type="button" class="btn btn-ghost" data-act="cli-edit" data-id="${c.id}">Editar cliente</button><button type="button" class="btn btn-primary" data-act="novo-projeto" data-cli="${esc(c.nome)}">+ Novo projeto</button>`,['adm-clientes','Clientes'])+
+ kpis([['Projetos',s.ps.length],['Pesquisas ativas',s.ativas],['Respondentes',s.resp]])+
+ `<h2 style="font-size:1.5rem">Projetos deste cliente</h2>${s.ps.length?`<div class="grid g3">${s.ps.map(p=>projCard(p,'adm')).join('')}</div>`:'<p class="empty panel">Este cliente ainda não tem projetos.</p>'}
+ <div class="panel" style="display:grid;gap:8px"><h3>Acesso da empresa ao sistema</h3>${us.length?us.map(u=>`<div class="ph"><span><b>${esc(u.nome)}</b> <span class="small muted">${esc(u.email)}</span></span><a class="linkbtn" href="#adm-usuarios">Ver permissões</a></div>`).join(''):'<p class="small muted">Ninguém desta empresa tem acesso de Cliente. Libere em Usuários e permissões.</p>'}</div>`)};
+
+/* Convites */
+V['adm-convites']=r=>sys(r,head('Convites','Envie pesquisas aos participantes, aprove pedidos de participação e acompanhe quem já respondeu.','<button type="button" class="btn btn-primary" data-act="novo-convite">+ Novo convite</button>')+
+ `<div class="filters"><input class="grow" type="search" data-live="conv" data-key="cq" placeholder="Buscar por participante ou pesquisa" aria-label="Buscar convites" value="${esc(UI.cq||'')}">${['','Solicitado','Enviado','Aberto','Respondido','Cancelado'].map(s=>`<button type="button" class="chipbtn" data-act="set" data-k="cst" data-v="${s}" aria-pressed="${(UI.cst||'')===s}">${s||'Todos'} ${s?S.convites.filter(c=>c.status===s).length:S.convites.length}</button>`).join('')}</div><div id="part-conv">${PART.conv()}</div>`);
 PART.conv=()=>{const q=(UI.cq||'').toLowerCase(),l=S.convites.filter(c=>{const p=P(c.pid),pa=partBy(c.cod)||{};return (!UI.cst||c.status===UI.cst)&&(!q||((p?.nome||'')+' '+(pa.nome||'')+' '+c.cod).toLowerCase().includes(q))});
- return `<div class="tablebox"><table><thead><tr><th>Pesquisa</th><th>Participante</th><th>Enviado em</th><th>Status</th><th>Ações</th></tr></thead><tbody>${l.map(c=>{const p=P(c.pid),pa=partBy(c.cod)||{nome:'—',email:''};return `<tr><td>${esc(p?.nome||'Pesquisa removida')}</td><td><b>${esc(pa.nome)}</b><span class="s">${c.cod} · ${esc(pa.email)}</span></td><td class="tnum">${c.data}</td><td>${pill(c.status)}</td><td class="acts">${c.status==='Respondido'||c.status==='Cancelado'?'<span class="muted">—</span>':`<button type="button" class="linkbtn" data-act="reenviar" data-id="${c.id}">Reenviar</button><button type="button" class="linkbtn danger" data-act="cancelar-convite" data-id="${c.id}">Cancelar</button>`}</td></tr>`}).join('')||emptyRow(5,'Nenhum convite com esses filtros.')}</tbody></table></div>`};
+ return `<div class="tablebox"><table><thead><tr><th>Pesquisa</th><th>Participante</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead><tbody>${l.map(c=>{const p=P(c.pid),pa=partBy(c.cod)||{nome:'—',email:''};return `<tr><td>${esc(p?.nome||'Pesquisa removida')}</td><td><b>${esc(pa.nome)}</b><span class="s">${c.cod} · ${esc(pa.email)}</span></td><td class="tnum">${c.data}</td><td>${pill(c.status)}</td><td class="acts">${c.status==='Solicitado'?`<button type="button" class="linkbtn" data-act="aprovar" data-id="${c.id}">Aprovar</button><button type="button" class="linkbtn danger" data-act="recusar" data-id="${c.id}">Recusar</button>`:c.status==='Respondido'||c.status==='Cancelado'?'<span class="muted">—</span>':`<button type="button" class="linkbtn" data-act="reenviar" data-id="${c.id}">Reenviar</button><button type="button" class="linkbtn danger" data-act="cancelar-convite" data-id="${c.id}">Cancelar</button>`}</td></tr>`}).join('')||emptyRow(5,'Nenhum convite com esses filtros.')}</tbody></table></div>`};
 function conviteForm(pid){const ps=S.pesquisas.filter(p=>p.status==='Ativa'||p.status==='Pausada');
  openModal('Novo convite',`<form id="f-conv" data-form="convite">${sel('cpid','Pesquisa',ps.map(p=>[p.id,p.nome]),pid||ps[0]?.id)}${sel('ccod','Participante',S.participantes.map(p=>[p.cod,`${p.nome} · ${p.cod}`]),S.participantes[0]?.cod)}<p class="small muted">O participante recebe o convite por e-mail e só vê o material depois de aceitar o termo de sigilo.</p><div class="err" id="cv-err" hidden></div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-conv">Enviar convite</button>`)}
 FORM.convite=f=>{const d=formData(f);if(S.convites.some(c=>c.pid===d.cpid&&c.cod===d.ccod&&c.status!=='Cancelado')){const e=f.querySelector('#cv-err');e.textContent='Esse participante já tem um convite ativo para essa pesquisa.';e.hidden=false;return}
  S.convites.unshift({id:nid('cv'),pid:d.cpid,cod:d.ccod,data:hoje(),status:'Enviado'});save();closeModal();toast('Convite enviado.');refresh()};
 
-const CAD={clientes:{t:'Clientes',s:'cliente',cols:[['nome','Nome da empresa'],['contato','Contato'],['email','E-mail'],['seg','Segmento']]},agentes:{t:'Agentes',s:'agente',cols:[['nome','Nome'],['email','E-mail'],['regiao','Região de atuação'],['tel','Telefone']]},participantes:{t:'Participantes',s:'participante',cols:[['cod','Código'],['nome','Nome'],['email','E-mail'],['cidade','Cidade']]}};
-V['adm-cadastros']=r=>{const t=UI.cadTab||'clientes',c=CAD[t];
- return sys(r,head('Cadastros','Clientes, agentes e participantes usados nas pesquisas.',`<button type="button" class="btn btn-primary" data-act="cad-add">+ Adicionar ${c.s}</button>`)+
- `<div class="tabs" role="tablist">${Object.entries(CAD).map(([k,v])=>`<button type="button" role="tab" aria-selected="${k===t}" data-act="set" data-k="cadTab" data-v="${k}">${v.t} ${S[k].length}</button>`).join('')}</div>
- <input type="search" data-live="cad" data-key="cadq" placeholder="Buscar em ${c.t.toLowerCase()}" aria-label="Buscar" value="${esc(UI.cadq||'')}"><div id="part-cad">${PART.cad()}</div>`)};
-PART.cad=()=>{const t=UI.cadTab||'clientes',c=CAD[t],q=(UI.cadq||'').toLowerCase(),l=S[t].filter(x=>!q||c.cols.some(([k])=>String(x[k]||'').toLowerCase().includes(q)));
- return `<div class="tablebox"><table><thead><tr>${c.cols.map(([,l])=>`<th>${l}</th>`).join('')}<th>Ações</th></tr></thead><tbody>${l.map(x=>`<tr>${c.cols.map(([k],i)=>`<td${i===0?' style="font-weight:600"':''}>${esc(x[k]||'—')}</td>`).join('')}<td class="acts"><button type="button" class="linkbtn" data-act="cad-edit" data-id="${x.id}">Editar</button><button type="button" class="linkbtn danger" data-act="cad-del" data-id="${x.id}">Excluir</button></td></tr>`).join('')||emptyRow(c.cols.length+1,'Nenhum cadastro encontrado.')}</tbody></table></div>`};
-function cadForm(id){const t=UI.cadTab||'clientes',c=CAD[t],x=id?S[t].find(i=>i.id===id):{};
- openModal((id?'Editar ':'Adicionar ')+c.s,`<form id="f-cad" data-form="cad" data-id="${id||''}">${c.cols.map(([k,l])=>k==='cod'?field('cad-'+k,l+' (gerado automaticamente se vazio)',x[k]||'','text','pattern="P-\\d{4}" placeholder="P-0000"'):field('cad-'+k,l,x[k]||'',k==='email'?'email':'text',k==='nome'?'required':'')).join('')}</form>`,
+/* Cadastros: agentes e participantes (clientes têm área própria) */
+const CAD={clientes:{t:'Clientes',s:'cliente',cols:[['nome','Nome da empresa'],['contato','Contato'],['email','E-mail'],['seg','Segmento'],['criado','Cadastrado em']]},agentes:{t:'Agentes',s:'agente',cols:[['nome','Nome'],['email','E-mail'],['regiao','Região de atuação'],['tel','Telefone'],['criado','Cadastrado em']]},participantes:{t:'Participantes',s:'participante',cols:[['cod','Código'],['nome','Nome'],['email','E-mail'],['cidade','Cidade'],['criado','Cadastrado em']]}};
+const pesqDe=(t,x)=>t==='agentes'?S.pesquisas.filter(p=>p.agentes.includes(x.nome)):S.convites.filter(c=>c.cod===x.cod&&c.status!=='Cancelado').map(c=>P(c.pid)).filter(Boolean);
+V['adm-cadastros']=r=>{let t=UI.cadTab;if(t!=='agentes'&&t!=='participantes')t=UI.cadTab='agentes';const c=CAD[t];
+ return sys(r,head('Cadastros','Agentes e participantes usados nas pesquisas. Os clientes ficam no menu Clientes.',`<button type="button" class="btn btn-primary" data-act="cad-add">+ Adicionar ${c.s}</button>`)+
+ `<div class="tabs" role="tablist">${['agentes','participantes'].map(k=>`<button type="button" role="tab" aria-selected="${k===t}" data-act="set" data-k="cadTab" data-v="${k}">${CAD[k].t} ${S[k].length}</button>`).join('')}</div>
+ <div class="filters"><input class="grow" type="search" data-live="cad" data-key="cadq" placeholder="Buscar em ${c.t.toLowerCase()}" aria-label="Buscar" value="${esc(UI.cadq||'')}"><span class="lbl">${t==='agentes'?'Aplica pesquisas do tipo':'Participa de pesquisas do tipo'}</span><select data-live="cad" data-key="cadtp" aria-label="Tipo de pesquisa">${opts([['','Todos os tipos'],'Padrão','Personalizada',['__nenhuma','Sem pesquisa']],UI.cadtp||'')}</select></div><div id="part-cad">${PART.cad()}</div>`)};
+PART.cad=()=>{const t=UI.cadTab==='participantes'?'participantes':'agentes',c=CAD[t],q=(UI.cadq||'').toLowerCase(),tp=UI.cadtp||'';
+ const l=S[t].filter(x=>{if(q&&!c.cols.some(([k])=>String(x[k]||'').toLowerCase().includes(q)))return false;const ps=pesqDe(t,x);if(tp==='__nenhuma')return !ps.length;return !tp||ps.some(p=>p.tipo===tp)});
+ return `<div class="tablebox"><table><thead><tr>${c.cols.map(([,l])=>`<th>${l}</th>`).join('')}<th>Pesquisas</th><th>Ações</th></tr></thead><tbody>${l.map(x=>{const ps=pesqDe(t,x),pd=ps.filter(p=>p.tipo==='Padrão').length;return `<tr>${c.cols.map(([k],i)=>`<td${i===0?' style="font-weight:600"':''}${k==='criado'?' class="tnum"':''}>${esc(x[k]||'—')}</td>`).join('')}<td class="small">${ps.length?`${ps.length} <span class="muted">(${pd} padrão · ${ps.length-pd} personalizada${ps.length-pd===1?'':'s'})</span>`:'<span class="muted">Nenhuma</span>'}</td><td class="acts"><button type="button" class="linkbtn" data-act="cad-edit" data-id="${x.id}">Editar</button><button type="button" class="linkbtn danger" data-act="cad-del" data-id="${x.id}">Excluir</button></td></tr>`}).join('')||emptyRow(c.cols.length+2,'Nenhum cadastro com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${l.length} de ${S[t].length} ${c.t.toLowerCase()}</p>`};
+function cadForm(id,t){t=t||UI.cadTab||'agentes';const c=CAD[t],x=id?S[t].find(i=>i.id===id):{};
+ openModal((id?'Editar ':'Adicionar ')+c.s,`<form id="f-cad" data-form="cad" data-id="${id||''}" data-t="${t}">${c.cols.filter(([k])=>k!=='criado').map(([k,l])=>k==='cod'?field('cad-'+k,l+' (gerado automaticamente se vazio)',x[k]||'','text','pattern="P-\\d{4}" placeholder="P-0000"'):field('cad-'+k,l,x[k]||'',k==='email'?'email':'text',k==='nome'?'required':'')).join('')}${id?`<p class="small muted">Cadastrado em ${x.criado||'—'}</p>`:''}</form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-cad">Salvar</button>`)}
-FORM.cad=f=>{const t=UI.cadTab||'clientes',d=formData(f),v={};CAD[t].cols.forEach(([k])=>v[k]=(d['cad-'+k]||'').trim());if(!v.nome)return;if(t==='participantes'&&!v.cod)v.cod=nextCod();
- const id=f.dataset.id;if(id)Object.assign(S[t].find(i=>i.id===id),v);else S[t].unshift({id:nid(t[0]),...v});save();closeModal();toast('Cadastro salvo.');refresh()};
+FORM.cad=f=>{const t=f.dataset.t,d=formData(f),v={};CAD[t].cols.filter(([k])=>k!=='criado').forEach(([k])=>v[k]=(d['cad-'+k]||'').trim());if(!v.nome)return;if(t==='participantes'&&!v.cod)v.cod=nextCod();
+ const id=f.dataset.id;if(id){const x=S[t].find(i=>i.id===id),old=x.nome;Object.assign(x,v);if(t==='clientes'&&old!==v.nome){S.projetos.forEach(p=>{if(p.cliente===old)p.cliente=v.nome});S.pesquisas.forEach(p=>{if(p.cliente===old)p.cliente=v.nome});S.users.forEach(u=>{if(u.empresa===old)u.empresa=v.nome})}}
+ else S[t].unshift({id:nid(t[0]),criado:hoje(),...v});save();closeModal();toast('Cadastro salvo.');refresh()};
 
+/* Usuários e permissões */
 V['adm-usuarios']=r=>{const t=UI.usrTab||'usuarios';
  return sys(r,head('Usuários e permissões','Defina o tipo de acesso de cada conta e o que cada perfil pode fazer.',t==='usuarios'?'<button type="button" class="btn btn-primary" data-act="novo-usuario">+ Novo usuário</button>':'')+
  `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${t==='usuarios'}" data-act="set" data-k="usrTab" data-v="usuarios">Usuários</button><button type="button" role="tab" aria-selected="${t==='perm'}" data-act="set" data-k="usrTab" data-v="perm">Permissões por perfil</button></div>`+
  (t==='usuarios'?`<p class="note">O login tem duas entradas: <b>Administrador</b> e <b>Usuário</b>. Marque abaixo como cada usuário pode navegar. Quem tem mais de uma permissão troca de perfil pelo menu lateral.</p>
  <div class="tablebox"><table><thead><tr><th>Usuário</th><th>Acesso</th><th>Navega como</th><th>Empresa / código</th><th>Ações</th></tr></thead><tbody>${S.users.map(u=>`<tr><td><b>${esc(u.nome)}</b><span class="s">${esc(u.email)}</span></td><td>${pill(u.admin?'Administrador':'Usuário')}</td><td>${u.admin?'<span class="small muted">Acesso total pela área do administrador</span>':`<div class="permbox">${['agente','cliente','participante'].map(p=>`<label><input type="checkbox" data-act-change="perm" data-uid="${u.id}" data-p="${p}" ${u.perms.includes(p)?'checked':''}>${ROLE_SHORT[p]}</label>`).join('')}</div>${u.perms.length?'':'<span class="s" style="color:var(--warn-fg)">Sem permissões: não consegue entrar</span>'}`}</td><td class="small">${u.perms.includes('cliente')?esc(u.empresa||'—'):''}${u.perms.includes('cliente')&&u.perms.includes('participante')?'<br>':''}${u.perms.includes('participante')?`<span class="tnum">${u.codigo||'—'}</span>`:''}${u.admin?'—':''}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-usuario" data-id="${u.id}">Editar</button>${u.id===S.session.uid?'':`<button type="button" class="linkbtn danger" data-act="remover-usuario" data-id="${u.id}">Remover</button>`}</td></tr>`).join('')}</tbody></table></div>`
- :matrixView()))}
+ :matrixView()))};
 function matrixView(){const d=UI.mx||JSON.parse(JSON.stringify(S.matrix)),dirty=!!UI.mx;
  return `<div class="tablebox"><table class="matrix"><thead><tr><th>Permissão</th><th>Administrador</th><th>Agente</th><th>Cliente Empresa</th><th>Participante</th></tr></thead><tbody>${MATRIX_ROWS.map(([k,l])=>`<tr><td>${l}</td>${['admin','agente','cliente','participante'].map(role=>{const lock=k==='gerenciar_usuarios'||role==='admin';return `<td><input type="checkbox" aria-label="${l} — ${ROLE[role]}" data-act-change="mx" data-k="${k}" data-r="${role}" ${(d[k]||{})[role]?'checked':''} ${lock?'disabled':''}></td>`}).join('')}</tr>`).join('')}</tbody></table></div>
- <p class="small muted">“Gerenciar usuários e permissões” fica sempre com o Administrador, para ninguém perder o acesso ao sistema. As colunas de Agente, Cliente e Participante liberam ou escondem itens do menu desses perfis.</p>
+ <p class="small muted">“Gerenciar usuários e permissões” fica sempre com o Administrador, para ninguém perder o acesso ao sistema. As colunas de Agente, Cliente e Participante liberam ou escondem itens do menu e botões desses perfis.</p>
  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-act="salvar-mx" ${dirty?'':'disabled'}>Salvar permissões</button>${dirty?'<span class="unsaved">Alterações não salvas</span><button type="button" class="linkbtn" data-act="descartar-mx">Descartar</button>':''}</div>`}
 function userForm(id){const u=id?S.users.find(x=>x.id===id):{perms:['participante']},adm=!!u.admin;
  openModal(id?'Editar usuário':'Novo usuário',`<form id="f-usr" data-form="usuario" data-id="${id||''}">${field('unome','Nome',u.nome||'','text','required')}${field('umail','E-mail',u.email||'','email','required')}
- <fieldset class="field"><legend style="font:500 .875rem var(--sans);margin-bottom:6px">Tipo de acesso</legend><div class="permbox"><label><input type="radio" name="uacc" value="usuario" ${adm?'':'checked'}>Usuário</label><label><input type="radio" name="uacc" value="admin" ${adm?'checked':''} ${id===S.session.uid?'disabled':''}>Administrador</label></div></fieldset>
- <fieldset class="field" id="u-perms" ${adm?'hidden':''}><legend style="font:500 .875rem var(--sans);margin-bottom:6px">Navega como</legend><div class="permbox">${['agente','cliente','participante'].map(p=>`<label><input type="checkbox" name="up-${p}" ${u.perms?.includes(p)?'checked':''}>${ROLE[p]}</label>`).join('')}</div></fieldset>
+ <fieldset class="field"><legend class="lg">Tipo de acesso</legend><div class="permbox"><label><input type="radio" name="uacc" value="usuario" ${adm?'':'checked'}>Usuário</label><label><input type="radio" name="uacc" value="admin" ${adm?'checked':''} ${id===S.session.uid?'disabled':''}>Administrador</label></div></fieldset>
+ <fieldset class="field" id="u-perms" ${adm?'hidden':''}><legend class="lg">Navega como</legend><div class="permbox">${['agente','cliente','participante'].map(p=>`<label><input type="checkbox" name="up-${p}" ${u.perms?.includes(p)?'checked':''}>${ROLE[p]}</label>`).join('')}</div></fieldset>
  <div class="row2" id="u-extra" ${adm?'hidden':''}>${sel('uemp','Empresa (para Cliente)',S.clientes.map(c=>c.nome),u.empresa||S.clientes[0]?.nome)}${field('ucod','Código de participante',u.codigo||'','text','placeholder="Gerado automaticamente"')}</div>
  <div class="err" id="u-err" hidden></div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-usr">Salvar usuário</button>`,
  m=>m.querySelectorAll('[name=uacc]').forEach(x=>x.onchange=()=>{const a=m.querySelector('[name=uacc]:checked').value==='admin';m.querySelector('#u-perms').hidden=a;m.querySelector('#u-extra').hidden=a}))}
+function garantirCadastros(u){if(u.perms.includes('participante')){u.codigo=u.codigo||nextCod();if(!partBy(u.codigo))S.participantes.push({id:nid('r'),cod:u.codigo,nome:u.nome,email:u.email,cidade:'—',criado:hoje()})}
+ if(u.perms.includes('agente')&&!S.agentes.some(a=>a.nome===u.nome))S.agentes.push({id:nid('a'),nome:u.nome,email:u.email,regiao:'—',tel:'',criado:hoje()})}
 FORM.usuario=f=>{const d=formData(f),id=f.dataset.id,e=f.querySelector('#u-err'),email=d.umail.trim().toLowerCase();
  if(!d.unome.trim()||!/^\S+@\S+\.\S+$/.test(email)){e.textContent='Preencha nome e um e-mail válido.';e.hidden=false;return}
  if(S.users.some(u=>u.email.toLowerCase()===email&&u.id!==id)){e.textContent='Já existe um usuário com esse e-mail.';e.hidden=false;return}
  const adm=id===S.session.uid?true:(d.uacc==='admin'),perms=adm?[]:['agente','cliente','participante'].filter(p=>d['up-'+p]);
  const u=id?S.users.find(x=>x.id===id):{id:nid('u')};Object.assign(u,{nome:d.unome.trim(),email,admin:adm,perms,empresa:perms.includes('cliente')?d.uemp:u.empresa});
- if(perms.includes('participante')){u.codigo=(d.ucod||'').trim()||u.codigo||nextCod();if(!partBy(u.codigo))S.participantes.push({id:nid('r'),cod:u.codigo,nome:u.nome,email,cidade:'—'})}
- if(perms.includes('agente')&&!S.agentes.some(a=>a.nome===u.nome))S.agentes.push({id:nid('a'),nome:u.nome,email,regiao:'—',tel:''});
+ if(perms.includes('participante')&&(d.ucod||'').trim())u.codigo=d.ucod.trim();garantirCadastros(u);
  if(!id)S.users.push(u);save();closeModal();toast(id?'Usuário atualizado.':'Usuário criado. Ele entra pela opção Usuário no login.');refresh()};
 
 /* ======================= AGENTE ======================= */
-const minhasCampo=()=>{const u=me();return S.pesquisas.filter(p=>p.agente===u.nome&&p.status!=='Rascunho')};
+const minhasCampo=()=>{const u=me();return S.pesquisas.filter(p=>p.agentes.includes(u.nome)&&p.status!=='Rascunho')};
 const orient=(t,l)=>`<div class="orient"><b>${t}</b><ol>${l.map(x=>`<li>${x}</li>`).join('')}</ol></div>`;
-V['ag-pesquisas']=r=>sys(r,head('Minhas pesquisas','Pesquisas atribuídas a você para aplicação em campo.')+
- `<div class="filters"><input class="grow" type="search" data-live="agl" data-key="agq" placeholder="Buscar pesquisa ou local" aria-label="Buscar pesquisa ou local" value="${esc(UI.agq||'')}"><select data-live="agl" data-key="agst" aria-label="Status">${opts([['','Todos os status'],'Não iniciada','Em andamento','Concluída'],UI.agst||'')}</select><select data-live="agl" data-key="agord" aria-label="Ordenar">${opts([['asc','Data: mais antiga'],['desc','Data: mais recente']],UI.agord||'asc')}</select></div>
- <div id="part-agl">${PART.agl()}</div>`+orient('Orientações',['Verifique o público-alvo antes de iniciar.','Confirme o local e o horário.','Use os recursos da pesquisa.']));
-PART.agl=()=>{const q=(UI.agq||'').toLowerCase(),k=d=>toISO(d)||'9';let l=minhasCampo().filter(p=>(!q||(p.nome+' '+p.local).toLowerCase().includes(q))&&(!UI.agst||statusCampo(p)===UI.agst)).sort((a,b)=>k(a.data).localeCompare(k(b.data)));if(UI.agord==='desc')l.reverse();
- return `<div class="panel" style="padding:0">${l.map(p=>{const st=statusCampo(p);return `<div class="row-item">${tile(p.nome.split(' ')[0],p.local)}<div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(p.local)} · ${p.data}</span><div class="pbar"><i style="width:${Math.min(100,Math.round(p.feitas/p.meta*100))}%"></i></div><span class="small muted tnum">${p.feitas} de ${p.meta} entrevistas</span></div><div class="end">${pill(st)}<button type="button" class="btn btn-ghost btn-sm" data-act="ag-det" data-id="${p.id}">Ver detalhes</button>${st==='Concluída'?'<button type="button" class="btn btn-ghost btn-sm" disabled>Concluída</button>':`<button type="button" class="btn btn-primary btn-sm" data-act="ag-apl" data-id="${p.id}">Aplicar pesquisa</button>`}</div></div>`}).join('')||'<p class="empty">Nenhuma pesquisa atribuída a você com esses filtros.</p>'}</div>`};
+V['ag-pesquisas']=r=>{const l=minhasCampo(),late=l.filter(p=>statusCampo(p)!=='Concluída'&&p.status==='Ativa'&&dias(p.fim)!==null&&dias(p.fim)<=3);
+ return sys(r,head('Minhas pesquisas','Pesquisas atribuídas a você para aplicação em campo.')+
+ (late.length?`<div class="alertbar" role="status">${I.alert}<span><b>${late.length} pesquisa${late.length>1?'s':''} com prazo crítico.</b> ${late.map(p=>esc(p.nome)).join(' · ')}</span></div>`:'')+
+ `<div class="filters"><input class="grow" type="search" data-live="agl" data-key="agq" placeholder="Buscar pesquisa ou local" aria-label="Buscar pesquisa ou local" value="${esc(UI.agq||'')}"><select data-live="agl" data-key="agst" aria-label="Status">${opts([['','Todos os status'],'Não iniciada','Em andamento','Concluída'],UI.agst||'')}</select><select data-live="agl" data-key="agord" aria-label="Ordenar">${opts([['prazo','Prazo mais próximo'],['asc','Início: mais antigo'],['desc','Início: mais recente']],UI.agord||'prazo')}</select></div>
+ <div id="part-agl">${PART.agl()}</div>`+orient('Orientações',['Verifique o público-alvo antes de iniciar.','Confirme o local e o horário.','Confira os recursos em Detalhes da pesquisa.']))};
+PART.agl=()=>{const q=(UI.agq||'').toLowerCase(),k=d=>toISO(d)||'9',ord=UI.agord||'prazo';let l=minhasCampo().filter(p=>(!q||(p.nome+' '+localTxt(p)).toLowerCase().includes(q))&&(!UI.agst||statusCampo(p)===UI.agst));
+ l.sort((a,b)=>ord==='prazo'?k(a.fim).localeCompare(k(b.fim)):k(a.inicio).localeCompare(k(b.inicio)));if(ord==='desc')l.reverse();
+ return `<div class="panel" style="padding:0">${l.map(p=>{const st=statusCampo(p),done=st==='Concluída'||p.status!=='Ativa';return `<div class="row-item${lateCls(p.fim,done)}">${tile(p.nome.split(' ')[0],localTxt(p))}<div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(localTxt(p))} · ${periodo(p)}</span><div class="pbar"><i style="width:${Math.min(100,Math.round(p.feitas/p.meta*100))}%"></i></div><span class="small muted tnum">${p.feitas} de ${p.meta} entrevistas</span>${prazo(p.fim,done)}</div><div class="end">${pill(st)}<button type="button" class="btn btn-ghost btn-sm" data-act="ag-det" data-id="${p.id}">Ver detalhes</button>${st==='Concluída'?'<button type="button" class="btn btn-ghost btn-sm" disabled>Concluída</button>':`<button type="button" class="btn btn-primary btn-sm" data-act="ag-apl" data-id="${p.id}">Aplicar pesquisa</button>`}</div></div>`}).join('')||'<p class="empty">Nenhuma pesquisa atribuída a você com esses filtros.</p>'}</div>`};
 const agP=()=>P(UI.agPesq)&&minhasCampo().includes(P(UI.agPesq))?P(UI.agPesq):minhasCampo().find(p=>statusCampo(p)!=='Concluída')||minhasCampo()[0];
 V['ag-detalhes']=r=>{const p=agP();if(!p)return sys(r,head('Detalhes da pesquisa','Nenhuma pesquisa atribuída.','',['ag-pesquisas','Voltar às pesquisas']));
+ const it=S.recursos[p.id]||[],ok=it.filter(x=>x.ok).length,rec=can('agente','recursos'),done=statusCampo(p)==='Concluída';
  return sys(r,head('Detalhes da pesquisa',esc(p.nome),'',['ag-pesquisas','Voltar às pesquisas'])+
- `<div class="panel" style="display:grid;gap:16px"><h3>Informações da pesquisa</h3><dl class="meta"><div><dt>Nome da pesquisa</dt><dd>${esc(p.nome)}</dd></div><div><dt>Meta</dt><dd class="tnum">${p.meta} entrevistas</dd></div><div><dt>Local de aplicação</dt><dd>${esc(p.local)}</dd></div><div><dt>Entrevistas realizadas</dt><dd class="tnum">${p.feitas}</dd></div><div><dt>Data da pesquisa</dt><dd class="tnum">${p.data}</dd></div><div><dt>Situação</dt><dd>${pill(statusCampo(p))}</dd></div></dl></div>`+
+ `<div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Informações da pesquisa</h3>${prazo(p.fim,done||p.status!=='Ativa')}</div><dl class="meta"><div><dt>Nome da pesquisa</dt><dd>${esc(p.nome)}</dd></div><div><dt>Meta</dt><dd class="tnum">${p.meta} entrevistas</dd></div><div><dt>Local de aplicação</dt><dd>${esc(localTxt(p))}</dd></div><div><dt>Entrevistas realizadas</dt><dd class="tnum">${p.feitas}</dd></div><div><dt>Período</dt><dd class="tnum">${periodo(p)}</dd></div><div><dt>Situação</dt><dd>${pill(statusCampo(p))}</dd></div><div><dt>Agentes</dt><dd>${esc(agTxt(p))}</dd></div>${rec?`<div><dt>Recursos de campo</dt><dd class="tnum">${ok} de ${it.length} conferidos</dd></div>`:''}</dl></div>`+
  orient('Orientações para o agente',['Verifique o local e o horário de aplicação.','Confira a identificação do participante.','Siga as instruções recebidas da equipe.'])+
- `<div style="display:flex;gap:10px;flex-wrap:wrap">${statusCampo(p)==='Concluída'?'':`<button type="button" class="btn btn-primary" data-act="ag-apl" data-id="${p.id}">Aplicar pesquisa</button>`}<button type="button" class="btn btn-ghost" data-act="ag-rec" data-id="${p.id}">Ver recursos</button></div>`)};
+ `<div style="display:flex;gap:10px;flex-wrap:wrap">${done?'':`<button type="button" class="btn btn-primary" data-act="ag-apl" data-id="${p.id}">Aplicar pesquisa</button>`}${rec?`<button type="button" class="btn btn-ghost" data-act="ag-rec" data-id="${p.id}">${I.box}Ver recursos</button>`:''}</div>`)};
+function recursosBody(pid){const it=S.recursos[pid]||(S.recursos[pid]=[]),ok=it.filter(x=>x.ok).length;
+ return `<p class="muted small">Confira o material de campo antes de sair para aplicar. <b class="tnum">${ok} de ${it.length} conferidos.</b></p><div class="pbar wide"><i style="width:${it.length?Math.round(ok/it.length*100):0}%"></i></div>
+ <div>${it.map((x,i)=>`<div class="check-row"><label><input type="checkbox" data-act-change="rec" data-i="${i}" ${x.ok?'checked':''}>${esc(x.t)}</label><button type="button" class="linkbtn danger" data-act="rec-del" data-i="${i}">Remover</button></div>`).join('')||'<p class="empty">Nenhum item. Adicione o material que você leva para o campo.</p>'}</div>
+ <form data-form="rec-add" style="display:flex;gap:10px;flex-wrap:wrap"><input name="t" aria-label="Novo item" placeholder="Novo item, ex.: Termo de consentimento" style="flex:1 1 220px" required><button class="btn btn-ghost" type="submit">Adicionar</button></form>`}
+function modalRecursos(pid){UI.recPesq=pid;save();openModal('Recursos da pesquisa',`<div id="rec-body" style="display:grid;gap:12px">${recursosBody(pid)}</div>`,`<button type="button" class="btn btn-primary" data-act="rec-close">Concluir</button>`,m=>{const i=m.querySelector('#rec-body input[name=t]');i&&i.focus()})}
+const redrawRec=()=>{const b=document.getElementById('rec-body');if(b)b.innerHTML=recursosBody(UI.recPesq)};
 const AGQ=[['Qual gênero de filme você mais gosta?',['Ação','Comédia','Romance','Ficção científica']],['Com quem você costuma assistir?',['Sozinho','Com amigos','Com a família','Com o par']],['Onde você assiste filmes?',['Cinema','Streaming','TV aberta ou a cabo','Mídia física']]];
 V['ag-aplicar']=r=>{const p=agP();if(!p)return sys(r,head('Aplicar pesquisa','Nenhuma pesquisa atribuída a você.'));
  const on=UI.agOn&&UI.agOnPid===p.id,ab=minhasCampo().filter(x=>statusCampo(x)!=='Concluída');
  return sys(r,head('Aplicar pesquisa',esc(p.nome),'',['ag-pesquisas','Voltar às pesquisas'])+
- (ab.length>1?`<div class="filters"><span class="lbl">Pesquisa</span><select data-act-change="agPesq" aria-label="Escolher pesquisa">${opts(ab.map(x=>[x.id,x.nome]),p.id)}</select></div>`:'')+
- `<div class="resumo"><span>Local: <b>${esc(p.local)}</b></span><span>Data: <b class="tnum">${p.data}</b></span><span>Meta: <b class="tnum">${p.meta} entrevistas</b></span><span>Realizadas: <b class="tnum">${p.feitas}</b></span><div class="pbar"><i style="width:${Math.min(100,Math.round(p.feitas/p.meta*100))}%"></i></div></div>
+ (ab.length>1?`<div class="filters"><span class="lbl">Pesquisa</span><select data-act-change="agPesq" aria-label="Escolher pesquisa">${opts(ab.map(x=>[x.id,x.nome]),p.id)}</select>${prazo(p.fim,p.status!=='Ativa')}</div>`:'')+
+ `<div class="resumo"><span>Local: <b>${esc(localTxt(p))}</b></span><span>Período: <b class="tnum">${periodo(p)}</b></span><span>Meta: <b class="tnum">${p.meta} entrevistas</b></span><span>Realizadas: <b class="tnum">${p.feitas}</b></span><div class="pbar"><i style="width:${Math.min(100,Math.round(p.feitas/p.meta*100))}%"></i></div></div>
  <div class="two"><div class="panel" style="display:grid;gap:12px"><h3>Identificação do participante</h3><p class="muted small">Informe o código antes de iniciar o questionário.</p>
  <form data-form="ag-id" style="gap:10px" novalidate><div class="field"><label for="agcod">Código / ID do participante</label><input id="agcod" name="cod" placeholder="P-0000" value="${esc(on?UI.agCod:'')}" ${on?'readonly':''} autocomplete="off"></div><span class="small muted">Formato P- seguido de 4 números.</span><div class="err" id="ag-err" hidden></div>
  ${on?`<button type="button" class="btn btn-ghost" disabled style="justify-self:start">Questionário em andamento</button>`:'<button class="btn btn-primary" type="submit" style="justify-self:start">Iniciar questionário</button>'}</form></div>
@@ -955,26 +1068,28 @@ FORM['ag-q']=f=>{const d=formData(f);if(AGQ.some((_,i)=>!d['q'+i])){const e=f.qu
  const p=agP();p.feitas++;p.resp++;S.respostas.push({pid:p.id,onde:d.q2,genero:d.q0,via:'agente'});
  const cv=S.convites.find(c=>c.pid===p.id&&c.cod===UI.agCod&&c.status!=='Cancelado');if(cv)cv.status='Respondido';
  UI.agOn=false;UI.agCod='';save();refresh();toast(`Entrevista registrada: ${p.feitas} de ${p.meta}.`)};
-V['ag-recursos']=r=>{const l=minhasCampo();const p=l.find(x=>x.id===UI.recPesq)||l[0];if(!p)return sys(r,head('Recursos da pesquisa','Nenhuma pesquisa atribuída a você.'));
- const it=S.recursos[p.id]||(S.recursos[p.id]=[]),ok=it.filter(x=>x.ok).length;
- return sys(r,head('Recursos da pesquisa','Confira o material de campo antes de sair para aplicar.')+
- `<div class="filters"><span class="lbl">Pesquisa</span><select data-act-change="recPesq" aria-label="Pesquisa">${opts(l.map(x=>[x.id,x.nome]),p.id)}</select><span class="lbl tnum">${ok} de ${it.length} conferidos</span></div>
- <div class="panel" style="display:grid;gap:4px">${it.map((x,i)=>`<div class="check-row"><label><input type="checkbox" data-act-change="rec" data-i="${i}" ${x.ok?'checked':''}>${esc(x.t)}</label><button type="button" class="linkbtn danger" data-act="rec-del" data-i="${i}">Remover</button></div>`).join('')||'<p class="empty">Nenhum item. Adicione o material que você leva para o campo.</p>'}
- <form data-form="rec-add" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap"><input name="t" aria-label="Novo item" placeholder="Novo item, ex.: Termo de consentimento" style="flex:1 1 240px" required><button class="btn btn-ghost" type="submit">Adicionar</button></form></div>`)};
-FORM['rec-add']=f=>{const t=(formData(f).t||'').trim();if(!t)return;const l=minhasCampo(),p=l.find(x=>x.id===UI.recPesq)||l[0];(S.recursos[p.id]=S.recursos[p.id]||[]).push({t,ok:false});save();refresh();toast('Item adicionado.')};
+FORM['rec-add']=f=>{const t=(formData(f).t||'').trim();if(!t)return;(S.recursos[UI.recPesq]=S.recursos[UI.recPesq]||[]).push({t,ok:false});save();redrawRec();const i=document.querySelector('#rec-body input[name=t]');i&&i.focus()};
 
 /* ---------- Perfil (comum) ---------- */
 const perfilView=r=>{const u=me();return sys(r,head('Perfil','Seus dados de contato.')+`<form class="panel" data-form="perfil" style="max-width:620px">${field('pfn','Nome',u.nome,'text','required')}${field('pfe','E-mail',u.email,'email','required')}${field('pft','Telefone',u.tel||'','tel')}<div class="err" id="pf-err2" hidden></div><button class="btn btn-primary" type="submit" style="justify-self:start">Salvar alterações</button></form>`)};
 FORM.perfil=f=>{const d=formData(f),u=me(),e=f.querySelector('#pf-err2'),email=d.pfe.trim().toLowerCase();if(S.users.some(x=>x.email.toLowerCase()===email&&x.id!==u.id)){e.textContent='Esse e-mail já está em uso por outra conta.';e.hidden=false;return}
- const old=u.nome;Object.assign(u,{nome:d.pfn.trim()||u.nome,email,tel:d.pft.trim()});if(old!==u.nome){S.pesquisas.forEach(p=>{if(p.agente===old)p.agente=u.nome});S.agentes.forEach(a=>{if(a.nome===old)a.nome=u.nome});S.participantes.forEach(p=>{if(p.cod===u.codigo)p.nome=u.nome})}save();refresh();toast('Dados salvos.')};
-V['ag-perfil']=perfilView;V['cl-perfil']=perfilView;V['pa-perfil']=perfilView;
+ const old=u.nome;Object.assign(u,{nome:d.pfn.trim()||u.nome,email,tel:d.pft.trim()});if(old!==u.nome){S.pesquisas.forEach(p=>{p.agentes=p.agentes.map(a=>a===old?u.nome:a)});S.agentes.forEach(a=>{if(a.nome===old)a.nome=u.nome});S.participantes.forEach(p=>{if(p.cod===u.codigo)p.nome=u.nome})}save();refresh();toast('Dados salvos.')};
+V['ag-perfil']=perfilView;V['ag-recursos']=()=>'';V['cl-perfil']=perfilView;V['pa-perfil']=perfilView;
 
 /* ======================= CLIENTE ======================= */
 const minhasEmpresa=()=>S.pesquisas.filter(p=>p.cliente===me().empresa&&p.status!=='Rascunho');
-V['cl-resultados']=r=>sys(r,head('Resultados',`Pesquisas de ${esc(me().empresa||'sua empresa')}. Você vê só os dados da sua empresa.`)+`<div id="part-cli" style="display:grid;gap:22px">${PART.cli()}</div>`);
-PART.cli=()=>painelResultados('cli',minhasEmpresa(),me().empresa==='Cinema Alfa'?alfaWeeks:baseWeeks.map(v=>Math.round(v/5)));
-V['cl-projetos']=r=>{const l=S.projetos.filter(p=>p.cliente===me().empresa);return sys(r,head('Projetos','Projetos de pesquisa contratados pela sua empresa.')+(l.length?`<div class="grid g3">${l.map(p=>projCard(p,'cl')).join('')}</div>`:'<p class="empty panel">Sua empresa ainda não tem projetos.</p>'))};
-V['cl-projeto']=r=>{const pj=S.projetos.find(p=>p.id===UI.proj);if(!pj||pj.cliente!==me().empresa){UI.proj=(S.projetos.find(p=>p.cliente===me().empresa)||{}).id}return projetoView(r,'cl')};
+V['cl-projetos']=r=>{const l=S.projetos.filter(p=>p.cliente===me().empresa);return sys(r,head('Projetos',`Projetos de pesquisa contratados por ${esc(me().empresa||'sua empresa')}. Abra um projeto para ver o resultado de cada pesquisa.`)+(l.length?`<div class="grid g3">${l.map(p=>projCard(p,'cl')).join('')}</div>`:'<p class="empty panel">Sua empresa ainda não tem projetos.</p>'))};
+V['cl-projeto']=r=>{const pj=PJ(UI.proj);if(!pj||pj.cliente!==me().empresa){UI.proj=(S.projetos.find(p=>p.cliente===me().empresa)||{}).id}return projetoView(r,'cl')};
+V['cl-resultados']=r=>sys(r,head('Resultados',`Resultados de todas as pesquisas de ${esc(me().empresa||'sua empresa')}. Você vê só os dados da sua empresa.`)+`<div id="part-clr" style="display:grid;gap:22px">${PART.clr()}</div>`);
+PART.clr=()=>painelResultados('cli',minhasEmpresa(),me().empresa==='Cinema Alfa'?alfaWeeks:baseWeeks.map(v=>Math.round(v/5)),'cl-res');
+V['cl-resultado']=r=>{const p=P(UI.resPid);if(!p||p.cliente!==me().empresa||p.status==='Rascunho')return sys(r,head('Resultado individual','Escolha uma pesquisa em Projetos.','',['cl-projetos','Projetos']));
+ if(UI.proj!==p.projeto){UI.proj=p.projeto}const d=distOf(p),g=distOf(p,'genero'),cv=S.convites.filter(c=>c.pid===p.id&&c.status!=='Cancelado'&&c.status!=='Solicitado'),rs=cv.filter(c=>c.status==='Respondido').length;
+ const share=p.resp/Math.max(1,minhasEmpresa().reduce((a,x)=>a+x.resp,0)),w=(me().empresa==='Cinema Alfa'?alfaWeeks:baseWeeks.map(v=>Math.round(v/5))).map(v=>Math.round(v*share));
+ return sys(r,head(esc(p.nome),`${esc(projNome(p.projeto))} · ${p.tipo} · ${modoTxt(p)} · ${periodo(p)}`,`<button type="button" class="btn btn-ghost" data-act="abrir-projeto" data-id="${p.projeto}" data-sc="cl">Voltar ao projeto</button>`)+
+ kpis([['Respondentes',p.resp],['Entrevistas em campo',`${p.feitas} / ${p.meta}`],['Taxa de resposta dos convites',pct(rs,cv.length)],['Situação',pill(p.status)]])+
+ `<div class="grid g2"><div class="panel" style="display:grid;gap:14px"><div><h3>Onde você assiste filmes?</h3><p class="small muted">n = ${d.tot}${margem(d.tot)}</p></div>${hbars(d.labels,d.c)}</div>
+ <div class="panel" style="display:grid;gap:14px"><div><h3>Gênero favorito</h3><p class="small muted">n = ${g.tot}</p></div>${hbars(g.labels,g.c)}</div></div>
+ <div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Respostas por semana</h3><span class="small muted">Barra areia: semana atual</span></div>${vbars(w)}</div>`)};
 
 /* ======================= PARTICIPANTE ======================= */
 const QUESTOES=[
@@ -988,23 +1103,32 @@ const GENEROS=['Ação','Comédia','Romance','Ficção científica','Terror','Dr
 const myProg=()=>S.prog[me().id]||(S.prog[me().id]={});
 const myPrefs=()=>S.prefs[me().id]||(S.prefs[me().id]={});
 function stOf(pid){const g=myProg()[pid];return g?.done?'Concluída':g&&g.step>0?'Em andamento':'Pendente'}
-const meusConvites=()=>{const c=me().codigo;return S.convites.filter(x=>x.cod===c&&x.status!=='Cancelado'&&P(x.pid))};
+const meusConvites=()=>{const c=me().codigo;return S.convites.filter(x=>x.cod===c&&x.status!=='Cancelado'&&x.status!=='Solicitado'&&P(x.pid))};
 function config(pid){const p=P(pid),pr=myPrefs()[pid];if(p.tipo==='Personalizada'&&pr)return {total:pr.etapas,imagens:pr.imagens,pular:pr.pular,resumo:pr.resumo};return {total:6,imagens:true,pular:true,resumo:true}}
 const qsFor=(pid)=>{const c=config(pid);return QUESTOES.slice(0,c.total).map(q=>q.img&&!c.imagens?{...q,img:false}:q)};
 function startPesquisa(pid){const p=P(pid),cv=S.convites.find(c=>c.pid===pid&&c.cod===me().codigo&&c.status!=='Cancelado');if(cv&&cv.status==='Enviado')cv.status='Aberto';
  UI.paPid=pid;save();if(p.tipo==='Personalizada'&&!myPrefs()[pid]&&!myProg()[pid]){location.hash='pa-preferencias';return}
  const g=myProg()[pid];if(!g||g.done){myProg()[pid]={step:0,total:config(pid).total,ans:[],start:Date.now()}}save();location.hash='pa-responder'}
-const paCard=(p,st,cv,rec)=>{const g=myProg()[p.id];return `<article class="pcard">${tile(p.nome.split(' ')[0],p.cliente,'')}<div class="top"><b>${esc(p.nome)}</b>${pill(st)}</div><span class="small muted">${st==='Concluída'?`Concluída em ${g?.data||cv?.data}`:`Prazo: ${p.prazo}`} · ${p.tipo}</span>${st==='Concluída'?`<button type="button" class="btn btn-ghost" data-act="ver-resp" data-id="${p.id}">Ver resposta enviada</button>`:`<button type="button" class="btn btn-primary" data-act="${rec?'pa-rec':'pa-start'}" data-id="${p.id}">${st==='Em andamento'?'Continuar':'Responder pesquisa'}</button>`}</article>`};
+const paCard=(p,st,cv)=>{const g=myProg()[p.id],done=st==='Concluída';return `<article class="pcard${lateCls(p.fim,done||p.status!=='Ativa')}">${tile(p.nome.split(' ')[0],p.cliente,'')}<div class="top"><b>${esc(p.nome)}</b>${pill(st)}</div><span class="small muted">${done?`Concluída em ${g?.data||cv?.data}`:`Prazo: ${p.fim}`} · ${p.tipo}</span>${done?'':prazo(p.fim,p.status!=='Ativa')}${done?`<button type="button" class="btn btn-ghost" data-act="ver-resp" data-id="${p.id}">Ver resposta enviada</button>`:`<button type="button" class="btn btn-primary" data-act="pa-start" data-id="${p.id}">${st==='Em andamento'?'Continuar':'Responder pesquisa'}</button>`}</article>`};
+/* Recomendações viáveis: pesquisas ativas, dentro do prazo, com vagas, sem convite; entrada sujeita a triagem (evita a "bolha" de autosseleção) */
+function recomendacoes(){const u=me(),cod=u.codigo,mine=S.convites.filter(c=>c.cod===cod&&c.status!=='Cancelado');
+ return S.pesquisas.filter(p=>p.status==='Ativa'&&dias(p.fim)!==null&&dias(p.fim)>=0&&p.feitas<p.meta&&!mine.some(c=>c.pid===p.id&&c.status!=='Solicitado'))
+  .map(p=>({p,pedido:mine.some(c=>c.pid===p.id&&c.status==='Solicitado'),vagas:p.meta-p.feitas})).sort((a,b)=>b.vagas-a.vagas).slice(0,3)}
+const recCard=({p,pedido,vagas})=>`<article class="pcard">${tile(p.nome.split(' ')[0],p.cliente,'')}<div class="top"><b>${esc(p.nome)}</b>${pedido?pill('Aguardando triagem'):`<span class="pill p-neu">${p.tipo}</span>`}</div>
+ <ul class="why"><li>${vagas} vaga${vagas===1?'':'s'} abertas</li><li>${modoTxt(p)}</li><li>Inscrições até ${p.fim}</li></ul>
+ ${pedido?'<button type="button" class="btn btn-ghost" disabled>Pedido enviado para triagem</button>':`<button type="button" class="btn btn-primary" data-act="pa-quero" data-id="${p.id}">Quero participar</button>`}</article>`;
 V['pa-pesquisas']=r=>{const cvs=meusConvites(),items=cvs.map(c=>({c,p:P(c.pid),st:stOf(c.pid)})),tab=UI.paTab||'';
- const cont=items.find(i=>i.st==='Em andamento'),cnt=s=>items.filter(i=>i.st===s).length,l=items.filter(i=>!tab||i.st===tab);
- const recs=S.pesquisas.filter(p=>p.status==='Ativa'&&!cvs.some(c=>c.pid===p.id)).slice(0,3);
+ const cont=items.find(i=>i.st==='Em andamento'),cnt=s=>items.filter(i=>i.st===s).length,l=items.filter(i=>!tab||i.st===tab),recs=recomendacoes();
+ const urg=items.filter(i=>i.st!=='Concluída'&&i.p.status==='Ativa'&&dias(i.p.fim)!==null&&dias(i.p.fim)<=3);
  return sys(r,head('Minhas pesquisas','Você vê apenas as pesquisas enviadas para você.')+
- (cont?(()=>{const g=myProg()[cont.p.id];return `<div class="panel" style="display:grid;gap:10px"><span class="eyebrow" style="color:var(--fg-3)">Continue de onde parou</span><div class="ph" style="align-items:center"><div style="display:grid;gap:6px;flex:1 1 240px;min-width:0"><b>${esc(cont.p.nome)}</b><div class="pbar" style="width:320px"><i style="width:${Math.round(g.step/g.total*100)}%"></i></div><span class="small muted">Etapa ${g.step+1} de ${g.total}</span></div><button type="button" class="btn btn-primary" data-act="pa-start" data-id="${cont.p.id}">Continuar</button></div></div>`})():'')+
+ (urg.length?`<div class="alertbar" role="status">${I.alert}<span><b>Atenção ao prazo:</b> ${urg.map(i=>`${esc(i.p.nome)} (${dias(i.p.fim)<0?'vencida':dias(i.p.fim)===0?'vence hoje':'vence em '+dias(i.p.fim)+' dia'+(dias(i.p.fim)===1?'':'s')})`).join(' · ')}</span></div>`:'')+
+ (cont?(()=>{const g=myProg()[cont.p.id];return `<div class="panel" style="display:grid;gap:10px"><span class="eyebrow" style="color:var(--fg-3)">Continue de onde parou</span><div class="ph" style="align-items:center"><div style="display:grid;gap:6px;flex:1 1 240px;min-width:0"><b>${esc(cont.p.nome)}</b><div class="pbar" style="width:320px"><i style="width:${Math.round(g.step/g.total*100)}%"></i></div><span class="small muted">Etapa ${g.step+1} de ${g.total}</span>${prazo(cont.p.fim,cont.p.status!=='Ativa')}</div><button type="button" class="btn btn-primary" data-act="pa-start" data-id="${cont.p.id}">Continuar</button></div></div>`})():'')+
  `<div class="tabs" role="tablist">${[['','Todas',items.length],['Pendente','Pendentes',cnt('Pendente')],['Em andamento','Em andamento',cnt('Em andamento')],['Concluída','Concluídas',cnt('Concluída')]].map(([v,l,n])=>`<button type="button" role="tab" aria-selected="${tab===v}" data-act="set" data-k="paTab" data-v="${v}">${l} (${n})</button>`).join('')}</div>
  ${l.length?`<div class="grid g3">${l.map(i=>paCard(i.p,i.st,i.c)).join('')}</div>`:'<p class="empty panel">Nenhuma pesquisa nesta aba.</p>'}
- ${recs.length?`<h2 style="font-size:1.5rem">Recomendações</h2><p class="muted small" style="margin-top:-12px">Pesquisas abertas que combinam com o seu perfil.</p><div class="grid g3">${recs.map(p=>paCard(p,'Pendente',null,true)).join('')}</div>`:''}`)};
+ <h2 style="font-size:1.5rem">Recomendações</h2><p class="muted small" style="margin-top:-12px">Pesquisas abertas, dentro do prazo e com vagas. A equipe Sinergia confere seu perfil antes de liberar, para manter a amostra equilibrada.</p>
+ ${recs.length?`<div class="grid g3">${recs.map(recCard).join('')}</div>`:'<p class="empty panel">Nenhuma pesquisa aberta com vagas no momento.</p>'}`)};
 V['pa-preferencias']=r=>{const p=P(UI.paPid);if(!p)return sys(r,'<p class="empty">Escolha uma pesquisa em Minhas pesquisas.</p>');
- const pr=myPrefs()[p.id]||(UI.prefDraft&&UI.prefDraft.pid===p.id?UI.prefDraft:(UI.prefDraft={pid:p.id,nome:'',etapas:6,generos:[],imagens:true,pular:false,resumo:true}));
+ const pr=myPrefs()[p.id]||(UI.prefDraft&&UI.prefDraft.pid===p.id?UI.prefDraft:(UI.prefDraft={pid:p.id,nome:'',etapas:6,generos:[...(me().generos||[])],imagens:true,pular:false,resumo:true}));
  const tg=(k,l)=>`<div class="trow"><span>${l}</span><label class="toggle"><input type="checkbox" data-act-change="pref" data-k="${k}" ${pr[k]?'checked':''} aria-label="${l}"><span></span></label></div>`;
  return sys(r,head('Pesquisa personalizada',`Ajuste a pesquisa “${esc(p.nome)}” antes de começar.`,'',['pa-pesquisas','Minhas pesquisas'])+
  `<div class="two" style="grid-template-columns:minmax(0,1fr) minmax(0,380px)"><div class="panel" style="display:grid;gap:18px">
@@ -1013,7 +1137,8 @@ V['pa-preferencias']=r=>{const p=P(UI.paPid);if(!p)return sys(r,'<p class="empty
   <div class="field"><span style="font:500 .875rem var(--sans)">Gêneros de interesse</span><div class="opts">${GENEROS.map(g=>`<button type="button" class="chipbtn g" data-act="pref-gen" data-v="${g}" aria-pressed="${pr.generos.includes(g)}">${g}</button>`).join('')}</div></div>
   <div>${tg('imagens','Incluir imagens nas perguntas')}${tg('pular','Permitir pular perguntas')}${tg('resumo','Mostrar resumo ao final')}</div></div>
  <div class="panel" style="display:grid;gap:12px"><h3>Resumo</h3>${tile(p.nome.split(' ')[0],p.cliente,'')}
-  <div style="display:grid;gap:6px" class="small">${[['Etapas',pr.etapas],['Gêneros',pr.generos.length+' selecionado'+(pr.generos.length===1?'':'s')],['Imagens',pr.imagens?'sim':'não'],['Tempo estimado','~'+Math.round(pr.etapas*1.3)+' min']].map(([a,b])=>`<div class="ph"><span class="muted">${a}</span><b>${b}</b></div>`).join('')}</div>
+  <div style="display:grid;gap:6px" class="small">${[['Etapas',pr.etapas],['Gêneros',pr.generos.length+' selecionado'+(pr.generos.length===1?'':'s')],['Imagens',pr.imagens?'sim':'não'],['Tempo estimado','~'+Math.round(pr.etapas*1.3)+' min'],['Prazo',p.fim]].map(([a,b])=>`<div class="ph"><span class="muted">${a}</span><b>${b}</b></div>`).join('')}</div>
+  ${prazo(p.fim,p.status!=='Ativa')}
   <button type="button" class="btn btn-primary" data-act="pref-ini">Iniciar pesquisa</button><button type="button" class="btn btn-ghost" data-act="pref-save">Salvar rascunho</button></div></div>`)};
 function curPref(){const p=P(UI.paPid);return myPrefs()[p.id]||UI.prefDraft}
 const posterTile=(o,m,i)=>`<div class="tile t${[3,2,1,0][i]}" aria-hidden="true"><b>${o}</b><small>${m}</small></div>`;
@@ -1058,14 +1183,22 @@ const ACT={
  'excluir-pesquisa':el=>{const p=P(el.dataset.id);confirmBox('Excluir pesquisa',`Excluir “${esc(p.nome)}”? Os convites dessa pesquisa também saem da lista. Essa ação não pode ser desfeita.`,'Excluir pesquisa',()=>{S.pesquisas=S.pesquisas.filter(x=>x!==p);S.convites=S.convites.filter(c=>c.pid!==p.id);save();toast('Pesquisa excluída.');refresh()})},
  convidar:el=>{UI.pending='conv:'+el.dataset.id;save();location.hash='adm-convites'},
  resultado:el=>modalResultado(el.dataset.id),
- 'novo-projeto':()=>projForm(),
+ 'cl-res':el=>{UI.resPid=el.dataset.id;save();location.hash='cl-resultado'},
+ 'novo-projeto':el=>projForm(el.dataset.cli),
+ 'importar-pesquisas':el=>importarPesquisasForm(el.dataset.proj),
+ 'ip-modelo':()=>{const t=document.getElementById('ip-txt');t.value=MODELO_CSV;t.focus()},
  'abrir-projeto':el=>{UI.proj=el.dataset.id;UI.projTab='catalogo';UI.catq='';UI.catag='';save();location.hash=el.dataset.sc==='adm'?'adm-projeto':'cl-projeto'},
+ 'abrir-cliente':el=>{UI.cli=el.dataset.id;save();location.hash='adm-cliente'},
+ 'cli-add':()=>cadForm(null,'clientes'),
+ 'cli-edit':el=>cadForm(el.dataset.id,'clientes'),
  'novo-convite':()=>conviteForm(),
  reenviar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.data=hoje();save();refreshPart('conv');toast('Convite reenviado.')},
+ aprovar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.status='Enviado';c.data=hoje();save();refresh();toast('Participação aprovada. O convite foi enviado.')},
+ recusar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.status='Cancelado';save();refresh();toast('Pedido recusado: o perfil não entra nesta amostra.')},
  'cancelar-convite':el=>{const c=S.convites.find(x=>x.id===el.dataset.id);confirmBox('Cancelar convite',`O participante deixa de ver a pesquisa “${esc(P(c.pid)?.nome||'')}”.`,'Cancelar convite',()=>{c.status='Cancelado';save();refresh();toast('Convite cancelado.')})},
  'cad-add':()=>cadForm(),
  'cad-edit':el=>cadForm(el.dataset.id),
- 'cad-del':el=>{const t=UI.cadTab||'clientes',x=S[t].find(i=>i.id===el.dataset.id);confirmBox('Excluir cadastro',`Excluir ${esc(x.nome)} de ${CAD[t].t.toLowerCase()}?`,'Excluir',()=>{S[t]=S[t].filter(i=>i!==x);save();refresh();toast('Cadastro excluído.')})},
+ 'cad-del':el=>{const t=UI.cadTab==='participantes'?'participantes':'agentes',x=S[t].find(i=>i.id===el.dataset.id);confirmBox('Excluir cadastro',`Excluir ${esc(x.nome)} de ${CAD[t].t.toLowerCase()}?`,'Excluir',()=>{S[t]=S[t].filter(i=>i!==x);save();refresh();toast('Cadastro excluído.')})},
  'novo-usuario':()=>userForm(),
  'editar-usuario':el=>userForm(el.dataset.id),
  'remover-usuario':el=>{const u=S.users.find(x=>x.id===el.dataset.id);confirmBox('Remover usuário',`${esc(u.nome)} perde o acesso ao sistema.`,'Remover',()=>{S.users=S.users.filter(x=>x!==u);save();refresh();toast('Usuário removido.')})},
@@ -1073,15 +1206,16 @@ const ACT={
  'descartar-mx':()=>{UI.mx=null;save();refresh()},
  'ag-det':el=>{UI.agPesq=el.dataset.id;save();location.hash='ag-detalhes'},
  'ag-apl':el=>{if(UI.agOnPid!==el.dataset.id)UI.agOn=false;UI.agPesq=el.dataset.id;save();location.hash='ag-aplicar'},
- 'ag-rec':el=>{UI.recPesq=el.dataset.id;save();location.hash='ag-recursos'},
+ 'ag-rec':el=>modalRecursos(el.dataset.id),
+ 'rec-close':()=>{closeModal();refresh()},
  'ag-cancel':()=>confirmBox('Cancelar entrevista','As respostas marcadas serão descartadas.','Cancelar entrevista',()=>{UI.agOn=false;UI.agCod='';save();refresh()}),
- 'rec-del':el=>{const l=minhasCampo(),p=l.find(x=>x.id===UI.recPesq)||l[0];S.recursos[p.id].splice(+el.dataset.i,1);save();refresh()},
+ 'rec-del':el=>{S.recursos[UI.recPesq].splice(+el.dataset.i,1);save();redrawRec()},
  'pa-start':el=>startPesquisa(el.dataset.id),
- 'pa-rec':el=>{const pid=el.dataset.id;S.convites.unshift({id:nid('cv'),pid,cod:me().codigo,data:hoje(),status:'Aberto'});save();startPesquisa(pid)},
+ 'pa-quero':el=>{const pid=el.dataset.id;S.convites.unshift({id:nid('cv'),pid,cod:me().codigo,data:hoje(),status:'Solicitado'});save();refresh();toast('Pedido enviado. A equipe confere seu perfil e libera o convite se você se encaixar na amostra.')},
  'pref-et':el=>{curPref().etapas=+el.dataset.v;save();refresh()},
  'pref-gen':el=>{const pr=curPref(),g=el.dataset.v;pr.generos=pr.generos.includes(g)?pr.generos.filter(x=>x!==g):[...pr.generos,g];save();refresh()},
  'pref-save':()=>{const p=P(UI.paPid),pr={...curPref()};delete pr.pid;myPrefs()[p.id]=pr;save();toast('Rascunho salvo. Você pode iniciar quando quiser.')},
- 'pref-ini':()=>{const p=P(UI.paPid),pr={...curPref()};delete pr.pid;if(!pr.generos.length){toast('Escolha pelo menos um gênero de interesse.');return}myPrefs()[p.id]=pr;myProg()[p.id]={step:0,total:pr.etapas,ans:[],start:Date.now()};UI.prefDraft=null;save();location.hash='pa-responder'},
+ 'pref-ini':()=>{const p=P(UI.paPid),pr={...curPref()};delete pr.pid;if(!pr.generos.length){toast('Escolha pelo menos um gênero de interesse.');return}myPrefs()[p.id]=pr;me().generos=pr.generos;myProg()[p.id]={step:0,total:pr.etapas,ans:[],start:Date.now()};UI.prefDraft=null;save();location.hash='pa-responder'},
  'pa-ans':el=>{const g=myProg()[UI.paPid];g.ans[Math.min(g.step,qsFor(UI.paPid).length-1)]=el.dataset.v;save();refresh()},
  'pa-next':()=>{const g=myProg()[UI.paPid],qs=qsFor(UI.paPid),i=Math.min(g.step,qs.length-1);if(!g.ans[i]){document.getElementById('pa-err').hidden=false;return}paAdvance(g,qs,i)},
  'pa-skip':()=>{const g=myProg()[UI.paPid],qs=qsFor(UI.paPid),i=Math.min(g.step,qs.length-1);g.ans[i]=null;paAdvance(g,qs,i)},
@@ -1096,14 +1230,12 @@ function paAdvance(g,qs,i){if(UI.backToReview){UI.backToReview=false;g.step=qs.l
 const CHANGE={
  perm:el=>{const u=S.users.find(x=>x.id===el.dataset.uid),p=el.dataset.p;u.perms=el.checked?[...new Set([...u.perms,p])]:u.perms.filter(x=>x!==p);
   if(el.checked&&p==='cliente'&&!u.empresa){u.empresa=S.clientes[0]?.nome;toast(`Empresa definida como ${u.empresa}. Ajuste em Editar, se precisar.`)}
-  if(el.checked&&p==='participante'&&!u.codigo){u.codigo=nextCod();S.participantes.push({id:nid('r'),cod:u.codigo,nome:u.nome,email:u.email,cidade:'—'})}
-  if(el.checked&&p==='agente'&&!S.agentes.some(a=>a.nome===u.nome))S.agentes.push({id:nid('a'),nome:u.nome,email:u.email,regiao:'—',tel:''});
-  save();refresh();if(!(el.checked&&p==='cliente'))toast(`${u.nome}: ${el.checked?'pode':'não pode mais'} navegar como ${ROLE[p]}.`)},
+  if(el.checked)garantirCadastros(u);
+  save();refresh();if(!(el.checked&&p==='cliente'&&u.empresa===S.clientes[0]?.nome))toast(`${u.nome}: ${el.checked?'pode':'não pode mais'} navegar como ${ROLE[p]}.`)},
  mx:el=>{UI.mx=UI.mx||JSON.parse(JSON.stringify(S.matrix));const k=el.dataset.k;UI.mx[k]=UI.mx[k]||{};UI.mx[k][el.dataset.r]=el.checked?1:0;save();refresh()},
  impProj:el=>{UI.impProj=el.value;save()},
  agPesq:el=>{UI.agPesq=el.value;UI.agOn=false;save();refresh()},
- recPesq:el=>{UI.recPesq=el.value;save();refresh()},
- rec:el=>{const l=minhasCampo(),p=l.find(x=>x.id===UI.recPesq)||l[0];S.recursos[p.id][+el.dataset.i].ok=el.checked;save();refresh()},
+ rec:el=>{S.recursos[UI.recPesq][+el.dataset.i].ok=el.checked;save();redrawRec()},
  pref:el=>{curPref()[el.dataset.k]=el.checked;save();refresh()}
 };
 const PENDING={conv:id=>conviteForm(id)};
@@ -1112,7 +1244,7 @@ const PENDING={conv:id=>conviteForm(id)};
 FORM.cadastro=f=>{const v=id=>(f.querySelector('#'+id)?.value||'').trim(),email=v('p-mail').toLowerCase();
  if(!/^\S+@\S+\.\S+$/.test(email)){toast('Informe um e-mail válido.');return}
  if(S.users.some(u=>u.email.toLowerCase()===email)){toast('Já existe uma conta com esse e-mail. Entre pela opção Usuário.');UI.prefill=email;UI.loginTab='usuario';save();location.hash='login';return}
- const cod=nextCod(),nome=v('p-nome')||'Participante';S.users.push({id:nid('u'),nome,email,perms:['participante'],codigo:cod,tel:''});S.participantes.push({id:nid('r'),cod,nome,email,cidade:v('p-cid')||'—'});
+ const cod=nextCod(),nome=v('p-nome')||'Participante';S.users.push({id:nid('u'),nome,email,perms:['participante'],codigo:cod,tel:''});S.participantes.push({id:nid('r'),cod,nome,email,cidade:v('p-cid')||'—',criado:hoje()});
  UI.prefill=email;UI.loginTab='usuario';save();toast(`Cadastro criado com o código ${cod}. Entre pela opção Usuário.`);location.hash='login'};
 
 /* ======================= Roteador ======================= */
@@ -1157,6 +1289,3 @@ function carousel(){
 addEventListener('hashchange',render);render();
 })();
 </script>
-
-</body>
-</html>
