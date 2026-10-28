@@ -10,6 +10,7 @@ assets/logo-sinergia.png   logo
 SOLICITACOES.md            mapa das etiquetas ▶ INÍCIO / ◆ MEIO / ■ FIM (solicitações S1–S5 e requisitos A–E)
 EVOLUCAO.md                evolução de 27/10/2026 e revisão de Resultados de 28/10/2026
 PERMISSOES.md              perfis, matriz módulo × ação, regras de rota, sessão e auditoria
+ACESSOS.md                 refatoração de 28/10/2026: diagnóstico, vínculos, regras R1–R13, migração, testes e limites
 INTEGRACOES.md             SurveyMonkey, Teams/Meet e transcrição: o que existe e como ativar de verdade
 REVERSAO.md                plano de reversão (ponto de restauração e passos)
 tests/                     testes automatizados (pytest + Playwright)
@@ -19,10 +20,10 @@ tests/                     testes automatizados (pytest + Playwright)
 
 O login tem duas entradas:
 
-- **Administrador**: gerencia pesquisas, projetos, convites, resultados, cadastros, usuários e permissões.
-- **Usuário**: navega como **Equipe interna**, **Cliente Empresa** e/ou **Participante**, conforme o que o administrador marcar em *Usuários e permissões*. Quem tem mais de uma permissão escolhe o perfil ao entrar e troca pelo menu lateral ("Navegar como").
+- **Administrador**: gerencia pesquisas, projetos, convites, resultados, cadastros, usuários e acessos.
+- **Usuário**: navega como **Equipe interna**, **Cliente Empresa** e/ou **Participante**, conforme os **vínculos** da conta (função na equipe, empresa cliente, código de participante). Quem tem mais de um vínculo escolhe o papel ao entrar e troca pelo menu lateral ("Navegar como"); as permissões não se somam.
 
-Na aba *Permissões por perfil*, o administrador marca, para cada perfil, o que ele pode fazer em cada módulo (visualizar, criar, editar, excluir, importar, exportar, gerenciar convites, consultar resultados, dados detalhados…). A matriz vale para menus, telas, botões e para a checagem central que roda antes de cada ação. Detalhes em [PERMISSOES.md](PERMISSOES.md).
+Desde 28/10/2026 o sistema **calcula** o acesso: não há caixas para marcar áreas por usuário. Novo usuário nasce com um convite pendente e sem acesso; o vínculo vale quando a pessoa entra. Nomeação de administrador precisa da aprovação de outro administrador. A matriz por perfil é só leitura (está no código) e aparece em *Usuários e acessos → Arquitetura de acessos*, com regras, auditoria e um diagnóstico que explica por que cada pessoa tem ou não um acesso. Detalhes em [ACESSOS.md](ACESSOS.md) e [PERMISSOES.md](PERMISSOES.md).
 
 Entrevistadores e terceirizados (agentes de campo) **não têm acesso** à plataforma: ficam só em Cadastros, e o login recusa o e-mail deles (solicitação S5).
 
@@ -31,13 +32,16 @@ Entrevistadores e terceirizados (agentes de campo) **não têm acesso** à plata
 | Conta | Acesso |
 |---|---|
 | helena@sinergia.com.br | Administrador |
-| demo@sinergia.com.br | Usuário · Equipe interna (análise), Cliente e Participante |
+| demo@sinergia.com.br | Usuário · Equipe interna (análise) e Participante; o vínculo de Cliente está em revisão (conflito equipe + cliente) |
 | bianca@sinergia.com.br | Usuário · Equipe interna — Transcrição |
 | carla@dadosco.com.br | Usuário · Equipe interna — Processamento (parceiro Dados & Co) |
 | livia@sinergia.com.br | Usuário · Equipe interna — Assistente de análise |
 | joao.tadeu@sinergia.com.br | Usuário · Participante |
 | yasmin@sinergia.com.br | Entrevistadora terceirizada: o login é recusado de propósito |
 | marina@cinemaalfa.com.br | Usuário · Cliente (Cinema Alfa) |
+| marcos@sinergia.com.br | Administrador (segundo administrador, aprova nomeações) |
+| otavio@ciabeta.com | Convite pendente de Cliente (Cia Beta): o acesso vale no primeiro login |
+| paulo@cinemadelta.com.br | Conta suspensa: o login é recusado de propósito |
 | ana.ribeiro@email.com | Usuário · Participante |
 
 ## Solicitações da cliente (relatório de 21/10/2026)
@@ -60,7 +64,7 @@ O cadastro de participante no site cria uma conta nova com permissão de Partici
 |---|---|---|
 | Site | Home, Serviços, Cinema, CAT, CIA, Pesquisa aberta, Cadastro | `#home`, `#servicos`, `#cinema`, `#cat`, `#cia`, `#pesquisa`, `#cadastro` |
 | Acesso | Login (Administrador / Usuário) e escolha de perfil | `#login`, `#navegar` |
-| Administrador | A1 Pesquisas e A2 Nova pesquisa, A3 Resultados, A4 Projetos, A5 Projeto, A9 Clientes, A10 Cliente, A6 Convites, A7 Cadastros, A8 Usuários e permissões | `#adm-pesquisas`, `#adm-resultados`, `#adm-projetos`, `#adm-projeto`, `#adm-clientes`, `#adm-cliente`, `#adm-convites`, `#adm-cadastros`, `#adm-usuarios` |
+| Administrador | A1 Pesquisas e A2 Nova pesquisa, A3 Resultados, A4 Projetos, A5 Projeto, A9 Clientes, A10 Cliente, A6 Convites, A7 Cadastros, A8 Usuários e acessos (com Arquitetura de acessos e Auditoria) | `#adm-pesquisas`, `#adm-resultados`, `#adm-projetos`, `#adm-projeto`, `#adm-clientes`, `#adm-cliente`, `#adm-convites`, `#adm-cadastros`, `#adm-usuarios` |
 | Agente | Desativada (S5): entrevistadores e terceirizados não acessam | — |
 | Equipe interna | Focus group, Sala (observação), Transcrição e análise, Perfil | `#eq-focus`, `#eq-sala`, `#eq-transcricoes`, `#eq-perfil` |
 | Cliente Empresa | K2 Projetos (início), K3 Projeto, K5 Resultado individual, K1 Resultados (todas as pesquisas), K4 Perfil | `#cl-projetos`, `#cl-projeto`, `#cl-resultado`, `#cl-resultados`, `#cl-perfil` |
@@ -84,7 +88,7 @@ Importação centralizada em Pesquisas, link do SurveyMonkey, respostas detalhad
 
 Os dados ficam no navegador com a chave `sinergia-sistema-v4`; quem abriu uma versão anterior recebe os dados novos automaticamente.
 
-As áreas logadas exigem login. Um endereço de outra área abre a página *Acesso negado* (403) e a tentativa fica registrada em *Usuários e permissões → Acessos negados*. A sessão expira após 30 minutos sem uso.
+As áreas logadas exigem login. Um endereço de outra área abre a página *Acesso negado* (403) e a tentativa fica registrada em *Usuários e acessos → Auditoria*. A sessão expira após 30 minutos sem uso.
 
 ## Testes automatizados
 
