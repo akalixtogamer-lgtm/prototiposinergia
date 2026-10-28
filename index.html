@@ -283,7 +283,35 @@ footer .base{border-top:1px solid rgba(255,255,255,.1)} footer .base .wrap{displ
 .vb .col{flex:1;width:100%;display:flex;align-items:flex-end}
 .vb i{display:block;width:100%;background:var(--action);border-radius:4px 4px 0 0;min-height:2px}
 .vb i.hl{background:var(--accent)}
-.vb em{font:500 .78rem var(--mono);font-style:normal;color:var(--fg-3)}
+.vb em{font:500 .72rem/1.25 var(--mono);font-style:normal;color:var(--fg-3);text-align:center;white-space:normal}
+/* R · resultados por pesquisa (28/10/2026) */
+.kpi .s{font-size:.8rem;color:var(--fg-3);line-height:1.35} .kpi .v small,.metric .v small{font-size:.55em;color:var(--fg-2);font-weight:500}
+.res-filters .chips{display:inline-flex;gap:6px;flex-wrap:wrap}
+.res-count{margin-top:-8px}
+.bars.n .bar{grid-template-columns:minmax(96px,170px) minmax(0,1fr) 84px}
+.bar b small{font:400 .75rem var(--mono);color:var(--fg-3);margin-left:4px}
+.qpanel{display:grid;gap:14px;align-content:start} .qpanel h3{font-size:1.12rem;margin-top:4px}
+.read{font-size:.9rem;color:var(--fg);background:var(--muted);border-left:3px solid var(--action);padding:8px 12px;border-radius:0 var(--r-sm) var(--r-sm) 0}
+.stack{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--muted);gap:2px}
+.stack i{display:block;min-width:3px}
+.stack .pos,.sw.pos{background:var(--action)} .stack .neu,.sw.neu{background:var(--line-strong)} .stack .neg,.sw.neg{background:#c4524a}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.9rem}
+.legend li{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center}
+.legend b{font:500 .85rem var(--mono)} .legend b small{font:400 .75rem var(--mono);color:var(--fg-3);margin-left:4px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px} .sw.hl{background:var(--accent)}
+.res-head{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.res-head .info{display:grid;gap:6px;flex:1 1 420px;min-width:0} .res-head h2{font-size:clamp(1.4rem,2.4vw,1.8rem)}
+.alerts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.empty-state{display:grid;gap:8px;text-align:left}
+.res-row{display:grid;grid-template-columns:minmax(0,1fr) 190px 130px 210px;gap:16px;align-items:center;padding:16px 20px;border-top:1px solid var(--line)}
+.res-row .info{display:grid;gap:3px;min-width:0} .res-row .info b{font:600 1rem var(--sans)}
+.res-row .metric{display:grid;gap:2px} .res-row .metric .v{font:600 1.35rem/1.15 var(--serif)} .res-row .metric .l{font-size:.8rem;color:var(--fg-2)}
+.res-row .nbox{display:grid;gap:2px;white-space:nowrap} .res-row .end{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:1100px){.res-row{grid-template-columns:minmax(0,1fr) auto}.res-row .info{grid-column:1/-1}.res-row .end{grid-column:1/-1;justify-content:flex-start}}
+td.tnum{white-space:nowrap}
+.attn{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.attn li{display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:start;padding-bottom:10px;border-bottom:1px solid var(--line)} .attn li:last-child{border-bottom:0;padding-bottom:0}
+.attn .dot{width:10px;height:10px;border-radius:50%;margin-top:6px} .attn .dot.late{background:#c4524a} .attn .dot.soon{background:var(--accent)}
 .ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .tile{position:relative;border-radius:var(--r-md);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 12px;overflow:hidden;flex:none}
 .tile b{font:600 1rem/1.2 var(--serif);color:#fff} .tile small{font:500 .7rem var(--sans);color:rgba(255,255,255,.82)}
@@ -941,9 +969,7 @@ const TONE={Ativa:'ok',Pausada:'acc',Encerrada:'info',Rascunho:'neu',Pendente:'a
 const pill=s=>`<span class="pill p-${TONE[s]||'neu'}">${esc(s)}</span>`;
 const hashN=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0);
 const tile=(t,sub,cls='sm')=>`<div class="tile ${cls} t${hashN(t)%5}" aria-hidden="true"><b>${esc(t)}</b><small>${esc(sub)}</small></div>`;
-const kpis=a=>`<div class="kpis${a.length===3?' k3':''}">${a.map(([l,v])=>`<div class="kpi"><span class="l">${l}</span><span class="v tnum">${v}</span></div>`).join('')}</div>`;
-const vbars=v=>{const m=Math.max(...v,1);return `<div class="vbars" role="img" aria-label="Respostas por semana: ${v.join(', ')}">${v.map((x,i)=>`<div class="vb"><span>${x}</span><div class="col"><i class="${i===v.length-1?'hl':''}" style="height:${Math.max(1,Math.round(x/m*100))}%"></i></div><em>S${i+1}</em></div>`).join('')}</div>`};
-const hbars=(labels,counts)=>{const tot=counts.reduce((a,b)=>a+b,0);return `<div class="bars">${labels.map((l,k)=>{const v=tot?Math.round(counts[k]/tot*100):0;return `<div class="bar"><span>${esc(l)}</span><span class="t"><i class="${k===0?'hl':''}" style="width:${v}%"></i></span><b>${v}%</b></div>`}).join('')}</div>`};
+const kpis=a=>`<div class="kpis${a.length===3?' k3':''}">${a.map(([l,v,s])=>`<div class="kpi"><span class="l">${l}</span><span class="v tnum">${v}</span>${s?`<span class="s">${s}</span>`:''}</div>`).join('')}</div>`;
 const emptyRow=(n,t)=>`<tr><td colspan="${n}" class="empty">${t}</td></tr>`;
 const head=(t,s,a='',back)=>`${back?`<a class="btn btn-ghost btn-sm back" href="#${back[0]}">← ${back[1]}</a>`:''}<div class="main-head"><div><h1>${t}</h1>${s?`<p class="muted">${s}</p>`:''}</div>${a?`<div style="display:flex;gap:10px;flex-wrap:wrap">${a}</div>`:''}</div>`;
 const field=(id,label,val='',type='text',extra='')=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" name="${id}" type="${type}" value="${esc(val)}" ${extra}></div>`;
@@ -955,7 +981,6 @@ const periodo=p=>`${p.inicio} a ${p.fim}`;
 const modoTxt=p=>p.modos.length>1?'Online e presencial':p.modos[0]||'—';
 const localTxt=p=>p.modos.includes('Presencial')?(p.local||'Local a definir')+(p.modos.includes('Online')?' + online':''):'Online';
 const agTxt=p=>p.agentes.length?p.agentes.join(', '):'Sem agente';
-const baseWeeks=[118,101,116,98,113,96], alfaWeeks=[26,21,25,22,24,18];
 function prazo(fim,done){if(done)return '';const d=dias(fim);if(d===null)return '';
  if(d<0)return `<span class="due late">${I.alert}Prazo vencido há ${-d} dia${d===-1?'':'s'}</span>`;
  if(d===0)return `<span class="due late">${I.alert}Vence hoje</span>`;
@@ -1035,17 +1060,150 @@ function closeModal(){document.querySelectorAll('.modal-bg').forEach(m=>m.remove
 function confirmBox(title,text,label,fn){openModal(title,`<p class="muted">${text}</p>`,`<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button type="button" class="btn btn-danger" id="cfm">${label}</button>`,m=>{m.querySelector('#cfm').onclick=()=>{closeModal();fn()}})}
 const formData=f=>Object.fromEntries(new FormData(f).entries());
 
-/* ---------- Resultados de uma pesquisa ---------- */
+/* ▶ INÍCIO · R · resultados por pesquisa (28/10/2026): cada tipo de estudo tem as próprias perguntas, n, margem e leitura */
 const ONDE=['Cinema','Streaming','TV aberta ou a cabo','Mídia física'],GEN=['Comédia','Ação','Drama','Ficção científica','Romance'];
-function distOf(p,field='onde'){const labels=field==='onde'?ONDE:GEN,i=S.pesquisas.indexOf(p),own=S.respostas.filter(r=>r.pid===p.id);
- const base=field==='onde'?[.46,.35,.13,.06]:[.31,.24,.2,.15,.1],adj=base.map((x,k)=>x+(k===i%base.length?.04:k===(i+1)%base.length?-.04:0));
- const n0=Math.max(0,p.resp-own.length),c=adj.map(x=>Math.round(x*n0));c[0]+=n0-c.reduce((x,y)=>x+y,0);own.forEach(r=>{const k=labels.indexOf(field==='onde'?r.onde:r.genero);if(k>=0)c[k]++});return {labels,c,tot:c.reduce((a,b)=>a+b,0)}}
-const margem=n=>n?` · margem ±${(98/Math.sqrt(n)).toFixed(1).replace('.',',')} p.p. (95%)`:'';
-function modalResultado(id){const p=P(id);if(!p)return;const d=distOf(p);
- openModal(esc(p.nome),`<p class="muted">${esc(p.cliente)} · ${esc(projNome(p.projeto))} · ${p.tipo} · ${modoTxt(p)} · ${periodo(p)}</p>
- ${kpis([['Respondentes',p.resp],['Entrevistas em campo',`${p.feitas}/${p.meta}`],['Situação',pill(p.status)]])}
- <div class="panel" style="display:grid;gap:14px"><div><h3>Onde você assiste filmes?</h3><p class="small muted">n = ${d.tot}${margem(d.tot)}</p></div>${hbars(d.labels,d.c)}</div>`,
- `<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
+const hstr=s=>{let h=2166136261;for(const ch of String(s)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const rng=seed=>{let a=hstr(seed);return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}};
+const nf=(x,d=1)=>x.toFixed(d).replace('.',',');
+const pc=x=>Math.round(x*100)+'%';
+function repartir(w,n){const s=w.reduce((a,b)=>a+b,0)||1,raw=w.map(x=>x/s*n),c=raw.map(Math.floor);const r=n-c.reduce((a,b)=>a+b,0);
+ raw.map((x,i)=>[x-c[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,r).forEach(([,i])=>c[i]++);return c}
+/* Banco de perguntas. t: multi (escolha única) · escala (1 a 5) · nps (0 a 10) · sim (sim/não) · itens (várias notas de 1 a 5) */
+const Q={
+ onde:{t:'multi',q:'Onde você mais assiste filmes?',curto:'Onde assiste',o:ONDE,w:[.46,.35,.13,.06]},
+ genero:{t:'multi',q:'Qual é o seu gênero de filme favorito?',curto:'Gênero favorito',o:GEN,w:[.31,.24,.2,.15,.1]},
+ nota:{t:'escala',q:'De 1 a 5, quanto você gostou do filme?',curto:'Nota do filme',o:['1','2','3','4','5'],w:[.03,.06,.15,.4,.36],media:'Nota média do filme',bom:'deram nota 4 ou 5'},
+ nps:{t:'nps',q:'De 0 a 10, quanto você recomendaria a um amigo?',curto:'Recomendação (0 a 10)',w:[.02,.01,.02,.03,.03,.06,.07,.12,.18,.2,.26]},
+ gostou:{t:'multi',q:'O que você mais gostou no filme?',curto:'Ponto forte',o:['História','Elenco','Efeitos e fotografia','Trilha sonora','Final'],w:[.3,.27,.19,.12,.12]},
+ sessao:{t:'itens',q:'Avalie a sessão de 1 a 5',curto:'Nota média da sessão',o:['Imagem','Som','Conforto da poltrona','Atendimento','Bomboniere'],m:[4.4,4.2,3.6,4.0,3.3]},
+ voltar:{t:'sim',q:'Você voltaria a este cinema nas próximas semanas?',curto:'Voltaria ao cinema',p:.78},
+ soube:{t:'multi',q:'Como você soube da sessão?',curto:'Como soube',o:['Redes sociais','Site ou app do cinema','Indicação de alguém','Cartaz no local'],w:[.41,.27,.2,.12]},
+ freq:{t:'multi',q:'Com que frequência você assiste filmes?',curto:'Frequência',o:['Toda semana','2 ou 3 vezes por mês','1 vez por mês','Menos que isso'],w:[.28,.33,.24,.15]},
+ assina:{t:'multi',q:'Quantos serviços de streaming você assina?',curto:'Streamings assinados',o:['Nenhum','1','2','3 ou mais'],w:[.12,.34,.31,.23]},
+ idade:{t:'multi',q:'Qual é a sua faixa de idade?',curto:'Faixa de idade',o:['18 a 24','25 a 34','35 a 44','45 a 59','60 ou mais'],w:[.22,.31,.21,.17,.09]},
+ sexo:{t:'multi',q:'Sexo',curto:'Sexo',o:['Feminino','Masculino','Outro ou prefere não dizer'],w:[.52,.45,.03]},
+ regiao:{t:'multi',q:'Em que região você mora?',curto:'Região',o:['Zona Sul','Zona Norte','Zona Oeste','Centro','Niterói e São Gonçalo','Baixada Fluminense'],w:[.24,.22,.21,.09,.14,.1]},
+ companhia:{t:'multi',q:'Com quem você costuma ir ao cinema?',curto:'Companhia',o:['Com o par','Com amigos','Com a família','Sozinho'],w:[.34,.29,.24,.13]},
+ intencao:{t:'escala',q:'Depois do trailer, qual a chance de você ver o filme no cinema?',curto:'Intenção de assistir',o:['Nenhuma','Baixa','Talvez','Alta','Certeza'],w:[.06,.1,.22,.34,.28],topo:'Intenção alta de assistir',bom:'têm chance alta ou certeza de ver o filme'},
+ trailer:{t:'multi',q:'Qual trailer deixou você com mais vontade de ver o filme?',curto:'Trailer preferido',o:['Trailer A','Trailer B','Nenhum dos dois'],w:[.34,.55,.11]},
+ passa:{t:'multi',q:'Que gênero o trailer passa?',curto:'Gênero percebido',o:['Comédia','Comédia romântica','Drama','Suspense'],w:[.46,.27,.16,.11]},
+ apelo:{t:'escala',q:'De 1 a 5, quanto a ideia do filme chama sua atenção?',curto:'Apelo da ideia',o:['1','2','3','4','5'],w:[.05,.11,.24,.35,.25],media:'Apelo médio da ideia',bom:'deram 4 ou 5'},
+ original:{t:'escala',q:'De 1 a 5, quanto a ideia parece original?',curto:'Originalidade',o:['1','2','3','4','5'],w:[.07,.15,.3,.3,.18],media:'Originalidade média',bom:'deram 4 ou 5'},
+ pagaria:{t:'sim',q:'Você pagaria ingresso para ver esse filme?',curto:'Pagaria ingresso',p:.64},
+ compra:{t:'escala',q:'De 1 a 5, como foi comprar o ingresso?',curto:'Nota da compra',o:['1','2','3','4','5'],w:[.04,.05,.14,.38,.39],media:'Nota média da compra',bom:'deram nota 4 ou 5'},
+ canal:{t:'multi',q:'Por onde você comprou o ingresso?',curto:'Canal de compra',o:['App','Site','Bilheteria','Totem'],w:[.46,.24,.21,.09]},
+ problema:{t:'sim',q:'Você teve algum problema na compra?',curto:'Teve problema na compra',p:.12,ruim:true}};
+/* Tipos de estudo: quais perguntas aparecem e quais viram indicador-chave */
+const ESTUDOS={
+ satisfacao:{nome:'Satisfação com filme',q:['nota','nps','gostou','onde'],chave:['nota','nps']},
+ possessao:{nome:'Experiência pós-sessão',q:['sessao','voltar','soube','nota'],chave:['sessao','voltar']},
+ habitos:{nome:'Hábitos de consumo',q:['onde','freq','assina','genero'],chave:['onde','assina']},
+ perfil:{nome:'Perfil de público',q:['idade','sexo','regiao','companhia'],chave:['idade','companhia']},
+ trailer:{nome:'Avaliação de trailer',q:['intencao','trailer','passa','genero'],chave:['intencao','trailer']},
+ conceito:{nome:'Teste de conceito',q:['apelo','original','pagaria','genero'],chave:['apelo','pagaria']},
+ bilheteria:{nome:'Compra de ingressos',q:['compra','canal','problema','nps'],chave:['compra','problema']},
+ geral:{nome:'Pesquisa geral',q:['onde','genero'],chave:['onde','genero']}};
+const estudoDe=p=>{if(p.estudo&&ESTUDOS[p.estudo])return p.estudo;const n=(p.nome||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+ return /bilheteria|ingresso/.test(n)?'bilheteria':/pos-sessao|pos sessao/.test(n)?'possessao':/satisfa/.test(n)?'satisfacao':/habito|consumo|streaming/.test(n)?'habitos':/perfil|publico/.test(n)?'perfil':/trailer/.test(n)?'trailer':/conceito/.test(n)?'conceito':'geral'};
+const margemPP=n=>n?'±'+nf(98/Math.sqrt(n))+' p.p.':'—';
+const margem=n=>n?` · margem ${margemPP(n)} (95%)`:'';
+/* Resultado de uma pergunta numa pesquisa. O total sempre fecha com o n da pesquisa. */
+function resQ(p,id){const q=Q[id],n=p.resp||0,R=rng(p.id+':'+id);
+ if(q.t==='sim'){const s=Math.round(n*Math.min(.97,Math.max(.03,q.p+(R()-.5)*.14)));return {id,q,n,c:[s,n-s],sim:n?s/n:0}}
+ if(q.t==='itens'){const m=q.m.map(x=>Math.min(5,Math.max(1,x+(R()-.5)*.5)));return {id,q,n,m,media:m.reduce((a,b)=>a+b,0)/m.length}}
+ const w=q.w.map(x=>x*(.8+.4*R()));let c;
+ if(id==='onde'||id==='genero'){const own=S.respostas.filter(r=>r.pid===p.id&&q.o.includes(r[id])),oc=q.o.map(o=>own.filter(r=>r[id]===o).length);c=repartir(w,Math.max(0,n-own.length)).map((x,i)=>x+oc[i])}
+ else c=repartir(w,n);
+ const r={id,q,n,c};
+ if(q.t==='escala'){r.media=n?c.reduce((a,x,i)=>a+x*(i+1),0)/n:0;r.top=n?(c[c.length-1]+c[c.length-2])/n:0}
+ if(q.t==='nps'){r.det=c.slice(0,7).reduce((a,b)=>a+b,0);r.neu=c[7]+c[8];r.pro=c[9]+c[10];r.nps=n?Math.round((r.pro-r.det)/n*100):0}
+ return r}
+const resEstudo=p=>ESTUDOS[estudoDe(p)].q.map(id=>resQ(p,id));
+/* Indicador-chave de uma pergunta (valor + rótulo) */
+function destaque(r){const q=r.q;if(!r.n)return {v:'—',l:q.media||q.topo||q.curto};
+ if(q.t==='escala')return q.media?{v:nf(r.media)+'<small> / 5</small>',l:q.media}:{v:pc(r.top),l:q.topo};
+ if(q.t==='nps')return {v:(r.nps>0?'+':'')+r.nps,l:'NPS · recomendação'};
+ if(q.t==='sim')return {v:pc(r.sim),l:q.curto};
+ if(q.t==='itens')return {v:nf(r.media)+'<small> / 5</small>',l:q.curto};
+ const k=r.c.indexOf(Math.max(...r.c));return {v:esc(q.o[k]),l:`${q.curto} · ${pc(r.c[k]/r.n)}`}}
+/* Leitura em uma frase, para quem não quer interpretar o gráfico */
+function leitura(r){const q=r.q,n=r.n;if(!n)return '';
+ if(q.t==='escala')return `${pc(r.top)} ${q.bom}${q.media?` · média ${nf(r.media)} de 5`:''}.`;
+ if(q.t==='nps')return `${pc(r.pro/n)} promotores (9 e 10) e ${pc(r.det/n)} detratores (0 a 6): NPS ${r.nps>0?'+':''}${r.nps}.`;
+ if(q.t==='sim')return `${pc(r.sim)} responderam “sim” (${r.c[0]} de ${n})${q.ruim&&r.sim>=.1?': ponto de atenção':''}.`;
+ if(q.t==='itens'){const o=r.m.map((x,i)=>[x,i]).sort((a,b)=>b[0]-a[0]),b=o[0],w=o[o.length-1];return `Melhor avaliado: ${q.o[b[1]]} (${nf(b[0])}). Pior: ${q.o[w[1]]} (${nf(w[0])}).`}
+ const o=r.c.map((x,i)=>[x,i]).sort((a,b)=>b[0]-a[0]);return `${q.o[o[0][1]]} lidera com ${pc(o[0][0]/n)}; depois vem ${q.o[o[1][1]]}, com ${pc(o[1][0]/n)}.`}
+/* Gráficos de cada tipo de pergunta: percentual e número de pessoas lado a lado */
+const barsN=(labels,counts,n)=>{const m=Math.max(...counts);return `<div class="bars n">${labels.map((l,k)=>{const v=n?counts[k]/n:0;return `<div class="bar"><span>${esc(l)}</span><span class="t"><i class="${counts[k]===m&&m>0?'hl':''}" style="width:${Math.round(v*100)}%"></i></span><b>${pc(v)} <small>${counts[k]}</small></b></div>`}).join('')}</div>`};
+const pilha=(segs,n)=>`<div class="stack" role="img" aria-label="${segs.map(([l,c])=>`${l}: ${n?pc(c/n):'0%'}`).join(', ')}">${segs.map(([l,c,cls])=>c?`<i class="${cls}" style="flex:${c}"></i>`:'').join('')}</div><ul class="legend">${segs.map(([l,c,cls])=>`<li><span class="sw ${cls}"></span>${l}<b>${n?pc(c/n):'0%'} <small>${c}</small></b></li>`).join('')}</ul>`;
+function grafico(r){const q=r.q;
+ if(q.t==='nps')return pilha([['Detratores (0 a 6)',r.det,'neg'],['Neutros (7 e 8)',r.neu,'neu'],['Promotores (9 e 10)',r.pro,'pos']],r.n);
+ if(q.t==='sim')return pilha(q.ruim?[['Sim',r.c[0],'neg'],['Não',r.c[1],'pos']]:[['Sim',r.c[0],'pos'],['Não',r.c[1],'neu']],r.n);
+ if(q.t==='itens'){const m=Math.max(...r.m);return `<div class="bars n">${q.o.map((l,k)=>`<div class="bar"><span>${esc(l)}</span><span class="t"><i class="${r.m[k]===m?'hl':''}" style="width:${Math.round(r.m[k]/5*100)}%"></i></span><b>${nf(r.m[k])} <small>/ 5</small></b></div>`).join('')}</div>`}
+ return barsN(q.o,r.c,r.n)}
+const perguntaPanel=r=>`<div class="panel qpanel"><div><span class="eyebrow" style="color:var(--fg-3)">${esc(r.q.curto)}</span><h3>${esc(r.q.q)}</h3><p class="small muted">n = ${r.n}${r.q.t==='itens'||r.q.t==='nps'?'':margem(r.n)}</p></div>${grafico(r)}<p class="read">${leitura(r)}</p></div>`;
+/* Respostas por semana calculadas pela data de cada pesquisa (a soma fecha com o total) */
+const dParse=s=>{const i=toISO(s);return i?new Date(i+'T12:00:00'):null};
+const hojeD=()=>{const d=new Date();d.setHours(12,0,0,0);return d};
+const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const ddmm=d=>pad(d.getDate())+'/'+pad(d.getMonth()+1);
+const semLbl=(a,b)=>ddmm(a)===ddmm(b)?ddmm(a):a.getMonth()===b.getMonth()?`${pad(a.getDate())}–${ddmm(b)}`:`${ddmm(a)}–${ddmm(b)}`;
+function fimColeta(p){const b=dParse(p.fim),h=hojeD();return b&&b<h?b:h}
+function acum(p,d){const a=dParse(p.inicio),b=fimColeta(p);if(!a||!p.resp||d<a||b<a)return 0;if(d>=b)return p.resp;
+ const T=(b-a)/864e5+1,x=((d-a)/864e5+1)/T,ph=(hstr(p.id)%628)/100,f=x+.05*(Math.sin(x*18.85+ph)-Math.sin(ph))/18.85;return Math.round(p.resp*Math.min(1,Math.max(0,f)))}
+function semanasJanela(list,per){const h=hojeD(),out=[];for(let k=per-1;k>=0;k--){const b=addD(h,-7*k),a=addD(b,-6);out.push({l:semLbl(a,b),v:list.reduce((s,p)=>s+acum(p,b)-acum(p,addD(a,-1)),0),atual:k===0})}return out}
+function semanasPesquisa(p){const a=dParse(p.inicio),b=fimColeta(p);if(!a||b<a)return [];const out=[];for(let s=a;s<=b;s=addD(s,7)){const e=addD(s,6)<b?addD(s,6):b;out.push({l:semLbl(s,e),v:acum(p,e)-acum(p,addD(s,-1)),atual:e>=hojeD()})}return out.slice(-12)}
+const vbarsW=w=>{const m=Math.max(...w.map(x=>x.v),1);return `<div class="vbars" role="img" aria-label="Respostas por semana: ${w.map(x=>x.l+' '+x.v).join(', ')}">${w.map(x=>`<div class="vb"><span>${x.v}</span><div class="col"><i class="${x.atual?'hl':''}" style="height:${Math.max(1,Math.round(x.v/m*100))}%"></i></div><em>${x.l}</em></div>`).join('')}</div>`};
+/* Alertas de cada pesquisa: prazo, amostra e ritmo de campo */
+function alertas(p,interno=true){const a=[],d=dias(p.fim);
+ if(p.status==='Rascunho'){if(interno)a.push(['ok',`Rascunho · começa em ${p.inicio}`]);return a}
+ if(interno&&p.status==='Ativa'&&d!==null&&d<0)a.push(['late',`Prazo venceu há ${-d} dia${d===-1?'':'s'} e a pesquisa segue ativa`]);
+ else if(interno&&p.status==='Ativa'&&d!==null&&d<=3)a.push(['soon',d===0?'Termina hoje':`Termina em ${d} dia${d===1?'':'s'}`]);
+ if(!p.resp)a.push(['late','Nenhuma resposta até agora']);else if(p.resp<30)a.push(['soon',`Amostra pequena (n = ${p.resp}): leia como tendência`]);
+ if(interno&&p.status==='Ativa'&&p.meta&&p.feitas<p.meta&&d!==null&&d>=0){const ini=dParse(p.inicio),fim=dParse(p.fim);if(ini&&fim){const tot=(fim-ini)/864e5+1,dec=Math.max(0,(hojeD()-ini)/864e5+1);if(p.feitas<p.meta*Math.min(1,dec/tot)*.6)a.push(['soon',`Campo atrasado: ${p.feitas} de ${p.meta} entrevistas`])}}
+ return a}
+const alertasHTML=l=>l.length?`<div class="alerts">${l.map(([c,t])=>`<span class="due ${c}">${c==='ok'?'':I.alert}${esc(t)}</span>`).join('')}</div>`:'';
+/* Visão de uma pesquisa: cabeçalho, indicadores próprios, uma caixa por pergunta e coleta semana a semana */
+function resultadoPesquisa(p,scope){const interno=scope!=='cli',e=ESTUDOS[estudoDe(p)],rs=resEstudo(p),ch=e.chave.map(id=>destaque(rs.find(r=>r.id===id)||resQ(p,id)));
+ const W=semanasPesquisa(p),cv=S.convites.filter(c=>c.pid===p.id&&c.status!=='Cancelado'&&c.status!=='Solicitado'),rsp=cv.filter(c=>c.status==='Respondido').length;
+ const cab=`<div class="panel res-head"><div class="info"><span class="eyebrow">${esc(e.nome)}</span><h2>${esc(p.nome)}</h2>
+  <p class="muted small">${esc(p.cliente)} · ${esc(projNome(p.projeto))} · ${esc(localTxt(p))} · ${periodo(p)}${interno?` · ${esc(agTxt(p))}`:''}</p>${alertasHTML(alertas(p,interno))}</div>
+  <div class="end">${pill(p.status)}</div></div>`;
+ const k=kpis([['Respondentes',p.resp,p.resp?`coletados de ${p.inicio} a ${ddmm(fimColeta(p))}`:'nenhuma resposta ainda'],['Margem de erro',margemPP(p.resp),p.resp?'95% de confiança, nos percentuais':'sem amostra'],[ch[0].l,ch[0].v],[ch[1].l,ch[1].v]])
+  +(interno?`<p class="small muted">Entrevistas em campo: <b>${p.feitas} de ${p.meta}</b> (${pct(p.feitas,p.meta)} da meta) · Convites respondidos: <b>${rsp} de ${cv.length}</b>${cv.length?` (${pct(rsp,cv.length)})`:''}</p>`:'');
+ if(!p.resp)return cab+k+`<div class="panel empty-state"><h3>Ainda não há resultados para mostrar</h3><p class="muted">${p.status==='Rascunho'?`A pesquisa está em rascunho e começa em ${p.inicio}.`:dias(p.fim)<0?`O prazo terminou em ${p.fim} sem respostas.`:`A coleta vai até ${p.fim}.`} Os gráficos aparecem assim que entrar a primeira resposta${interno?' (pelo site ou em Pesquisas → Importar)':''}.</p><p class="small muted">Perguntas desta pesquisa: ${e.q.map(id=>esc(Q[id].curto)).join(' · ')}.</p></div>`;
+ return cab+k+`<div class="grid g2">${rs.map(perguntaPanel).join('')}</div>
+ <div class="panel" style="display:grid;gap:16px"><div><h3>Respostas por semana</h3><p class="small muted">Desde o início da coleta · n = ${W.reduce((s,x)=>s+x.v,0)} · <span class="sw hl"></span> semana atual (parcial)</p></div>${vbarsW(W)}</div>`+insightsPanel([p.projeto])}
+/* Painel de resultados: sem pesquisa escolhida mostra a visão geral; com pesquisa, o resultado específico dela */
+function filtroRes(scope,base){const md=UI[scope+'Modo']||'',per=+(UI[scope+'Per']||6),list=base.filter(p=>!md||p.modos.includes(md)),pq0=UI[scope+'Pesq']||'',pq=list.some(p=>p.id===pq0)?pq0:'';return {md,per,list,pq}}
+function painelResultados(scope,base){const f=filtroRes(scope,base),p=f.pq?P(f.pq):null,ativos=f.md||f.pq||f.per!==6;
+ const barra=`<div class="filters res-filters">${p?`<button type="button" class="btn btn-ghost btn-sm" data-act="set" data-k="${scope}Pesq" data-v="">← Todas as pesquisas</button>`:''}<label class="lbl" for="${scope}-pq">Pesquisa</label><select id="${scope}-pq" data-live="${scope}" data-key="${scope}Pesq">${opts([['','Todas as pesquisas'],...f.list.map(x=>[x.id,x.nome])],f.pq)}</select>
+ ${p?'':`<label class="lbl" for="${scope}-per">Período</label><select id="${scope}-per" data-live="${scope}" data-key="${scope}Per">${opts([['4','Últimas 4 semanas'],['6','Últimas 6 semanas'],['12','Últimas 12 semanas']],f.per)}</select>`}
+ <span class="lbl" id="${scope}-ap">Aplicação</span><span role="group" aria-labelledby="${scope}-ap" class="chips">${[['','Todas'],['Online','Online'],['Presencial','Presencial']].map(([v,l])=>`<button type="button" class="chipbtn g" data-act="set" data-k="${scope}Modo" data-v="${v}" aria-pressed="${f.md===v}">${l}</button>`).join('')}</span>
+ ${ativos?`<button type="button" class="linkbtn" data-act="res-limpar" data-scope="${scope}">Limpar filtros</button>`:''}</div>`;
+ if(p)return barra+resultadoPesquisa(p,scope);
+ const L=f.list,interno=scope!=='cli',W=semanasJanela(L,f.per),noPer=W.reduce((s,x)=>s+x.v,0),tot=L.reduce((a,x)=>a+x.resp,0);
+ const cv=S.convites.filter(c=>L.some(x=>x.id===c.pid)&&c.status!=='Cancelado'&&c.status!=='Solicitado'),rs=cv.filter(c=>c.status==='Respondido').length;
+ const cnt=s=>L.filter(x=>x.status===s).length,feitas=L.reduce((a,x)=>a+x.feitas,0),meta=L.reduce((a,x)=>a+x.meta,0);
+ const resumo=`<p class="small muted res-count">Mostrando <b>${L.length} de ${base.length}</b> pesquisas${f.md?` · aplicação ${f.md.toLowerCase()}`:''}. Escolha uma pesquisa para ver as perguntas dela.</p>`;
+ const k=kpis([['Pesquisas',L.length,`${cnt('Ativa')} ativas · ${cnt('Pausada')} pausadas · ${cnt('Encerrada')} encerradas${interno?` · ${cnt('Rascunho')} rascunho`:''}`],['Respondentes (total)',tot,`${noPer} nas últimas ${f.per} semanas`],interno?['Entrevistas em campo',`${feitas}<small> / ${meta}</small>`,`${pct(feitas,meta)} da meta somada`]:['Pesquisas com resultado',L.filter(x=>x.resp).length,'com pelo menos uma resposta'],['Convites respondidos',pct(rs,cv.length),`${rs} de ${cv.length} convites`]]);
+ if(!L.length)return barra+resumo+`<div class="panel empty-state"><h3>Nenhuma pesquisa com esses filtros</h3><p class="muted">Nenhuma pesquisa ${f.md?`com aplicação ${f.md.toLowerCase()}`:''} nesta lista. <button type="button" class="linkbtn" data-act="res-limpar" data-scope="${scope}">Limpar filtros</button></p></div>`;
+ const al=L.map(x=>[x,alertas(x,interno).filter(a=>a[0]!=='ok')]).filter(([,a])=>a.length),nal=al.reduce((s,[,a])=>s+a.length,0);
+ const linhas=L.map(x=>{const e=ESTUDOS[estudoDe(x)],d=x.resp?destaque(resQ(x,e.chave[0])):null;
+  return `<div class="res-row"><div class="info"><span class="eyebrow" style="color:var(--fg-3)">${esc(e.nome)}</span><b>${esc(x.nome)}</b><span class="small muted">${esc(x.cliente)} · ${modoTxt(x)} · ${periodo(x)}</span>${alertasHTML(alertas(x,interno))}</div>
+  <div class="metric">${d?`<span class="v">${d.v}</span><span class="l">${esc(d.l)}</span>`:`<span class="v muted">—</span><span class="l">sem respostas</span>`}</div>
+  <div class="nbox"><span class="tnum"><b>n = ${x.resp}</b></span><span class="small muted">${x.resp?'margem '+margemPP(x.resp):'—'}</span></div>
+  <div class="end">${pill(x.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="set" data-k="${scope}Pesq" data-v="${x.id}"${x.resp?'':' aria-label="Ver detalhes de '+esc(x.nome)+'"'}>Ver resultado</button></div></div>`}).join('');
+ return barra+resumo+k+`<div class="grid g2" style="align-items:start"><div class="panel" style="display:grid;gap:16px"><div><h3>Respostas por semana</h3><p class="small muted">Pesquisas do filtro somadas · n = ${noPer} no período · <span class="sw hl"></span> semana atual (parcial)</p></div>${vbarsW(W)}</div>
+ <div class="panel" style="display:grid;gap:12px;align-content:start"><div><h3>Pedem atenção</h3><p class="small muted">${al.length?`${nal} ponto${nal===1?'':'s'} em ${al.length} pesquisa${al.length===1?'':'s'}`:'Nada fora do normal nas pesquisas do filtro'}</p></div>${al.length?`<ul class="attn">${al.map(([x,a])=>`<li><span class="dot ${a.some(y=>y[0]==='late')?'late':'soon'}"></span><span><b>${esc(x.nome)}</b><br><span class="small muted">${a.map(y=>esc(y[1])).join(' · ')}</span></span><button type="button" class="linkbtn" data-act="set" data-k="${scope}Pesq" data-v="${x.id}">Abrir</button></li>`).join('')}</ul>`:''}</div></div>
+ <div class="panel" style="padding:0"><div style="padding:18px 20px 6px"><h3>Resultado de cada pesquisa</h3><p class="small muted">Indicador principal de cada uma; abra para ver todas as perguntas.</p></div>${linhas}</div>`}
+/* Resposta individual a uma pergunta (aba Respostas detalhadas) */
+function respDe(r,id){const q=Q[id];if(id==='onde'||id==='genero')return r[id]||'—';const R=rng(r.id+':'+id);
+ if(q.t==='sim')return R()<q.p?'Sim':'Não';
+ if(q.t==='itens')return nf(q.m.reduce((a,m)=>a+Math.min(5,Math.max(1,Math.round(m+(R()-.5)*2))),0)/q.m.length);
+ const w=q.w,s=w.reduce((a,b)=>a+b,0);let x=R()*s,i=0;while(i<w.length-1&&x>w[i]){x-=w[i];i++}
+ return q.t==='nps'?String(i):q.t==='escala'&&/^\d$/.test(q.o[i])?q.o[i]+' / 5':q.o[i]}
+/* ■ FIM · R · resultados por pesquisa */
 
 /* ======================= LOGIN ======================= */
 V.login=()=>{const tab=UI.loginTab||'usuario',pre=UI.prefill||'';
@@ -1093,6 +1251,7 @@ function pesqForm(p){p=p||{};const proj=p.projeto||UI.novaProj||'';const cli=p.c
  ${field('nome','Nome da pesquisa',p.nome||'','text','required placeholder="Ex.: Satisfação — Lançamento Filme B"')}
  <div class="row2">${sel('cliente','Cliente',S.clientes.map(c=>c.nome),cli)}${sel('projeto','Projeto',projs.length?projs.map(x=>[x.id,x.nome]):[['','Sem projetos para este cliente']],proj||projs[0]?.id)}</div>
  <div class="row2">${sel('tipo','Tipo',['Padrão','Personalizada'],p.tipo||'Padrão')}${sel('status','Status',['Rascunho','Ativa','Pausada','Encerrada'],p.status||'Rascunho')}</div>
+ ${sel('estudo','Tipo de estudo (define as perguntas e os indicadores do resultado)',Object.entries(ESTUDOS).map(([k,v])=>[k,v.nome]),p.id?estudoDe(p):'satisfacao')}
  <fieldset class="field"><legend class="lg">Local de aplicação</legend><div class="permbox"><label><input type="checkbox" name="m-online" ${modos.includes('Online')?'checked':''}>Online</label><label><input type="checkbox" name="m-pres" id="m-pres" ${modos.includes('Presencial')?'checked':''}>Presencial</label></div><span class="small muted">Marque os dois para pesquisa híbrida.</span></fieldset>
  <div id="local-box" ${modos.includes('Presencial')?'':'hidden'}>${field('local','Local presencial (cinema, sala ou endereço)',p.local||'','text','placeholder="Ex.: Cinema Botafogo"')}</div>
  ${sel('agmode','Agente em campo',[['com','Com agente'],['sem','Sem agente (autoaplicada)']],comAg?'com':'sem')}
@@ -1115,7 +1274,7 @@ FORM.pesquisa=f=>{const d=formData(f),id=f.dataset.id,e=f.querySelector('#pf-err
  if(d.fim<d.inicio)return fail('A data de fim não pode ser antes do início.');
  const sm=(d.smlink||'').trim();if(sm&&!/^https:\/\/([\w-]+\.)?surveymonkey\.com\/\S+$/i.test(sm))return fail('Link do SurveyMonkey inválido. Use o endereço que começa com https://…surveymonkey.com/');
  if(d.agmode==='com'&&!agentes.length)return fail('Escolha pelo menos um agente, ou marque “Sem agente”.');
- const v={nome:d.nome.trim(),cliente:d.cliente,projeto:d.projeto,tipo:d.tipo,status:d.status,agentes,modos,local:modos.includes('Presencial')?(d.local||'').trim():'',smLink:sm,inicio:fromISO(d.inicio),fim:fromISO(d.fim),meta:+d.meta||1};
+ const v={nome:d.nome.trim(),cliente:d.cliente,projeto:d.projeto,tipo:d.tipo,status:d.status,estudo:ESTUDOS[d.estudo]?d.estudo:'geral',agentes,modos,local:modos.includes('Presencial')?(d.local||'').trim():'',smLink:sm,inicio:fromISO(d.inicio),fim:fromISO(d.fim),meta:+d.meta||1};
  if(id)Object.assign(P(id),v);else S.pesquisas.unshift({id:nid('p'),resp:0,feitas:0,...v});
  UI.novaProj='';save();closeModal();toast(id?'Pesquisa atualizada.':'Pesquisa criada.');refresh()};
 
@@ -1127,19 +1286,7 @@ V['adm-pesquisas']=r=>{const ativ=S.pesquisas.filter(p=>p.status==='Ativa').leng
 PART.pesq=()=>{const q=(UI.pq||'').toLowerCase(),rows=S.pesquisas.filter(p=>(!q||(p.nome+' '+p.cliente).toLowerCase().includes(q))&&(!UI.pst||p.status===UI.pst)&&(!UI.ptp||p.tipo===UI.ptp));
  return `<div class="tablebox"><table><thead><tr><th>Nome</th><th>Cliente</th><th>Tipo</th><th>Aplicação</th><th>Período</th><th>Status</th><th>Resp.</th><th>Ações</th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.nome)}</b><span class="s">${esc(projNome(p.projeto))} · ${esc(agTxt(p))}</span></td><td>${esc(p.cliente)}</td><td>${p.tipo}</td><td class="small">${modoTxt(p)}</td><td class="small tnum">${p.inicio}<br>${p.fim}${p.status==='Ativa'?'<br>'+prazo(p.fim,p.feitas>=p.meta):''}</td><td>${pill(p.status)}</td><td class="tnum">${p.resp}</td><td class="acts">${p.smLink?`<a class="linkbtn" href="${esc(p.smLink)}" target="_blank" rel="noopener noreferrer" data-ext="surveymonkey" title="Abre o SurveyMonkey em nova aba (A.4)">SurveyMonkey ${I.ext}</a>`:''}<button type="button" class="linkbtn" data-act="editar-pesquisa" data-id="${p.id}">Editar</button><button type="button" class="linkbtn" data-act="convidar" data-id="${p.id}">Convidar</button>${p.agentes.length?`<button type="button" class="linkbtn" data-act="ag-rec" data-id="${p.id}">Recursos</button>`:''}<button type="button" class="linkbtn" data-act="resultado" data-id="${p.id}">Resultados</button><button type="button" class="linkbtn danger" data-act="excluir-pesquisa" data-id="${p.id}">Excluir</button></td></tr>`).join('')||emptyRow(8,'Nenhuma pesquisa com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${rows.length} de ${S.pesquisas.length} pesquisas</p>`};
 
-function filtroRes(scope){const pq=UI[scope+'Pesq']||'',md=UI[scope+'Modo']||'';return {pq,md,list:x=>x.filter(p=>(!pq||p.id===pq)&&(!md||p.modos.includes(md)))}}
-function painelResultados(scope,base,weeksBase,abrir){const f=filtroRes(scope),list=f.list(base),per=UI[scope+'Per']||'6';
- const allResp=base.reduce((a,p)=>a+p.resp,0)||1,share=list.reduce((a,p)=>a+p.resp,0)/allResp;
- const cv=S.convites.filter(c=>list.some(p=>p.id===c.pid)&&c.status!=='Cancelado'&&c.status!=='Solicitado'),rs=cv.filter(c=>c.status==='Respondido').length;
- const w=weeksBase.map(v=>Math.round(v*share)).slice(per==='4'?2:0);
- const agg=ONDE.map((_,k)=>list.reduce((a,p)=>a+distOf(p).c[k],0));
- return `<div class="filters"><span class="lbl">Período</span><select data-live="${scope}" data-key="${scope}Per" aria-label="Período">${opts([['6','Últimas 6 semanas'],['4','Últimas 4 semanas']],per)}</select><span class="lbl">Pesquisa</span><select data-live="${scope}" data-key="${scope}Pesq" aria-label="Pesquisa">${opts([['','Todas'],...base.map(p=>[p.id,p.nome])],f.pq)}</select>
- ${[['','Todos'],['Online','Online'],['Presencial','Presencial']].map(([v,l])=>`<button type="button" class="chipbtn" data-act="set" data-k="${scope}Modo" data-v="${v}" aria-pressed="${f.md===v}">${l}</button>`).join('')}</div>
- ${kpis([['Pesquisas ativas',list.filter(p=>p.status==='Ativa').length],['Pesquisas concluídas',list.filter(p=>p.status==='Encerrada').length],['Respondentes (todos)',list.reduce((a,p)=>a+p.resp,0)],['Taxa de resposta dos convites',pct(rs,cv.length)]])}
- <div class="grid g2"><div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Respostas por semana</h3><span class="small muted">Barra areia: semana atual</span></div>${vbars(w)}</div>
- <div class="panel" style="display:grid;gap:14px"><div><h3>Onde o público assiste filmes</h3><p class="small muted">${f.pq?'Pesquisa selecionada':'Todas as pesquisas somadas'} · n = ${agg.reduce((a,b)=>a+b,0)}</p></div>${hbars(ONDE,agg)}</div></div>
- <div class="panel" style="padding:0"><div style="padding:18px 20px 4px"><h3>Pesquisas</h3></div>${list.map(p=>`<div class="row-item"><div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(p.cliente)} · n = ${p.resp} · ${periodo(p)}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="${abrir||'resultado'}" data-id="${p.id}">Abrir pesquisa</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa com esses filtros.</p>'}</div>`}
-PART.adm=()=>painelResultados('adm',S.pesquisas,baseWeeks);
+PART.adm=()=>painelResultados('adm',S.pesquisas);
 PART.arq=(pj)=>{const rows=S.arquivos.filter(a=>!pj||a.projeto===pj);
  return `<div class="tablebox"><table><thead><tr><th>Arquivo</th>${pj?'':'<th>Projeto</th>'}<th>Tamanho</th><th>Enviado em</th><th>Linhas</th><th>Status</th></tr></thead><tbody>${rows.map(a=>`<tr><td><b>${esc(a.nome)}</b></td>${pj?'':`<td>${esc(projNome(a.projeto))}</td>`}<td class="tnum">${a.tam}</td><td class="tnum">${a.data}</td><td class="tnum">${a.linhas}</td><td>${pill(a.status)}</td></tr>`).join('')||emptyRow(6,'Nenhum arquivo importado ainda.')}</tbody></table></div>`};
 function importar(files,pj){const fmtB=b=>b>1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(b/1024))+' KB';
@@ -1272,15 +1419,10 @@ const minhasEmpresa=()=>S.pesquisas.filter(p=>p.cliente===me().empresa&&p.status
 V['cl-projetos']=r=>{const l=S.projetos.filter(p=>p.cliente===me().empresa);return sys(r,head('Projetos',`Projetos de pesquisa contratados por ${esc(me().empresa||'sua empresa')}. Abra um projeto para ver o resultado de cada pesquisa.`)+(l.length?`<div class="grid g3">${l.map(p=>projCard(p,'cl')).join('')}</div>`:'<p class="empty panel">Sua empresa ainda não tem projetos.</p>'))};
 V['cl-projeto']=r=>{const pj=PJ(UI.proj);if(!pj||pj.cliente!==me().empresa){UI.proj=(S.projetos.find(p=>p.cliente===me().empresa)||{}).id}return projetoView(r,'cl')};
 V['cl-resultados']=r=>sys(r,head('Resultados',`Resultados de todas as pesquisas de ${esc(me().empresa||'sua empresa')}. Você vê só os dados da sua empresa.`)+`<div id="part-clr" style="display:grid;gap:22px">${PART.clr()}</div>`+insightsPanel(S.projetos.filter(x=>x.cliente===me().empresa).map(x=>x.id))); /* S4 */
-PART.clr=()=>painelResultados('cli',minhasEmpresa(),me().empresa==='Cinema Alfa'?alfaWeeks:baseWeeks.map(v=>Math.round(v/5)),'cl-res');
+PART.clr=()=>painelResultados('cli',minhasEmpresa());
 V['cl-resultado']=r=>{const p=P(UI.resPid);if(!p||p.cliente!==me().empresa||p.status==='Rascunho')return sys(r,head('Resultado individual','Escolha uma pesquisa em Projetos.','',['cl-projetos','Projetos']));
- if(UI.proj!==p.projeto){UI.proj=p.projeto}const d=distOf(p),g=distOf(p,'genero'),cv=S.convites.filter(c=>c.pid===p.id&&c.status!=='Cancelado'&&c.status!=='Solicitado'),rs=cv.filter(c=>c.status==='Respondido').length;
- const share=p.resp/Math.max(1,minhasEmpresa().reduce((a,x)=>a+x.resp,0)),w=(me().empresa==='Cinema Alfa'?alfaWeeks:baseWeeks.map(v=>Math.round(v/5))).map(v=>Math.round(v*share));
- return sys(r,head(esc(p.nome),`${esc(projNome(p.projeto))} · ${p.tipo} · ${modoTxt(p)} · ${periodo(p)}`,`<button type="button" class="btn btn-ghost" data-act="abrir-projeto" data-id="${p.projeto}" data-sc="cl">Voltar ao projeto</button>`)+
- kpis([['Respondentes',p.resp],['Entrevistas em campo',`${p.feitas} / ${p.meta}`],['Taxa de resposta dos convites',pct(rs,cv.length)],['Situação',pill(p.status)]])+
- `<div class="grid g2"><div class="panel" style="display:grid;gap:14px"><div><h3>Onde você assiste filmes?</h3><p class="small muted">n = ${d.tot}${margem(d.tot)}</p></div>${hbars(d.labels,d.c)}</div>
- <div class="panel" style="display:grid;gap:14px"><div><h3>Gênero favorito</h3><p class="small muted">n = ${g.tot}</p></div>${hbars(g.labels,g.c)}</div></div>
- <div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Respostas por semana</h3><span class="small muted">Barra areia: semana atual</span></div>${vbars(w)}</div>`+insightsPanel([p.projeto]))}; /* S4: insights do focus group no resultado do cliente */
+ if(UI.proj!==p.projeto){UI.proj=p.projeto}
+ return sys(r,head('Resultado individual',`Resultado da pesquisa no projeto ${esc(projNome(p.projeto))}. Você vê só dados agregados.`,`<button type="button" class="btn btn-ghost" data-act="abrir-projeto" data-id="${p.projeto}" data-sc="cl">Voltar ao projeto</button>`)+`<div style="display:grid;gap:22px">${resultadoPesquisa(p,'cli')}</div>`)}; /* S4: insights do focus group no resultado do cliente */
 
 /* ======================= PARTICIPANTE ======================= */
 const QUESTOES=[
@@ -1375,7 +1517,8 @@ const ACT={
  'editar-pesquisa':el=>pesqForm(P(el.dataset.id)),
  'excluir-pesquisa':el=>{const p=P(el.dataset.id);confirmBox('Excluir pesquisa',`Excluir “${esc(p.nome)}”? Os convites dessa pesquisa também saem da lista. Essa ação não pode ser desfeita.`,'Excluir pesquisa',()=>{S.pesquisas=S.pesquisas.filter(x=>x!==p);S.convites=S.convites.filter(c=>c.pid!==p.id);save();toast('Pesquisa excluída.');refresh()})},
  convidar:el=>{UI.pending='conv:'+el.dataset.id;save();location.hash='adm-convites'},
- resultado:el=>modalResultado(el.dataset.id),
+ resultado:el=>{UI.admPesq=el.dataset.id;UI.admModo='';UI.resTab='painel';save();if(location.hash==='#adm-resultados')refresh();else location.hash='adm-resultados'}, /* R: abre o resultado específico da pesquisa */
+ 'res-limpar':el=>{const s=el.dataset.scope;UI[s+'Pesq']='';UI[s+'Modo']='';UI[s+'Per']='6';save();refresh()},
  'cl-res':el=>{UI.resPid=el.dataset.id;save();location.hash='cl-resultado'},
  'novo-projeto':el=>projForm(el.dataset.cli),
  'importar-pesquisas':el=>importarPesquisasForm(el.dataset.proj),
@@ -1716,7 +1859,12 @@ function detalhesView(scope){const pq=UI[scope+'DetP']||'',dp=UI[scope+'DetD']||
 function detTabela(scope){const pq=UI[scope+'DetP']||'',dp=UI[scope+'DetD']||'',og=UI[scope+'DetO']||'';const l=S.respostasDet.filter(r=>(!pq||r.pid===pq)&&(!dp||r.dispositivo===dp)&&(!og||r.origem===og));
  const tp=Math.max(1,Math.ceil(l.length/10)),pg=Math.min(Math.max(1,UI[scope+'DetPg']||1),tp),pag=l.slice((pg-1)*10,pg*10);
  if(!l.length)return '<p class="empty panel">Nenhuma resposta com esses filtros. Ajuste os filtros ou importe respostas em Pesquisas → Importar.</p>';
- return `<div class="tablebox"><table><thead><tr><th>Código</th><th>Pesquisa</th><th>Data</th><th>Origem</th><th>Dispositivo</th><th>Onde assiste</th><th>Gênero favorito</th></tr></thead><tbody>${pag.map(r=>`<tr><td class="tnum">${esc(r.cod)}</td><td>${esc((P(r.pid)||{}).nome||'—')}</td><td class="tnum">${r.data}</td><td class="small">${esc(r.origem)}</td><td>${esc(r.dispositivo)}</td><td>${esc(r.onde)}</td><td>${esc(r.genero)}</td></tr>`).join('')}</tbody></table></div>${paginacao(l.length,pg,scope+'DetPg','det-'+scope)}`}
+ const C=detColunas(pq);
+ return `${pq?`<p class="small muted">${esc(ESTUDOS[estudoDe(P(pq))].nome)}: uma coluna por pergunta da pesquisa.</p>`:'<p class="small muted">Escolha uma pesquisa para ver todas as perguntas dela em colunas. Aqui aparece só a resposta-chave de cada uma.</p>'}<div class="tablebox"><table><thead><tr>${C.map(c=>`<th>${esc(c[0])}</th>`).join('')}</tr></thead><tbody>${pag.map(r=>`<tr>${C.map(c=>`<td${c[2]?` class="${c[2]}"`:''}>${esc(c[1](r))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${paginacao(l.length,pg,scope+'DetPg','det-'+scope)}`}
+/* R: colunas da aba Respostas detalhadas. Com uma pesquisa escolhida, cada pergunta dela vira uma coluna */
+function detColunas(pq){const base=[['Código',r=>r.cod,'tnum'],...(pq?[]:[['Pesquisa',r=>(P(r.pid)||{}).nome||'—']]),['Data',r=>r.data,'tnum'],['Origem',r=>r.origem,'small'],['Dispositivo',r=>r.dispositivo]];
+ if(pq)return base.concat(ESTUDOS[estudoDe(P(pq))].q.map(id=>[Q[id].curto,r=>respDe(r,id)]));
+ return base.concat([['Resposta-chave',r=>{const p=P(r.pid);if(!p)return '—';const id=ESTUDOS[estudoDe(p)].chave[0];return Q[id].curto+': '+respDe(r,id)}]])}
 PART['det-adm']=()=>detTabela('adm');PART['det-eq']=()=>detTabela('eq');
 V['adm-resultados']=r=>{const tab=UI.resTab==='det'?'det':'painel';
  return sys(r,head('Resultados','Painel com indicadores e gráficos; respostas detalhadas para quem tem permissão. A importação fica em Pesquisas → Importar.')+
@@ -1726,7 +1874,7 @@ V['eq-resultados']=r=>{const tab=UI.eqResTab==='det'?'det':'painel';
  return sys(r,head('Resultados','Visão da assistente de análise: painel agregado e respostas detalhadas por código.')+
  `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='painel'}" data-act="set" data-k="eqResTab" data-v="painel">Painel</button>${pode('resultados','detalhes')?`<button type="button" role="tab" aria-selected="${tab==='det'}" data-act="set" data-k="eqResTab" data-v="det">Respostas detalhadas</button>`:''}</div>`+
  (tab==='painel'?`<div id="part-eqr" style="display:grid;gap:22px">${PART.eqr()}</div>`:detalhesView('eq')))};
-PART.eqr=()=>painelResultados('eqr',S.pesquisas,baseWeeks);
+PART.eqr=()=>painelResultados('eqr',S.pesquisas);
 function paginacao(total,pg,key,part){const tp=Math.max(1,Math.ceil(total/10));if(tp<=1)return `<p class="small muted">Mostrando ${total} de ${total}</p>`;
  const ini=(pg-1)*10+1,fim=Math.min(total,pg*10);const nums=[];for(let i=1;i<=tp;i++)if(i===1||i===tp||Math.abs(i-pg)<=1)nums.push(i);else if(nums[nums.length-1]!=='…')nums.push('…');
  return `<nav class="pager" aria-label="Paginação"><span class="small muted">Mostrando ${ini}–${fim} de ${total}</span><div class="pg-btns"><button type="button" class="chipbtn" data-act="pag" data-k="${key}" data-v="${pg-1}" data-part="${part}" ${pg<=1?'disabled':''} aria-label="Página anterior">‹</button>${nums.map(n=>n==='…'?'<span class="muted">…</span>':`<button type="button" class="chipbtn" data-act="pag" data-k="${key}" data-v="${n}" data-part="${part}" aria-pressed="${n===pg}" aria-label="Página ${n}">${n}</button>`).join('')}<button type="button" class="chipbtn" data-act="pag" data-k="${key}" data-v="${pg+1}" data-part="${part}" ${pg>=tp?'disabled':''} aria-label="Próxima página">›</button></div></nav>`}
@@ -1835,7 +1983,7 @@ Object.assign(ACT,{
  'imp-resp-abrir':()=>{closeModal();importarRespostasForm()},
  'ir-modelo':()=>{const t=document.getElementById('ir-txt');t.value=MODELO_RESP;t.focus()},
  'exp-res':el=>{const s=el.dataset.scope,pq=UI[s+'DetP']||'',dp=UI[s+'DetD']||'',og=UI[s+'DetO']||'';const l=S.respostasDet.filter(r=>(!pq||r.pid===pq)&&(!dp||r.dispositivo===dp)&&(!og||r.origem===og));
-  baixarCSV('respostas_detalhadas.csv',[['codigo','pesquisa','data','origem','dispositivo','onde','genero'],...l.map(r=>[r.cod,(P(r.pid)||{}).nome||'',r.data,r.origem,r.dispositivo,r.onde,r.genero])])},
+  const C=detColunas(pq);baixarCSV('respostas_detalhadas.csv',[C.map(c=>c[0]),...l.map(r=>C.map(c=>c[1](r)))])},
  'pag':el=>{const v=+el.dataset.v;if(!v)return;UI[el.dataset.k]=v;save();refreshPart(el.dataset.part)},
  'conv-det':el=>conviteDetalhes(el.dataset.id),
  'conv-editar':el=>{closeModal();conviteEditar(el.dataset.id)},

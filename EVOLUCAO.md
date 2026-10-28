@@ -122,3 +122,19 @@ Arquivo "Sinergia — Protótipo Consolidado", página Protótipo, seção **"Ev
 
 - Validação: rodar `pytest -q tests` e percorrer o fluxo "Evolução 27/10/2026" no Figma.
 - Reversão: branch `reversao-pre-evolucao` (commit `87d64a1`); passos em [REVERSAO.md](REVERSAO.md).
+
+# Revisão de 28/10/2026 — página Resultados por pesquisa
+
+Análise da tela A3 Resultados apontou: o mesmo gráfico ("Onde o público assiste filmes") em todas as pesquisas, barras semanais que não fechavam com o n, filtro Online/Presencial sem rótulo e sem estado vazio, e semanas sem datas.
+
+| O que mudou | Como ficou |
+| --- | --- |
+| Tipo de estudo | Cada pesquisa tem um tipo (Satisfação com filme, Experiência pós-sessão, Hábitos de consumo, Perfil de público, Avaliação de trailer, Teste de conceito, Compra de ingressos, Geral). O tipo define as perguntas e os indicadores do resultado. Pesquisas antigas têm o tipo deduzido pelo nome; o formulário de pesquisa ganhou o campo "Tipo de estudo" |
+| Visão geral | Indicadores com contexto (status, total e no período, campo vs. meta, convites "x de y"), respostas por semana com datas, quadro "Pedem atenção" (prazo vencido, sem respostas, amostra pequena, campo atrasado) e uma linha por pesquisa com o indicador principal, n e margem de erro |
+| Visão da pesquisa | Cabeçalho (cliente, projeto, local, período, agentes, alertas), 4 indicadores (respondentes, margem de erro e 2 indicadores do tipo de estudo), uma caixa por pergunta com n, margem, percentual + número de pessoas e uma frase de leitura, coleta semana a semana desde o início e insights do focus group |
+| Números | Semanas calculadas pelas datas de cada pesquisa: a soma das barras fecha com o n. Cada pergunta soma o n inteiro |
+| Filtros | Rótulo "Aplicação", "Limpar filtros", contagem "Mostrando x de y" e estado vazio explicado |
+| Respostas detalhadas | Com uma pesquisa escolhida, cada pergunta vira coluna (também no CSV); com "Todas", aparece a resposta-chave de cada pesquisa |
+| Cliente | Mesma visão por pesquisa, sem dados internos (campo, agentes, alertas de prazo) |
+
+Testes: `tests/test_resultados.py` (8 testes). Suíte completa: **38 de 38 aprovados**.

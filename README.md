@@ -8,7 +8,7 @@ Site institucional e sistema de pesquisas da Sinergia Research & Intelligence, m
 index.html                 site completo (HTML, CSS e JS num arquivo só)
 assets/logo-sinergia.png   logo
 SOLICITACOES.md            mapa das etiquetas ▶ INÍCIO / ◆ MEIO / ■ FIM (solicitações S1–S5 e requisitos A–E)
-EVOLUCAO.md                evolução de 27/10/2026: o que mudou, arquivos, status por requisito e pendências
+EVOLUCAO.md                evolução de 27/10/2026 e revisão de Resultados de 28/10/2026
 PERMISSOES.md              perfis, matriz módulo × ação, regras de rota, sessão e auditoria
 INTEGRACOES.md             SurveyMonkey, Teams/Meet e transcrição: o que existe e como ativar de verdade
 REVERSAO.md                plano de reversão (ponto de restauração e passos)
