@@ -138,3 +138,5 @@ Análise da tela A3 Resultados apontou: o mesmo gráfico ("Onde o público assis
 | Cliente | Mesma visão por pesquisa, sem dados internos (campo, agentes, alertas de prazo) |
 
 Testes: `tests/test_resultados.py` (8 testes). Suíte completa: **38 de 38 aprovados**.
+
+**Figma** (arquivo "Sinergia — Protótipo Consolidado", página Protótipo): seção **"Revisão 28/10/2026 · Resultados por pesquisa"** com RV-A3a (visão geral), RV-A3b (uma pesquisa: Satisfação — Filme A) e RV-90 (o que mudou), ligadas no fluxo clicável de mesmo nome. Componentes novos na página Componentes: KPI / com contexto, Barra de resultado, Alerta e Linha de pesquisa · resultado.
