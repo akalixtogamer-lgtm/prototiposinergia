@@ -284,6 +284,35 @@ footer .base{border-top:1px solid rgba(255,255,255,.1)} footer .base .wrap{displ
 .vb i{display:block;width:100%;background:var(--action);border-radius:4px 4px 0 0;min-height:2px}
 .vb i.hl{background:var(--accent)}
 .vb em{font:500 .72rem/1.25 var(--mono);font-style:normal;color:var(--fg-3);text-align:center;white-space:normal}
+/* AC · usuários e acessos (28/10/2026) */
+.p-bad{background:var(--red-50);color:var(--red-800)}
+.modal.wide{width:min(1040px,100%)}
+.det-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.det-sec{display:grid;gap:10px} .det-sec h3{font-size:1.1rem}
+.det-sec.calc{border:1px dashed var(--line-strong);background:var(--bg-subtle);border-radius:var(--r-md);padding:14px 16px}
+.calc-tag{display:inline-flex;align-items:center;gap:6px;font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)} .calc-tag svg{width:14px;height:14px}
+.calc-papel{display:grid;gap:4px;padding-top:6px;border-top:1px solid var(--line)} .calc-papel:first-of-type{border-top:0;padding-top:0}
+.caps{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:4px;font-size:.85rem} .caps li{display:grid;grid-template-columns:130px 1fr;gap:10px} .caps li span{color:var(--fg-2)}
+.why{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem} .why li{padding-left:18px;position:relative} .why li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:50%}
+.why li.ok::before{background:var(--action)} .why li.no::before{background:#c4524a}
+.det-sec.admin-acts{border-left:4px solid var(--accent);padding-left:14px} .acts-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-danger[disabled],.btn[disabled]{opacity:.45;cursor:not-allowed}
+.hist{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem}
+table.usr td{vertical-align:top} table.usr th,table.usr td{padding-left:10px;padding-right:10px} .calc-cell{min-width:180px;max-width:240px;color:var(--fg);font-size:.82rem}
+.vref{min-width:220px} .vref .s{display:block;font-size:.8rem;color:var(--fg-2);margin-top:2px} .modal td.acts{display:flex;gap:10px;flex-wrap:wrap;min-width:150px}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;counter-reset:f}
+.flow li{position:relative;background:var(--bg-subtle);border:1px solid var(--line);border-radius:var(--r-md);padding:12px;display:grid;gap:4px;counter-increment:f}
+.flow li::before{content:counter(f);font:500 .72rem var(--mono);color:var(--fg-3)}
+.flow li b{font-size:.92rem} .flow li span{font-size:.8rem;color:var(--fg-2)} .flow li.end{border-color:var(--action);background:var(--brand-soft)}
+.matrix.ro td.yes{color:var(--action)} .matrix.ro td.yes svg{width:16px;height:16px} .matrix.ro td.no{color:var(--fg-3)}
+.arq{display:grid;gap:14px} .mx-papel{min-width:260px} .mx-papel .s{display:block;font-size:.78rem;color:var(--fg-2);margin-top:2px;font-weight:400} .arq details summary{cursor:pointer;font-weight:600;font-size:.92rem}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.steps li{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;padding:10px 12px;border-radius:var(--r-md);background:var(--bg-subtle);border:1px solid var(--line)}
+.steps li div{display:grid;gap:2px} .steps li span:not(.mk){font-size:.86rem;color:var(--fg-2)}
+.steps .mk{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-weight:700} .steps .mk svg{width:14px;height:14px}
+.steps li.ok .mk{background:var(--ok-bg);color:var(--ok-fg)} .steps li.no .mk{background:var(--red-50);color:var(--red-800)} .steps li.no{border-color:#e3a49e}
+.verdict{padding:12px 14px;border-radius:var(--r-md);font-size:.95rem} .verdict.ok{background:var(--ok-bg);color:var(--ok-fg)} .verdict.no{background:var(--red-50);color:var(--red-800)}
+.state{margin:0;padding-left:18px;display:grid;gap:8px;font-size:.92rem} .state li.warn{color:var(--warn-fg)}
 /* R · resultados por pesquisa (28/10/2026) */
 .kpi .s{font-size:.8rem;color:var(--fg-3);line-height:1.35} .kpi .v small,.metric .v small{font-size:.55em;color:var(--fg-2);font-weight:500}
 .res-filters .chips{display:inline-flex;gap:6px;flex-wrap:wrap}
@@ -764,7 +793,7 @@ const SEXOS=['Feminino','Masculino','Outro','Prefere não informar'];
 const DISPOS=['Próprio','Cedido pela Sinergia','Cedido pelo local de aplicação','Não informado'];
 const ORIGENS=['SurveyMonkey (importado)','Online na Sinergia','Campo (importado)'];
 function evolSeed(s){
- s.v=4;
+ s.v=4;s.demo=true;
  const base={'P-1027':['Zona Norte',29,'Feminino'],'P-1031':['Niterói e São Gonçalo',41,'Masculino'],'P-1044':['Zona Sul',24,'Feminino'],'P-1052':['Niterói e São Gonçalo',35,'Masculino'],'P-1060':['Zona Oeste',52,'Feminino'],'P-1075':['Centro',38,'Masculino'],'P-1099':['Zona Sul',33,'Masculino']};
  s.participantes.forEach(p=>{const b=base[p.cod];if(b){p.regiao=b[0];p.idade=b[1];p.sexo=b[2]}});
  const NOMES=['Beatriz','Carlos','Débora','Eduardo','Fernanda','Gabriel','Helena','Igor','Juliana','Kauã','Larissa','Marcelo','Natália','Otávio','Patrícia','Renato','Sabrina','Tiago','Úrsula','Vinícius','Wesley','Yara','Alice','Bernardo','Camila','Daniel','Elisa','Felipe','Giovana','Hugo','Isabela','Júlio','Lívia'];
@@ -854,7 +883,11 @@ function seed(){return evolSeed({v:3,session:null,ui:{},
   /* ◆ MEIO · S5 · equipe interna: transcrição, processamento (parceiro) e assistentes de análise */
   {id:'u6',nome:'Bianca Lemos',email:'bianca@sinergia.com.br',perms:['equipe'],funcao:'Transcrição',tel:'(21) 98444-1010'},
   {id:'u7',nome:'Carla Nunes',email:'carla@dadosco.com.br',perms:['equipe'],funcao:'Processamento (parceiro)',parceiro:'Dados & Co',tel:'(21) 98555-2020'},
-  {id:'u8',nome:'Lívia Rocha',email:'livia@sinergia.com.br',perms:['equipe'],funcao:'Assistente de análise',tel:'(21) 98666-3030'}
+  {id:'u8',nome:'Lívia Rocha',email:'livia@sinergia.com.br',perms:['equipe'],funcao:'Assistente de análise',tel:'(21) 98666-3030'},
+  /* AC: segundo administrador (aprova nomeações, R4), um convite pendente e uma conta suspensa, para demonstrar os estados */
+  {id:'u9',nome:'Marcos Vieira',email:'marcos@sinergia.com.br',admin:true,perms:[],tel:'(21) 98777-4040'},
+  {id:'u10',nome:'Otávio Reis',email:'otavio@ciabeta.com',perms:['cliente'],empresa:'Cia Beta',tel:'(21) 3555-0101'},
+  {id:'u11',nome:'Paulo Freitas',email:'paulo@cinemadelta.com.br',perms:['cliente'],empresa:'Cinema Delta',tel:'(21) 3444-0202'}
   /* ■ FIM · S5 · contas */
  ],
  clientes:[
@@ -959,7 +992,7 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const nid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const pct=(a,b)=>b?Math.round(a/b*100)+'%':'0%';
-const me=()=>S.session&&S.users.find(u=>u.id===S.session.uid);
+const me=()=>{const u=S.session&&S.users.find(x=>x.id===S.session.uid);if(u&&u.vinculos)projetar(u);return u}; /* AC/R11: o acesso é recalculado a cada leitura */
 const P=id=>S.pesquisas.find(p=>p.id===id);
 const PJ=id=>S.projetos.find(p=>p.id===id);
 const projNome=id=>(PJ(id)||{}).nome||'—';
@@ -999,7 +1032,7 @@ const ROLE_DESC={equipe:'Observa focus groups e cuida da transcrição, do proce
 const ROLE_ICO={equipe:'users',cliente:'build',participante:'user'};
 /* ■ FIM · S5 · perfis */
 const MENU={
- admin:[['adm-pesquisas','Pesquisas','list'],['adm-projetos','Projetos','folder'],['adm-clientes','Clientes','build'],['adm-convites','Convites','mail'],['adm-focus','Reuniões','video'],['adm-resultados','Resultados','chart'],['adm-cadastros','Cadastros','users'],['adm-usuarios','Usuários e permissões','lock'],['adm-integracoes','Integrações','globe']], /* D.1: Reuniões; A.4/E: Integrações */
+ admin:[['adm-pesquisas','Pesquisas','list'],['adm-projetos','Projetos','folder'],['adm-clientes','Clientes','build'],['adm-convites','Convites','mail'],['adm-focus','Reuniões','video'],['adm-resultados','Resultados','chart'],['adm-cadastros','Cadastros','users'],['adm-usuarios','Usuários e acessos','lock'],['adm-integracoes','Integrações','globe']], /* D.1: Reuniões; A.4/E: Integrações */
  equipe:[['eq-focus','Reuniões','video','focus_observar'],['eq-transcricoes','Transcrição e análise','list','transcrever_analisar'],['eq-resultados','Resultados','chart','ver_resultados'],['eq-perfil','Perfil','user']], /* A.3: resultados para a análise */ /* S5: menu da equipe interna */
  cliente:[['cl-projetos','Projetos','folder','ver_projetos'],['cl-resultados','Resultados','chart','ver_resultados'],['cl-perfil','Perfil','user']],
  participante:[['pa-pesquisas','Minhas pesquisas','home','responder'],['pa-focus','Debates','video','focus_participar'],['pa-respostas','Minhas respostas','hist','responder'],['pa-perfil','Perfil','user']]};
@@ -1034,9 +1067,10 @@ function guard(r){
  return r}
 
 /* ---------- Breadcrumb ---------- */
-const LABEL={'adm-integracoes':'Integrações','eq-resultados':'Resultados','adm-pesquisas':'Pesquisas','adm-projetos':'Projetos','adm-clientes':'Clientes','adm-convites':'Convites','adm-resultados':'Resultados','adm-cadastros':'Cadastros','adm-usuarios':'Usuários e permissões','ag-pesquisas':'Minhas pesquisas','ag-detalhes':'Detalhes da pesquisa','ag-aplicar':'Aplicar pesquisa','ag-perfil':'Perfil','cl-projetos':'Projetos','cl-resultados':'Resultados','cl-perfil':'Perfil','pa-pesquisas':'Minhas pesquisas','pa-preferencias':'Pesquisa personalizada','pa-responder':'Responder','pa-revisao':'Revisão das respostas','pa-concluida':'Pesquisa concluída','pa-respostas':'Minhas respostas','pa-perfil':'Perfil'};
+const LABEL={'adm-integracoes':'Integrações','eq-resultados':'Resultados','adm-pesquisas':'Pesquisas','adm-projetos':'Projetos','adm-clientes':'Clientes','adm-convites':'Convites','adm-resultados':'Resultados','adm-cadastros':'Cadastros','adm-usuarios':'Usuários e acessos','ag-pesquisas':'Minhas pesquisas','ag-detalhes':'Detalhes da pesquisa','ag-aplicar':'Aplicar pesquisa','ag-perfil':'Perfil','cl-projetos':'Projetos','cl-resultados':'Resultados','cl-perfil':'Perfil','pa-pesquisas':'Minhas pesquisas','pa-preferencias':'Pesquisa personalizada','pa-responder':'Responder','pa-revisao':'Revisão das respostas','pa-concluida':'Pesquisa concluída','pa-respostas':'Minhas respostas','pa-perfil':'Perfil'};
 const CHAIN={'adm-projeto':['adm-projetos'],'adm-cliente':['adm-clientes'],'ag-detalhes':['ag-pesquisas'],'ag-aplicar':['ag-pesquisas'],'cl-projeto':['cl-projetos'],'cl-resultado':['cl-projetos','cl-projeto'],'pa-preferencias':['pa-pesquisas'],'pa-responder':['pa-pesquisas'],'pa-revisao':['pa-pesquisas','pa-responder'],'pa-concluida':['pa-pesquisas']};
-function labelOf(r){if(LABEL[r])return LABEL[r];if(r==='adm-projeto'||r==='cl-projeto')return projNome(UI.proj);if(r==='adm-cliente')return (S.clientes.find(c=>c.id===UI.cli)||{}).nome||'Cliente';if(r==='cl-resultado')return (P(UI.resPid)||{}).nome||'Resultado';return r}
+function labelOf(r){if(LABEL[r])return LABEL[r];const daEmpresa=x=>x&&(routeRole(r)!=='cliente'||x.cliente===(me()||{}).empresa); /* AC/R6: o breadcrumb do cliente não mostra nome de outra empresa */
+ if(r==='adm-projeto'||r==='cl-projeto'){const pj=PJ(UI.proj);return daEmpresa(pj)?pj.nome:'Projeto'}if(r==='adm-cliente')return (S.clientes.find(c=>c.id===UI.cli)||{}).nome||'Cliente';if(r==='cl-resultado'){const p=P(UI.resPid);return daEmpresa(p)?p.nome:'Resultado'}return r}
 function crumbs(r){const role=routeRole(r),chain=(CHAIN[r]||[]).filter(x=>x!==r);
  const list=[['home','Site'],[homeOf(role),'Área '+ROLE[role]],...chain.map(x=>[x,labelOf(x)]),[null,labelOf(r)]];
  return `<nav class="crumbs" aria-label="Você está em"><ol>${list.map(([h,l],i)=>i===list.length-1?`<li aria-current="page">${esc(l)}</li>`:`<li><a href="#${h}">${esc(l)}</a></li>`).join('')}</ol></nav>`}
@@ -1234,9 +1268,12 @@ FORM.login=f=>{const d=formData(f),err=f.querySelector('#l-err'),tab=UI.loginTab
  /* ■ FIM · S5 · login recusado */
  if(!u)return fail('Não encontramos uma conta com esse e-mail. Confira o endereço ou use uma conta de demonstração.');
  if((d.senha||'').length<4)return fail('Senha incorreta. Neste protótipo, use qualquer senha com 4 ou mais caracteres.');
+ if(u.bloqueado)return fail('Esta conta está suspensa. Fale com o administrador da Sinergia.'); /* AC/R2 */
+ (u.vinculos||[]).filter(v=>v.situacao==='convite'&&v.tipo!=='admin').forEach(v=>{v.situacao='ativo';v.aceitoEm=hoje()+' '+tstr();u.acessoAtualizado=v.aceitoEm;checarConflitos(u,true);S.auditoria=S.auditoria||[];S.auditoria.unshift({t:v.aceitoEm,tipo:'alteracao',quem:u.nome,perfil:'login',acao:'Convite aceito no primeiro acesso',alvo:u.nome,motivo:VINC_TIPOS[v.tipo]+' ('+v.ref+')'})}); /* AC: entrar confirma a identidade e aceita o convite */
+ const ac=projetar(u);save();
  if(tab==='admin'&&!u.admin)return fail('Esta conta não é de administrador. Entre pela opção Usuário.');
  if(tab==='usuario'&&u.admin)return fail('Contas de administrador entram pela opção Administrador.');
- if(tab==='usuario'&&!u.perms.length)return fail('Sua conta ainda não tem permissões de navegação. Peça ao administrador para liberar o acesso.');
+ if(tab==='usuario'&&!u.perms.length)return fail(ac.pend.length?`Seu acesso ainda não foi liberado: ${ac.pend.map(v=>VINC_TIPOS[v.tipo]+' '+SIT_V[situacaoVinc(v)].toLowerCase()).join(', ')}. O administrador precisa concluir a revisão.`:'Sua conta não tem nenhum vínculo ativo. Peça ao administrador da Sinergia um convite.');
  S.session={uid:u.id,mode:tab==='admin'?'admin':'user',role:u.perms.length===1?u.perms[0]:null,last:Date.now()};UI.prefill='';UI.aviso='';save();
  toast(`Olá, ${u.nome.split(' ')[0]}.`);location.hash=firstRoute()};
 
@@ -1345,7 +1382,7 @@ V['adm-cliente']=r=>{const c=S.clientes.find(x=>x.id===UI.cli);if(!c)return sys(
  return sys(r,head(esc(c.nome),`${esc(c.seg)} · contato ${esc(c.contato)} · ${esc(c.email)} · cliente desde ${c.criado}`,`<button type="button" class="btn btn-ghost" data-act="cli-edit" data-id="${c.id}">Editar cliente</button><button type="button" class="btn btn-primary" data-act="novo-projeto" data-cli="${esc(c.nome)}">+ Novo projeto</button>`,['adm-clientes','Clientes'])+
  kpis([['Projetos',s.ps.length],['Pesquisas ativas',s.ativas],['Respondentes',s.resp]])+
  `<h2 style="font-size:1.5rem">Projetos deste cliente</h2>${s.ps.length?`<div class="grid g3">${s.ps.map(p=>projCard(p,'adm')).join('')}</div>`:'<p class="empty panel">Este cliente ainda não tem projetos.</p>'}
- <div class="panel" style="display:grid;gap:8px"><h3>Acesso da empresa ao sistema</h3>${us.length?us.map(u=>`<div class="ph"><span><b>${esc(u.nome)}</b> <span class="small muted">${esc(u.email)}</span></span><a class="linkbtn" href="#adm-usuarios">Ver permissões</a></div>`).join(''):'<p class="small muted">Ninguém desta empresa tem acesso de Cliente. Libere em Usuários e permissões.</p>'}</div>`)};
+ <div class="panel" style="display:grid;gap:8px"><h3>Acesso da empresa ao sistema</h3>${us.length?us.map(u=>`<div class="ph"><span><b>${esc(u.nome)}</b> <span class="small muted">${esc(u.email)}</span></span><button type="button" class="linkbtn" data-act="usr-det" data-id="${u.id}">Ver acessos</button></div>`).join(''):'<p class="small muted">Ninguém desta empresa tem vínculo de Cliente ativo. Convide em Usuários e acessos.</p>'}</div>`)};
 
 /* Convites */
 V['adm-convites']=r=>sys(r,head('Convites','Envie pesquisas aos participantes, aprove pedidos de participação e acompanhe quem já respondeu.','<button type="button" class="btn btn-primary" data-act="novo-convite">+ Novo convite</button>')+
@@ -1367,32 +1404,7 @@ FORM.cad=f=>{const t=f.dataset.t,d=formData(f),v={};CAD[t].cols.filter(([k])=>k!
  const id=f.dataset.id;if(id){const x=S[t].find(i=>i.id===id),old=x.nome;Object.assign(x,v);if(t==='clientes'&&old!==v.nome){S.projetos.forEach(p=>{if(p.cliente===old)p.cliente=v.nome});S.pesquisas.forEach(p=>{if(p.cliente===old)p.cliente=v.nome});S.users.forEach(u=>{if(u.empresa===old)u.empresa=v.nome})}}
  else S[t].unshift({id:nid(t[0]),criado:hoje(),...v});save();closeModal();toast('Cadastro salvo.');refresh()};
 
-/* Usuários e permissões */
-V['adm-usuarios']=r=>{const t=UI.usrTab||'usuarios';
- return sys(r,head('Usuários e permissões','Defina o tipo de acesso de cada conta e o que cada perfil pode fazer.',t==='usuarios'?'<button type="button" class="btn btn-primary" data-act="novo-usuario">+ Novo usuário</button>':'')+
- `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${t==='usuarios'}" data-act="set" data-k="usrTab" data-v="usuarios">Usuários</button><button type="button" role="tab" aria-selected="${t==='perm'}" data-act="set" data-k="usrTab" data-v="perm">Permissões por perfil</button><button type="button" role="tab" aria-selected="${t==='auditoria'}" data-act="set" data-k="usrTab" data-v="auditoria">Acessos negados</button></div>`+
- (t==='usuarios'?`<p class="note">O login tem duas entradas: <b>Administrador</b> e <b>Usuário</b>. Marque abaixo como cada usuário pode navegar. Quem tem mais de uma permissão troca de perfil pelo menu lateral.</p>
- <p class="note sol" data-solicitacao="S5">${solTag('S5')} <b>Entrevistadores e terceirizados não têm conta.</b> Eles ficam só em Cadastros → Agentes. Só a equipe interna (transcrição, processamento e assistentes de análise) recebe o perfil <b>Equipe interna</b>.</p>
- <div class="tablebox"><table><thead><tr><th>Usuário</th><th>Acesso</th><th>Navega como</th><th>Função / empresa / código</th><th>Ações</th></tr></thead><tbody>${S.users.map(u=>`<tr><td><b>${esc(u.nome)}</b><span class="s">${esc(u.email)}</span></td><td>${pill(u.admin?'Administrador':'Usuário')}</td><td>${u.admin?'<span class="small muted">Acesso total pela área do administrador</span>':`<div class="permbox">${USER_ROLES.map(p=>`<label><input type="checkbox" data-act-change="perm" data-uid="${u.id}" data-p="${p}" ${u.perms.includes(p)?'checked':''}>${ROLE_SHORT[p]}</label>`).join('')}</div>${u.perms.length?'':'<span class="s" style="color:var(--warn-fg)">Sem permissões: não consegue entrar</span>'}`}</td><td class="small">${u.perms.includes('equipe')?`${esc(u.funcao||'—')}${u.parceiro?' · '+esc(u.parceiro):''}<br>`:''}${u.perms.includes('cliente')?esc(u.empresa||'—'):''}${u.perms.includes('cliente')&&u.perms.includes('participante')?'<br>':''}${u.perms.includes('participante')?`<span class="tnum">${u.codigo||'—'}</span>`:''}${u.admin?'—':''}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-usuario" data-id="${u.id}">Editar</button>${u.id===S.session.uid?'':`<button type="button" class="linkbtn danger" data-act="remover-usuario" data-id="${u.id}">Remover</button>`}</td></tr>`).join('')}</tbody></table></div>`
- :t==='perm'?matrixView():auditoriaView()))}; /* E.2: matriz módulo × ação; E.6: registro de acessos negados */
-function userForm(id){const u=id?S.users.find(x=>x.id===id):{perms:['participante']},adm=!!u.admin;
- openModal(id?'Editar usuário':'Novo usuário',`<form id="f-usr" data-form="usuario" data-id="${id||''}">${field('unome','Nome',u.nome||'','text','required')}${field('umail','E-mail',u.email||'','email','required')}
- <fieldset class="field"><legend class="lg">Tipo de acesso</legend><div class="permbox"><label><input type="radio" name="uacc" value="usuario" ${adm?'':'checked'}>Usuário</label><label><input type="radio" name="uacc" value="admin" ${adm?'checked':''} ${id===S.session.uid?'disabled':''}>Administrador</label></div></fieldset>
- <fieldset class="field" id="u-perms" ${adm?'hidden':''}><legend class="lg">Navega como</legend><div class="permbox">${USER_ROLES.map(p=>`<label><input type="checkbox" name="up-${p}" ${u.perms?.includes(p)?'checked':''}>${ROLE[p]}</label>`).join('')}</div></fieldset>
- <div id="u-func" ${adm?'hidden':''}>${sel('ufunc','Função na equipe interna (para Equipe interna)',FUNCOES,u.funcao||FUNCOES[0])}</div>
- <div class="row2" id="u-extra" ${adm?'hidden':''}>${sel('uemp','Empresa (para Cliente)',S.clientes.map(c=>c.nome),u.empresa||S.clientes[0]?.nome)}${field('ucod','Código de participante',u.codigo||'','text','placeholder="Gerado automaticamente"')}</div>
- <div class="err" id="u-err" hidden></div></form>`,
- `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-usr">Salvar usuário</button>`,
- m=>m.querySelectorAll('[name=uacc]').forEach(x=>x.onchange=()=>{const a=m.querySelector('[name=uacc]:checked').value==='admin';m.querySelector('#u-perms').hidden=a;m.querySelector('#u-extra').hidden=a;m.querySelector('#u-func').hidden=a}))}
-function garantirCadastros(u){if(u.perms.includes('participante')){u.codigo=u.codigo||nextCod();if(!partBy(u.codigo))S.participantes.push({id:nid('r'),cod:u.codigo,nome:u.nome,email:u.email,cidade:'—',criado:hoje()})}
- if(u.perms.includes('equipe'))u.funcao=u.funcao||FUNCOES[0]}
-FORM.usuario=f=>{const d=formData(f),id=f.dataset.id,e=f.querySelector('#u-err'),email=d.umail.trim().toLowerCase();
- if(!d.unome.trim()||!/^\S+@\S+\.\S+$/.test(email)){e.textContent='Preencha nome e um e-mail válido.';e.hidden=false;return}
- if(S.users.some(u=>u.email.toLowerCase()===email&&u.id!==id)){e.textContent='Já existe um usuário com esse e-mail.';e.hidden=false;return}
- const adm=id===S.session.uid?true:(d.uacc==='admin'),perms=adm?[]:USER_ROLES.filter(p=>d['up-'+p]);
- const u=id?S.users.find(x=>x.id===id):{id:nid('u')};Object.assign(u,{nome:d.unome.trim(),email,admin:adm,perms,empresa:perms.includes('cliente')?d.uemp:u.empresa,funcao:perms.includes('equipe')?d.ufunc:u.funcao});
- if(perms.includes('participante')&&(d.ucod||'').trim())u.codigo=d.ucod.trim();garantirCadastros(u);
- if(!id)S.users.push(u);save();closeModal();toast(id?'Usuário atualizado.':'Usuário criado. Ele entra pela opção Usuário no login.');refresh()};
+
 
 /* ▶ INÍCIO · S5 Controle de acesso rigoroso · solicitação da cliente (relatório de 21/10/2026)
    A área do Agente foi desativada: entrevistadores e equipes terceirizadas não entram na plataforma.
@@ -1509,7 +1521,7 @@ const ACT={
  'login-tab':el=>{UI.loginTab=el.dataset.tab;save();refresh()},
  demo:el=>{const i=document.getElementById('l-mail'),s=document.getElementById('l-senha');i.value=el.dataset.email;s.value='demo1234';s.focus()},
  logout:()=>{S.session=null;UI.agOn=false;save();toast('Você saiu da conta.');location.hash='login'},
- reset:()=>confirmBox('Restaurar dados de exemplo','Pesquisas, convites, usuários e respostas voltam ao estado inicial deste protótipo. Você continua conectado.','Restaurar',()=>{const s=S.session;S=seed();S.session=s;UI=S.ui;save();toast('Dados de exemplo restaurados.');refresh()}),
+ reset:()=>confirmBox('Restaurar dados de exemplo','Pesquisas, convites, usuários e respostas voltam ao estado inicial deste protótipo. Você continua conectado.','Restaurar',()=>{const s=S.session;S=seed();migrarAcessos(S);S.users.forEach(projetar);S.session=s;UI=S.ui;save();toast('Dados de exemplo restaurados.');refresh()}),
  switch:el=>{const r=el.dataset.role;S.session.role=r;save();location.hash=homeOf(r)},
  set:el=>{UI[el.dataset.k]=el.dataset.v;save();refresh()},
  goto:el=>{(el.dataset.set||'').split(',').filter(Boolean).forEach(kv=>{const [k,v]=kv.split(':');UI[k]=v});save();location.hash=el.dataset.to},
@@ -1537,7 +1549,6 @@ const ACT={
  'cad-del':el=>{const t=UI.cadTab==='participantes'?'participantes':'agentes',x=S[t].find(i=>i.id===el.dataset.id);confirmBox('Excluir cadastro',`Excluir ${esc(x.nome)} de ${CAD[t].t.toLowerCase()}?`,'Excluir',()=>{S[t]=S[t].filter(i=>i!==x);save();refresh();toast('Cadastro excluído.')})},
  'novo-usuario':()=>userForm(),
  'editar-usuario':el=>userForm(el.dataset.id),
- 'remover-usuario':el=>{const u=S.users.find(x=>x.id===el.dataset.id);confirmBox('Remover usuário',`${esc(u.nome)} perde o acesso ao sistema.`,'Remover',()=>{S.users=S.users.filter(x=>x!==u);save();refresh();toast('Usuário removido.')})},
  'ag-rec':el=>modalRecursos(el.dataset.id),
  'rec-close':()=>{closeModal();refresh()},
  'rec-del':el=>{S.recursos[UI.recPesq].splice(+el.dataset.i,1);save();redrawRec()},
@@ -1559,10 +1570,6 @@ function paAdvance(g,qs,i){if(UI.backToReview){UI.backToReview=false;g.step=qs.l
  if(i<qs.length-1){g.step=i+1;save();refresh();window.scrollTo(0,0);return}
  g.step=qs.length-1;save();if(config(UI.paPid).resumo)location.hash='pa-revisao';else enviarParticipante()}
 const CHANGE={
- perm:el=>{const u=S.users.find(x=>x.id===el.dataset.uid),p=el.dataset.p;u.perms=el.checked?[...new Set([...u.perms,p])]:u.perms.filter(x=>x!==p);
-  if(el.checked&&p==='cliente'&&!u.empresa){u.empresa=S.clientes[0]?.nome;toast(`Empresa definida como ${u.empresa}. Ajuste em Editar, se precisar.`)}
-  if(el.checked)garantirCadastros(u);
-  save();refresh();if(!(el.checked&&p==='cliente'&&u.empresa===S.clientes[0]?.nome))toast(`${u.nome}: ${el.checked?'pode':'não pode mais'} navegar como ${ROLE[p]}.`)},
  impProj:el=>{UI.impProj=el.value;save()},
  rec:el=>{S.recursos[UI.recPesq][+el.dataset.i].ok=el.checked;save();redrawRec()},
  pref:el=>{curPref()[el.dataset.k]=el.checked;save();refresh()}
@@ -1573,7 +1580,7 @@ const PENDING={conv:id=>conviteForm(id)};
 FORM.cadastro=f=>{const v=id=>(f.querySelector('#'+id)?.value||'').trim(),email=v('p-mail').toLowerCase();
  if(!/^\S+@\S+\.\S+$/.test(email)){toast('Informe um e-mail válido.');return}
  if(S.users.some(u=>u.email.toLowerCase()===email)){toast('Já existe uma conta com esse e-mail. Entre pela opção Usuário.');UI.prefill=email;UI.loginTab='usuario';save();location.hash='login';return}
- const cod=nextCod(),nome=v('p-nome')||'Participante';S.users.push({id:nid('u'),nome,email,perms:['participante'],codigo:cod,tel:''});S.participantes.push({id:nid('r'),cod,nome,email,cidade:v('p-cid')||'—',criado:hoje()});
+ const cod=nextCod(),nome=v('p-nome')||'Participante';{const nu={id:nid('u'),nome,email,tel:'',bloqueado:false,acessoAtualizado:hoje()+' '+tstr(),vinculos:[{id:nid('v'),tipo:'participante',ref:cod,situacao:'ativo',origem:'Cadastro público',desde:hoje(),validade:'',motivo:''}]};S.participantes.push({id:nid('r'),cod,nome,email,cidade:v('p-cid')||'—',criado:hoje()});projetar(nu);S.users.push(nu);S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hoje()+' '+tstr(),tipo:'alteracao',quem:nome,perfil:'cadastro público',acao:'Conta criada pelo cadastro público',alvo:nome,motivo:'Participante ('+cod+')'})}
  UI.prefill=email;UI.loginTab='usuario';save();toast(`Cadastro criado com o código ${cod}. Entre pela opção Usuário.`);location.hash='login'};
 
 
@@ -1801,30 +1808,283 @@ document.addEventListener('change',e=>{const el=e.target;if(el.id!=='mat-file'||
 /* ======================= EVOLUÇÃO 27/10/2026 · continuação (dados e matriz padrão em sys4-evol-dados.js, carregado antes) ======================= */
 const FUNC_PERFIL={'Transcrição':'transcricao','Processamento (parceiro)':'processamento','Assistente de análise':'analise'};
 function perfilAtual(){const u=me();if(!u||!S.session)return null;if(S.session.mode==='admin')return u.admin?'admin':null;const r=S.session.role;if(!u.perms.includes(r))return null;return r==='equipe'?FUNC_PERFIL[u.funcao]||null:r}
-function pode(mod,ac,perfil){perfil=perfil||perfilAtual();if(!perfil)return false;if(SO_ADMIN.includes(mod+'.'+ac)&&perfil!=='admin')return false;return !!((S.perm2||{})[perfil]||{})[mod+'.'+ac]}
+function pode(mod,ac,perfil){perfil=perfil||perfilAtual();return podePerfil(perfil,mod+'.'+ac)} /* AC: políticas do código (POLITICAS), não mais a matriz gravada no navegador */
 /* ◆ MEIO · E.5–E.7 · camada central de autorização: toda ação que muda dados passa por exigir() */
 const SESSAO_MIN=()=>S.config&&S.config.sessaoMin||30;
 function sessaoValida(){return !!(S.session&&(Date.now()-(S.session.last||0))<SESSAO_MIN()*60000)}
 function expirar(){S.session=null;UI.aviso='expirada';save();location.hash='login'}
-function negar(mod,ac){const u=me();S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hoje()+' '+tstr(),quem:u?u.nome:'—',perfil:perfilAtual()||'sem sessão',acao:(MODULOS.find(m=>m[0]===mod)||[,mod])[1]+' · '+(ACOES.find(a=>a[0]===ac)||[,ac])[1],rota:location.hash});S.auditoria=S.auditoria.slice(0,200);save();
+function negar(mod,ac){const u=me();S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hoje()+' '+tstr(),tipo:'negado',quem:u?u.nome:'—',perfil:perfilAtual()||'sem sessão',acao:(MODULOS.find(m=>m[0]===mod)||[,mod])[1]+' · '+(ACOES.find(a=>a[0]===ac)||[,ac])[1],rota:location.hash});S.auditoria=S.auditoria.slice(0,200);save();
  toast(`Acesso negado: seu perfil não pode “${((ACOES.find(a=>a[0]===ac)||[,ac])[1]).toLowerCase()}” em ${(MODULOS.find(m=>m[0]===mod)||[,mod])[1]}.`);return false}
 function exigir(mod,ac){if(!sessaoValida()){expirar();return false}return pode(mod,ac)||negar(mod,ac)}
 const G=(mod,ac,fn)=>function(...a){return exigir(mod,ac)?fn.apply(this,a):undefined};
 ['click','keydown'].forEach(ev=>document.addEventListener(ev,()=>{if(S.session&&sessaoValida()){S.session.last=Date.now();save()}},true));
 V.negado=()=>{const n=UI.negado||{},u=me();return pageHero([['home','Site'],[null,'Acesso negado']],'Erro 403 · acesso negado','Você não tem permissão para abrir esta página',esc(n.motivo||'Seu perfil não inclui esta área.'))+
  `<section class="section"><div class="wrap" style="display:grid;gap:14px;max-width:720px"><p class="muted">Endereço pedido: <code>${esc(n.rota||'')}</code>. A tentativa foi registrada. Se você precisa deste acesso, peça ao administrador para revisar seu perfil em <b>Usuários e permissões</b>.</p><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-primary" href="#${u?firstRoute():'login'}">${u?'Voltar para a minha área':'Entrar'}</a><a class="btn btn-ghost" href="#home">Ir para o site</a></div></div></section>`};
-function negarRota(r,motivo){UI.negado={rota:'#'+r,motivo};const u=me();S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hoje()+' '+tstr(),quem:u?u.nome:'—',perfil:perfilAtual()||'sem sessão',acao:'Abrir '+r,rota:'#'+r});save();return 'negado'}
+function negarRota(r,motivo){UI.negado={rota:'#'+r,motivo};const u=me();S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hoje()+' '+tstr(),tipo:'negado',quem:u?u.nome:'—',perfil:perfilAtual()||'sem sessão',acao:'Abrir '+r,rota:'#'+r});save();return 'negado'}
 /* ■ FIM · E.1–E.8 · camada de autorização */
 
-/* ▶ INÍCIO · E.2/E.3/E.8 · tela da matriz módulo × ação por perfil */
-function matrixView(){const perf=UI.mxPerf||'transcricao',base=UI.mx2||JSON.parse(JSON.stringify(S.perm2)),dirty=!!UI.mx2,d=base[perf]||{},lockAll=perf==='admin';
+/* ▶ INÍCIO · AC · acessos calculados (refatoração de 28/10/2026)
+   Serviço central de autorização. As permissões deixam de vir de checkboxes por usuário:
+   identidade (login) → vínculos válidos (função, empresa, código, nomeação de administrador) → papel da sessão
+   → política do papel (definida aqui no código, só leitura) → permissões efetivas + escopo. Negação por padrão.
+   Limite deste protótipo: não há servidor. Este módulo faz o papel do backend no navegador; a versão real
+   precisa repetir exatamente estas regras na API (ver ACESSOS.md). */
+const VINC_TIPOS={admin:'Administrador',equipe:'Equipe interna',cliente:'Cliente Empresa',participante:'Participante'};
+const VINC_REF={admin:'',equipe:'Função',cliente:'Empresa',participante:'Código de participante'};
+const SIT_V={ativo:'Ativo',convite:'Convite pendente',aprovacao:'Aguardando aprovação',revisao:'Em revisão',revogado:'Revogado',expirado:'Expirado'};
+const ORIGEM_MIGRACAO='Migração 28/10/2026';
+/* Políticas por perfil: fonte única, no código. Mudam por revisão de código (pull request), não por clique. */
+const POLITICAS=(()=>{const p=permPadrao();Object.values(p).forEach(Object.freeze);return Object.freeze(p)})();
+const PERFIL_LABEL=Object.fromEntries(PERFIS);
+const ESCOPO_TXT={admin:'Todos os clientes, projetos, pesquisas e cadastros',transcricao:'Reuniões e transcrições da esteira; só a etapa de transcrição',processamento:'Reuniões e transcrições da esteira; só a etapa de processamento (falas anonimizadas)',analise:'Resultados de todos os clientes, respostas só por código (sem nome, e-mail ou telefone); só a etapa de análise',cliente:'Só a empresa do vínculo: projetos, pesquisas e resultados agregados',participante:'Só o próprio código: convites, respostas e debates para os quais foi convidado'};
+/* Regras de autorização (o que a tela Arquitetura de acessos mostra; cada uma aponta onde é aplicada no código) */
+const REGRAS=[
+ ['R1','Negação por padrão','Sem regra explícita que libere, a ação ou a tela é negada.','—','pode(), guard(), exigir()'],
+ ['R2','Conta suspensa não acessa','Suspender a conta derruba todos os vínculos na próxima ação, sem apagar dados.','Conta ativa','avaliarConta(), login'],
+ ['R3','Só vínculo ativo e dentro da validade conta','Convite pendente, revisão, revogação ou validade vencida não dão acesso.','Vínculo ativo','vincValido()'],
+ ['R4','Administrador só com aprovação de outro administrador','Ninguém se torna administrador sozinho: a nomeação é pedida com motivo e aprovada por outra pessoa.','Nomeação aprovada','v-aprovar, vincValido()'],
+ ['R5','Equipe interna recebe a política da função','Transcrição, processamento e análise têm capacidades diferentes; cada função só age na própria etapa da esteira.','Função na equipe','POLITICAS, DONO (esteira)'],
+ ['R6','Cliente vê só a própria empresa','Projetos, pesquisas e resultados filtrados pela empresa do vínculo; nunca dados individuais.','Empresa cadastrada','minhasEmpresa(), cl-resultado, cl-projeto'],
+ ['R7','Participante vê só o próprio código','Convites, respostas e debates do próprio código; nenhum cadastro de outras pessoas.','Código de participante','meusConvites(), pa-focus'],
+ ['R8','Um papel por sessão; vínculos não se somam','Quem tem mais de um vínculo escolhe o papel ao entrar. Equipe interna e cliente na mesma conta vai para revisão antes de valer.','—','firstRoute(), checarConflitos()'],
+ ['R9','Usuários e integrações só com administrador','Nenhuma política de outro papel consegue gerenciar contas ou integrações.','Administrador','SO_ADMIN, pode()'],
+ ['R10','Entrevistadores e terceirizados de campo sem conta','Ficam só em Cadastros → Agentes; os dados de campo entram pela importação (solicitação S5).','—','login, guard()'],
+ ['R11','Acesso recalculado em toda rota e ação','Revogar, suspender ou expirar um vínculo vale no próximo clique; a sessão não guarda privilégio.','—','me() → projetar()'],
+ ['R12','Mudança de acesso fica registrada','Convite, correção, revogação, aprovação, suspensão e remoção ficam na auditoria com responsável e motivo.','—','auditar()'],
+ ['R13','Administrador não reduz a própria proteção','Não pode suspender a própria conta, revogar a própria nomeação nem remover o último administrador.','—','protegeAdmin()']];
+const hojeHora=()=>hoje()+' '+tstr();
+function auditar(acao,alvo,motivo){const u=me();S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hojeHora(),tipo:'alteracao',quem:u?u.nome:'Sistema',perfil:perfilAtual()||'—',acao,alvo:alvo||'',motivo:motivo||''});S.auditoria=S.auditoria.slice(0,400)}
+/* Validade de um vínculo, com o motivo em linguagem simples */
+function vincValido(v){if(!v)return [false,'Vínculo inexistente'];
+ const sit=situacaoVinc(v);if(sit!=='ativo')return [false,sit==='expirado'?`Vínculo expirou em ${v.validade}`:`Vínculo ${SIT_V[sit].toLowerCase()}`];
+ if(v.tipo==='equipe'&&!FUNC_PERFIL[v.ref])return [false,'Função da equipe não reconhecida'];
+ if(v.tipo==='cliente'&&!S.clientes.some(c=>c.nome===v.ref))return [false,'Empresa não cadastrada em Clientes'];
+ if(v.tipo==='participante'&&!partBy(v.ref))return [false,'Código sem cadastro de participante'];
+ if(v.tipo==='admin'&&!v.aprovadoPor)return [false,'Nomeação de administrador sem aprovação registrada'];
+ return [true,'Vínculo ativo'+(v.validade?` até ${v.validade}`:'')]}
+const situacaoVinc=v=>v.situacao==='ativo'&&v.validade&&dias(v.validade)!==null&&dias(v.validade)<0?'expirado':v.situacao;
+/* Cálculo central: tudo o que a conta pode, a partir dos vínculos */
+function avaliarConta(u){const vs=(u.vinculos||[]).map(v=>{const [ok,motivo]=vincValido(v);return {v,ok:ok&&!u.bloqueado,motivo:ok&&u.bloqueado?'Conta suspensa: vínculo não vale enquanto durar a suspensão':motivo}});
+ const val=vs.filter(x=>x.ok).map(x=>x.v),ref=t=>(val.find(v=>v.tipo===t)||{}).ref||'';
+ const pend=(u.vinculos||[]).filter(v=>['convite','aprovacao','revisao'].includes(situacaoVinc(v)));
+ return {vs,val,admin:val.some(v=>v.tipo==='admin'),papeis:USER_ROLES.filter(p=>val.some(v=>v.tipo===p)),empresa:ref('cliente'),codigo:ref('participante'),funcao:ref('equipe'),pend,
+  situacao:u.bloqueado?'Bloqueado':val.length?'Ativo':pend.length?'Pendente':'Inativo',revisao:(u.vinculos||[]).some(v=>situacaoVinc(v)==='revisao')}}
+/* Os campos antigos (admin, perms, empresa, codigo, funcao) viram reflexo dos vínculos: o que estiver gravado neles é sobrescrito. */
+function projetar(u){const a=avaliarConta(u);u.admin=a.admin;u.perms=a.papeis;u.empresa=a.empresa;u.codigo=a.codigo;u.funcao=a.funcao;return a}
+const perfilDoPapel=(papel,a)=>papel==='admin'?'admin':papel==='equipe'?FUNC_PERFIL[a.funcao]||null:papel;
+const podePerfil=(perfil,k)=>!!perfil&&!(SO_ADMIN.includes(k)&&perfil!=='admin')&&!!(POLITICAS[perfil]||{})[k];
+function areasDe(papel,perfil){if(papel==='admin')return MENU.admin.map(m=>m[1]);return MENU[papel].filter(([,, ,c])=>!c||podePerfil(perfil,CAPMAP[c])).map(m=>m[1])}
+function capsDe(perfil){return MODULOS.map(([m,ml])=>[ml,APLICA[m].filter(a=>podePerfil(perfil,m+'.'+a)).map(a=>(ACOES.find(x=>x[0]===a)||[,a])[1].toLowerCase())]).filter(([,l])=>l.length)}
+/* Explica uma decisão para um papel e uma ação (usado no diagnóstico e no painel do usuário) */
+function explicar(u,papel,k){const a=avaliarConta(u),passos=[];const ok=(t,d,s)=>passos.push({t,d,s});
+ ok('Identidade',`Conta ${u.email}`,true);
+ ok('Situação da conta',u.bloqueado?'Suspensa (R2)':a.situacao,!u.bloqueado);
+ const vp=a.vs.filter(x=>x.v.tipo===papel);
+ ok('Vínculo do papel '+VINC_TIPOS[papel],vp.length?vp.map(x=>`${x.v.ref||VINC_TIPOS[papel]}: ${x.motivo}`).join('; '):'Nenhum vínculo deste tipo (R3)',vp.some(x=>x.ok));
+ const perfil=vp.some(x=>x.ok)?perfilDoPapel(papel,a):null;
+ ok('Política aplicada',perfil?`${PERFIL_LABEL[perfil]} · ${Object.keys(POLITICAS[perfil]||{}).length} permissões`:'Nenhuma: sem vínculo válido não há política (R1)',!!perfil);
+ ok('Escopo dos dados',perfil?ESCOPO_TXT[perfil]+(papel==='cliente'?` (${a.empresa})`:papel==='participante'?` (${a.codigo})`:''):'—',!!perfil);
+ let res=null;if(k){const [m,ac]=k.split('.'),permitido=podePerfil(perfil,k),rotulo=`${(ACOES.find(x=>x[0]===ac)||[,ac])[1]} em ${(MODULOS.find(x=>x[0]===m)||[,m])[1]}`;
+  const porque=!perfil?'sem papel válido (R1, R3)':SO_ADMIN.includes(k)&&perfil!=='admin'?'exclusivo do administrador (R9)':permitido?`a política ${PERFIL_LABEL[perfil]} inclui esta ação`:`a política ${PERFIL_LABEL[perfil]} não inclui esta ação (R1)`;
+  res={permitido,rotulo,porque};ok('Verificação',`${rotulo}: ${permitido?'permitido':'negado'} — ${porque}`,permitido)}
+ return {passos,perfil,res}}
+/* Conflito R8: equipe interna e cliente ativos na mesma conta vão para revisão, salvo se já confirmados com motivo */
+function checarConflitos(u,silencioso){const eq=(u.vinculos||[]).find(v=>v.tipo==='equipe'&&situacaoVinc(v)==='ativo'),cl=(u.vinculos||[]).find(v=>v.tipo==='cliente'&&situacaoVinc(v)==='ativo'&&!v.conflitoAprovado);
+ if(eq&&cl){cl.situacao='revisao';cl.motivo=`Conflito de vínculos: a mesma conta é equipe interna (${eq.ref}) e cliente (${cl.ref}). Confirme antes de liberar (R8).`;if(!silencioso)auditar('Vínculo enviado para revisão (R8)',u.nome,cl.motivo);return true}return false}
+/* Migração controlada dos checkboxes antigos para vínculos: preserva o que era válido, não amplia nada e marca revisão */
+const DEMO_ACESSOS={'helena@sinergia.com.br':{admin:{origem:'Provisionamento autorizado',aprovadoPor:'Diretoria Sinergia (provisionamento inicial)'}},'marcos@sinergia.com.br':{admin:{origem:'Provisionamento autorizado',aprovadoPor:'Helena Prado'}},
+ 'marina@cinemaalfa.com.br':{cliente:{origem:'Vínculo institucional'}},'ana.ribeiro@email.com':{participante:{origem:'Cadastro público'}},'joao.tadeu@sinergia.com.br':{participante:{origem:'Convite'}},
+ 'demo@sinergia.com.br':{equipe:{origem:'Vínculo institucional'},participante:{origem:'Cadastro público'}},'bianca@sinergia.com.br':{equipe:{origem:'Vínculo institucional'}},'livia@sinergia.com.br':{equipe:{origem:'Vínculo institucional'}},
+ 'carla@dadosco.com.br':{equipe:{origem:'Provisionamento autorizado',validade:'31/12/2026'}},'otavio@ciabeta.com':{cliente:{origem:'Convite',situacao:'convite'}},'paulo@cinemadelta.com.br':{cliente:{origem:'Vínculo institucional'},_conta:{bloqueado:true}}};
+function migrarAcessos(s){if(s.acessos)return;const d=hoje(),t=d+' '+tstr();s.auditoria=s.auditoria||[];let nv=0,nr=0;
+ s.users.forEach(u=>{if(u.vinculos)return;const vs=[],ov=(s.demo&&DEMO_ACESSOS[u.email])||{};
+  const add=(tipo,ref,ok,motivo,extra)=>{const v={id:nid('v'),tipo,ref:ref||'',situacao:ok?'ativo':'revisao',origem:ORIGEM_MIGRACAO,desde:d,validade:'',motivo:ok?'':motivo,...extra,...(ov[tipo]||{})};vs.push(v);nv++;if(v.situacao==='revisao')nr++};
+  u.legado={admin:!!u.admin,perms:[...(u.perms||[])],empresa:u.empresa||'',codigo:u.codigo||'',funcao:u.funcao||''}; /* cópia para reversão */
+  if(u.admin)add('admin','',true,'',{aprovadoPor:'Conta já era administradora antes da migração'});
+  (u.perms||[]).forEach(p=>{if(p==='equipe')add('equipe',u.funcao,!!FUNC_PERFIL[u.funcao],'Função da equipe não informada ou não reconhecida: confirme a função antes de liberar');
+   if(p==='cliente')add('cliente',u.empresa,s.clientes.some(c=>c.nome===u.empresa),'Empresa não informada ou não cadastrada: escolha a empresa antes de liberar');
+   if(p==='participante')add('participante',u.codigo,s.participantes.some(x=>x.cod===u.codigo),'Código sem cadastro de participante: confira o código antes de liberar')});
+  u.vinculos=vs;u.bloqueado=!!(ov._conta&&ov._conta.bloqueado);u.acessoAtualizado=t;
+  const eq=vs.find(v=>v.tipo==='equipe'&&v.situacao==='ativo'),cl=vs.find(v=>v.tipo==='cliente'&&v.situacao==='ativo');
+  if(eq&&cl){cl.situacao='revisao';cl.motivo=`Conflito de vínculos: a mesma conta é equipe interna (${eq.ref}) e cliente (${cl.ref}). Confirme antes de liberar (R8).`;nr++}
+  s.auditoria.unshift({t,tipo:'alteracao',quem:'Sistema',perfil:'migração',acao:'Migração de acesso',alvo:u.nome,motivo:vs.length?vs.map(v=>`${VINC_TIPOS[v.tipo]}${v.ref?' ('+v.ref+')':''}: ${SIT_V[v.situacao]}`).join('; '):'Nenhum vínculo: conta sem acesso'});
+  if(u.bloqueado)s.auditoria.unshift({t,tipo:'alteracao',quem:'Sistema',perfil:'migração',acao:'Conta suspensa',alvo:u.nome,motivo:'Dado de demonstração: conta suspensa para mostrar o estado'})});
+ s.acessos={versao:1,migradoEm:t,contas:s.users.length,vinculos:nv,emRevisao:nr}}
+/* Proteções do próprio administrador (R13) */
+const adminsAtivos=()=>S.users.filter(u=>avaliarConta(u).admin);
+function protegeAdmin(u,acao){const eu=me();if(u.id===eu.id&&['suspender','remover','revogar-admin'].includes(acao))return 'Você não pode reduzir a proteção da sua própria conta de administrador (R13).';
+ if(['suspender','remover','revogar-admin'].includes(acao)&&avaliarConta(u).admin&&adminsAtivos().length<=1)return 'Este é o último administrador ativo; o sistema ficaria sem administração (R13).';return ''}
+/* Execução do módulo: migra (uma vez) e recalcula todas as contas */
+migrarAcessos(S);S.users.forEach(projetar);save();
+
+/* ---------- Tela: Usuários e acessos ---------- */
+const SIT_TONE={Ativo:'ok',Pendente:'acc',Bloqueado:'bad',Inativo:'neu'};
+const VSIT_TONE={ativo:'ok',convite:'info',aprovacao:'acc',revisao:'acc',revogado:'neu',expirado:'neu'};
+const pillT=(t,tone)=>`<span class="pill p-${tone}">${esc(t)}</span>`;
+function resumoAcesso(u,a){if(a.admin)return 'Área do administrador completa';if(!a.papeis.length)return '<span class="muted">Nenhuma área</span>';
+ return a.papeis.map(p=>`<div><b>${ROLE_SHORT[p]}:</b> ${areasDe(p,perfilDoPapel(p,a)).filter(x=>x!=='Perfil').join(' · ')||'—'}</div>`).join('')}
+const papelPrincipal=a=>a.admin?'Administrador':a.papeis.length?ROLE[a.papeis[0]]+(a.papeis.length>1?` <span class="small muted">+${a.papeis.length-1}</span>`:''):'—';
+function filtroUsuarios(){const q=(UI.usrQ||'').toLowerCase(),pp=UI.usrPapel||'',st=UI.usrSit||'';
+ return S.users.filter(u=>{const a=avaliarConta(u);return (!q||(u.nome+' '+u.email).toLowerCase().includes(q))&&(!st||(st==='Revisão'?a.revisao:a.situacao===st))&&(!pp||(pp==='admin'?a.admin:a.papeis.includes(pp)))})}
+PART.usr=()=>{const l=filtroUsuarios();
+ return `<div class="tablebox"><table class="usr"><thead><tr><th>Usuário</th><th>Situação</th><th>Papel principal</th><th>Vínculo</th><th>Acesso calculado</th><th>Origem</th><th>Atualizado</th><th>Ações</th></tr></thead><tbody>${l.map(u=>{const a=avaliarConta(u),vv=(u.vinculos||[]).filter(v=>situacaoVinc(v)!=='revogado');
+  return `<tr><td><button type="button" class="linkbtn" data-act="usr-det" data-id="${u.id}">${esc(u.nome)}</button><span class="s">${esc(u.email)}</span></td>
+  <td>${pillT(a.situacao,SIT_TONE[a.situacao])}${a.revisao?`<span class="due soon" style="margin-top:6px">${I.alert}Precisa de revisão</span>`:''}</td>
+  <td>${papelPrincipal(a)}</td>
+  <td class="small">${vv.map(v=>{const s=situacaoVinc(v);return `<div>${v.tipo==='admin'?'Nomeação de administrador':esc(v.ref||'—')}${s!=='ativo'?` <span class="muted">· ${SIT_V[s].toLowerCase()}</span>`:''}</div>`}).join('')||'<span class="muted">Sem vínculo</span>'}</td>
+  <td class="small calc-cell">${resumoAcesso(u,a)}</td>
+  <td class="small">${[...new Set(vv.map(v=>v.origem))].map(esc).join('<br>')||'—'}</td>
+  <td class="small tnum">${esc((u.acessoAtualizado||'—').split(' ')[0])}<br><span class="muted">${esc((u.acessoAtualizado||'').split(' ')[1]||'')}</span></td>
+  <td><button type="button" class="btn btn-ghost btn-sm" data-act="usr-det" data-id="${u.id}" aria-label="Detalhes de ${esc(u.nome)}">Detalhes</button></td></tr>`}).join('')||emptyRow(8,'Nenhum usuário com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${l.length} de ${S.users.length} usuários</p>`};
+function usuariosView(){const as=S.users.map(avaliarConta),c=s=>as.filter(a=>a.situacao===s).length;
+ return kpis([['Usuários',S.users.length],['Ativos',c('Ativo')],['Pendentes de validação',as.filter(a=>a.pend.length).length],['Contas bloqueadas',c('Bloqueado')]])+
+ `<p class="note">O sistema calcula o acesso de cada conta a partir dos <b>vínculos</b>: função na equipe interna, empresa cliente, código de participante ou nomeação de administrador aprovada. Não há mais caixas para marcar áreas por usuário. Abra <b>Detalhes</b> para ver o que cada pessoa acessa e por quê.</p>
+ <p class="note sol" data-solicitacao="S5">${solTag('S5')} <b>Entrevistadores e terceirizados de campo não têm conta.</b> Eles ficam só em Cadastros → Agentes (regra R10).</p>
+ <div class="filters"><input class="grow" type="search" data-live="usr" data-key="usrQ" placeholder="Buscar por nome ou e-mail" aria-label="Buscar usuário" value="${esc(UI.usrQ||'')}">
+ <select data-live="usr" data-key="usrPapel" aria-label="Filtrar por papel">${opts([['','Todos os papéis'],['admin','Administrador'],...USER_ROLES.map(p=>[p,ROLE[p]])],UI.usrPapel||'')}</select>
+ <select data-live="usr" data-key="usrSit" aria-label="Filtrar por situação">${opts([['','Todas as situações'],'Ativo','Pendente','Bloqueado','Inativo',['Revisão','Precisa de revisão']],UI.usrSit||'')}</select></div>
+ <div id="part-usr">${PART.usr()}</div>`}
+/* Painel de detalhes: dados, vínculos, acesso calculado (só leitura), restrições, motivos e histórico */
+function usrDet(id){const u=S.users.find(x=>x.id===id);if(!u){openModal('Usuário não encontrado','<p class="err" role="alert">Esta conta não existe mais. Ela pode ter sido removida por outro administrador.</p>','<button type="button" class="btn btn-primary" data-act="close">Fechar</button>');return}
+ const a=avaliarConta(u),eu=me(),hist=(S.auditoria||[]).filter(x=>x.alvo===u.nome||x.quem===u.nome).slice(0,12);
+ const acoesV=v=>{const s=situacaoVinc(v),b=(act,l,cls='')=>`<button type="button" class="linkbtn ${cls}" data-act="${act}" data-uid="${u.id}" data-vid="${v.id}">${l}</button>`;
+  if(s==='convite')return b('v-reenviar','Reenviar convite')+b('v-revogar','Cancelar','danger');
+  if(s==='aprovacao')return b('v-aprovar','Aprovar')+b('v-revogar','Recusar','danger');
+  if(s==='revisao')return b('v-confirmar','Confirmar vínculo')+b('v-corrigir','Corrigir')+b('v-revogar','Revogar','danger');
+  if(s==='ativo'||s==='expirado')return (v.tipo!=='admin'?b('v-corrigir','Corrigir'):'')+b('v-revogar','Revogar','danger');return '<span class="small muted">—</span>'};
+ const calc=a.admin?[['admin','admin']]:a.papeis.map(p=>[p,perfilDoPapel(p,a)]);
+ openModal(`${esc(u.nome)} · acessos`,`
+ <div class="det-head"><div><span class="s">${esc(u.email)}${u.tel?' · '+esc(u.tel):''}</span><div class="alerts" style="margin-top:6px">${pillT(a.situacao,SIT_TONE[a.situacao])}${a.revisao?`<span class="due soon">${I.alert}Precisa de revisão</span>`:''}${!a.val.length&&!u.bloqueado?`<span class="due late">${I.alert}Sem vínculo válido: nenhum acesso</span>`:''}</div></div>
+ <span class="small muted">Acesso atualizado em ${esc(u.acessoAtualizado||'—')}</span></div>
+ <section class="det-sec"><h3>Vínculos identificados</h3><div class="tablebox"><table><thead><tr><th>Tipo</th><th>Referência e observação</th><th>Situação</th><th>Origem</th><th>Desde</th><th>Validade</th><th>Ações</th></tr></thead><tbody>${(u.vinculos||[]).map(v=>{const s=situacaoVinc(v),[ok,m]=vincValido(v);return `<tr><td>${VINC_TIPOS[v.tipo]}</td><td class="vref"><b>${esc(v.ref||(v.tipo==='admin'?'Nomeação':'—'))}</b>${(()=>{const o=v.motivo||(ok?(v.aprovadoPor?'Aprovado por '+v.aprovadoPor:''):m);return o?`<span class="s">${esc(o)}</span>`:''})()}</td><td>${pillT(SIT_V[s],VSIT_TONE[s])}</td><td class="small">${esc(v.origem)}</td><td class="small tnum">${esc(v.desde||'—')}</td><td class="small tnum">${esc(v.validade||'Sem validade')}</td><td class="acts">${acoesV(v)}</td></tr>`}).join('')||emptyRow(7,'Nenhum vínculo. Sem vínculo, a conta não acessa nada (R1).')}</tbody></table></div></section>
+ <section class="det-sec calc"><div class="calc-tag">${I.lock}Calculado pelo sistema · só leitura</div><h3>Acesso efetivo</h3>
+ ${calc.length?calc.map(([p,perfil])=>`<div class="calc-papel"><b>${p==='admin'?'Administrador':ROLE[p]}</b> <span class="small muted">· política ${esc(PERFIL_LABEL[perfil]||'—')}</span>
+  <p class="small"><b>Áreas:</b> ${areasDe(p,perfil).map(esc).join(', ')}</p><p class="small"><b>Escopo:</b> ${esc(ESCOPO_TXT[perfil]||'—')}${p==='cliente'?` (${esc(a.empresa)})`:p==='participante'?` (${esc(a.codigo)})`:''}</p>
+  <ul class="caps">${capsDe(perfil).map(([m,l])=>`<li><span>${m}</span>${l.join(', ')}</li>`).join('')}</ul></div>`).join(''):'<p class="small muted">Nenhum acesso. Para liberar, é preciso um vínculo válido (convite aceito, revisão confirmada ou nomeação aprovada).</p>'}
+ ${a.admin&&a.papeis.length?'<p class="small muted">A conta também tem vínculos de usuário, usados só quando entra pela opção Usuário (R8).</p>':''}
+ ${!a.admin&&a.papeis.length>1?'<p class="small muted">Mais de um papel: a pessoa escolhe um por sessão; as permissões não se somam (R8).</p>':''}</section>
+ <section class="det-sec"><h3>Restrições e motivos</h3><ul class="why">
+  ${a.vs.map(x=>`<li class="${x.ok?'ok':'no'}"><b>${VINC_TIPOS[x.v.tipo]}${x.v.ref?' · '+esc(x.v.ref):''}:</b> ${esc(x.motivo)}</li>`).join('')}
+  ${u.bloqueado?'<li class="no"><b>Conta suspensa:</b> nenhum vínculo vale enquanto durar a suspensão (R2).</li>':''}
+  ${!a.admin?'<li class="no"><b>Usuários e integrações:</b> exclusivos do administrador (R9).</li>':''}
+  ${a.papeis.includes('cliente')?`<li class="no"><b>Outros clientes:</b> bloqueados; só ${esc(a.empresa)} (R6). Dados individuais nunca aparecem para clientes.</li>`:''}
+  ${a.papeis.includes('participante')?`<li class="no"><b>Outros participantes e áreas internas:</b> bloqueados; só o código ${esc(a.codigo)} (R7).</li>`:''}
+  <li class="no"><b>Qualquer ação fora da política:</b> negada e registrada (R1).</li></ul></section>
+ <section class="det-sec admin-acts"><h3>Ações do administrador</h3><p class="small muted">Estas ações mudam vínculos ou a conta; o acesso é recalculado em seguida. Todas pedem confirmação e ficam na auditoria.</p>
+  <div class="acts-row"><button type="button" class="btn btn-ghost btn-sm" data-act="v-novo" data-uid="${u.id}">Convidar para novo vínculo</button>
+  ${a.admin||(u.vinculos||[]).some(v=>v.tipo==='admin'&&['ativo','aprovacao'].includes(situacaoVinc(v)))?'':`<button type="button" class="btn btn-ghost btn-sm" data-act="adm-solicitar" data-uid="${u.id}">Solicitar nomeação de administrador</button>`}
+  <button type="button" class="btn btn-ghost btn-sm" data-act="editar-usuario" data-id="${u.id}">Editar dados cadastrais</button>
+  ${u.bloqueado?`<button type="button" class="btn btn-ghost btn-sm" data-act="conta-reativar" data-uid="${u.id}">Reativar conta</button>`:`<button type="button" class="btn btn-ghost btn-sm" data-act="conta-suspender" data-uid="${u.id}" ${protegeAdmin(u,'suspender')?`disabled title="${esc(protegeAdmin(u,'suspender'))}"`:''}>Suspender conta</button>`}
+  <button type="button" class="btn btn-danger btn-sm" data-act="remover-usuario" data-id="${u.id}" ${protegeAdmin(u,'remover')?`disabled title="${esc(protegeAdmin(u,'remover'))}"`:''}>Remover usuário</button></div>
+  ${u.id===eu.id?'<p class="small muted">Esta é a sua conta: suspender, remover ou revogar a própria nomeação de administrador não é permitido (R13).</p>':''}</section>
+ <section class="det-sec"><h3>Histórico de autorização</h3>${hist.length?`<ul class="hist">${hist.map(h=>`<li><span class="tnum small muted">${esc(h.t)}</span> <b>${esc(h.acao)}</b> <span class="small muted">· ${esc(h.quem)}${h.motivo?' · '+esc(h.motivo):h.rota?' · '+esc(h.rota):''}</span></li>`).join('')}</ul>`:'<p class="small muted">Sem registros para esta conta.</p>'}</section>`,
+ `<button type="button" class="btn btn-ghost" data-act="usr-diag" data-id="${u.id}">Ver diagnóstico de acesso</button><button type="button" class="btn btn-primary" data-act="close">Fechar</button>`);
+ document.querySelector('.modal')?.classList.add('wide')}
+/* Caixa de confirmação com motivo obrigatório (ações críticas) */
+function motivoBox(title,text,label,fn,danger=true){openModal(title,`<p class="muted">${text}</p><div class="field"><label for="mot">Motivo (fica na auditoria)</label><textarea id="mot" rows="3" required></textarea></div><div class="err" id="mot-err" hidden></div>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button type="button" class="btn ${danger?'btn-danger':'btn-primary'}" id="mot-ok">${label}</button>`,m=>{m.querySelector('#mot-ok').onclick=()=>{const t=m.querySelector('#mot').value.trim();if(t.length<5){const e=m.querySelector('#mot-err');e.textContent='Escreva o motivo (pelo menos 5 caracteres).';e.hidden=false;return}fn(t)}})}
+const achaUV=el=>{const u=S.users.find(x=>x.id===el.dataset.uid);return [u,u&&(u.vinculos||[]).find(v=>v.id===el.dataset.vid)]};
+const tocar=u=>{u.acessoAtualizado=hojeHora();checarConflitos(u);projetar(u);save()};
+const refOpts=tipo=>tipo==='equipe'?FUNCOES.map(f=>[f,f]):tipo==='cliente'?S.clientes.map(c=>[c.nome,c.nome]):S.participantes.map(p=>[p.cod,`${p.cod} · ${p.nome}`]);
+/* Novo usuário: nasce com um convite para um vínculo; só vale depois que a pessoa entra (aceita) */
+function userForm(id){const u=id?S.users.find(x=>x.id===id):null;
+ if(u){openModal('Editar dados cadastrais',`<form id="f-usr" data-form="usuario" data-id="${u.id}">${field('unome','Nome',u.nome,'text','required')}${field('umail','E-mail',u.email,'email','required')}${field('utel','Telefone',u.tel||'','tel')}<p class="small muted">Papel e áreas não se editam aqui: eles vêm dos vínculos.</p><div class="err" id="u-err" hidden></div></form>`,
+  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-usr">Salvar</button>`);return}
+ openModal('Convidar usuário',`<form id="f-usr" data-form="usuario" data-id="">${field('unome','Nome',''  ,'text','required')}${field('umail','E-mail','','email','required')}
+ ${vincCampos()}<p class="small muted">A conta nasce com o convite pendente e sem acesso. O vínculo passa a valer quando a pessoa entra pela primeira vez. Nomeação de administrador é um processo separado, com aprovação de outro administrador (R4).</p><div class="err" id="u-err" hidden></div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-usr">Enviar convite</button>`,vincMount)}
+function vincCampos(){return `<div class="row2">${sel('vtipo','Vínculo',[['','Escolha o tipo'],...USER_ROLES.map(p=>[p,VINC_TIPOS[p]])],'')}<div class="field"><label for="vref">Referência</label><select id="vref" name="vref"><option value="">Escolha o tipo primeiro</option></select></div></div>
+ ${field('vval','Validade (opcional, para parceiros e acessos temporários)','','date')}
+ <label class="small" id="vnovo-box" hidden><input type="checkbox" name="vnovo"> Criar um cadastro de participante novo (código gerado agora)</label>`}
+function vincMount(m){const t=m.querySelector('#vtipo'),r=m.querySelector('#vref'),nb=m.querySelector('#vnovo-box');t.onchange=()=>{r.innerHTML=t.value?`<option value="">Escolha…</option>`+opts(refOpts(t.value)):'<option value="">Escolha o tipo primeiro</option>';nb.hidden=t.value!=='participante'}}
+function lerVinculo(d,nome,email){if(!USER_ROLES.includes(d.vtipo))return [null,'Escolha o tipo de vínculo.'];let ref=d.vref||'';
+ if(d.vtipo==='participante'&&d.vnovo){ref=nextCod();S.participantes.push({id:nid('r'),cod:ref,nome,email,cidade:'—',criado:hoje()})}
+ if(!ref)return [null,`Escolha ${VINC_REF[d.vtipo].toLowerCase()}: o sistema não escolhe por você.`];
+ const val=d.vval?fromISO(d.vval):'';if(val&&dias(val)<0)return [null,'A validade não pode estar no passado.'];
+ return [{id:nid('v'),tipo:d.vtipo,ref,situacao:'convite',origem:'Convite',desde:hoje(),validade:val,motivo:''},''];}
+FORM.usuario=f=>{const d=formData(f),id=f.dataset.id,e=f.querySelector('#u-err'),fail=t=>{e.textContent=t;e.hidden=false},email=(d.umail||'').trim().toLowerCase();
+ if(!d.unome.trim()||!/^\S+@\S+\.\S+$/.test(email))return fail('Preencha nome e um e-mail válido.');
+ if(S.users.some(u=>u.email.toLowerCase()===email&&u.id!==id))return fail('Já existe um usuário com esse e-mail.');
+ if(S.agentes.some(a=>(a.email||'').toLowerCase()===email))return fail('Este e-mail é de um entrevistador ou terceirizado de campo: eles não recebem conta (R10).');
+ if(id){const u=S.users.find(x=>x.id===id);const antes=`${u.nome} <${u.email}>`;Object.assign(u,{nome:d.unome.trim(),email,tel:(d.utel||'').trim()});auditar('Dados cadastrais editados',u.nome,`${antes} → ${u.nome} <${u.email}>`);save();closeModal();toast('Dados atualizados.');refresh();usrDet(u.id);return}
+ const [v,err]=lerVinculo(d,d.unome.trim(),email);if(!v)return fail(err);
+ const u={id:nid('u'),nome:d.unome.trim(),email,tel:'',vinculos:[v],bloqueado:false,acessoAtualizado:hojeHora()};projetar(u);S.users.push(u);
+ auditar('Usuário convidado',u.nome,`${VINC_TIPOS[v.tipo]} (${v.ref})${v.validade?' até '+v.validade:''}`);save();closeModal();toast('Convite registrado. O acesso vale quando a pessoa entrar pela primeira vez.');refresh()};
+FORM['v-novo']=f=>{const d=formData(f),u=S.users.find(x=>x.id===f.dataset.uid),e=f.querySelector('#u-err'),fail=t=>{e.textContent=t;e.hidden=false};
+ if((u.vinculos||[]).some(v=>v.tipo===d.vtipo&&['ativo','convite','aprovacao','revisao'].includes(situacaoVinc(v))))return fail(`Esta conta já tem um vínculo de ${VINC_TIPOS[d.vtipo]} em vigor ou pendente. Corrija o existente.`);
+ const [v,err]=lerVinculo(d,u.nome,u.email);if(!v)return fail(err);u.vinculos.push(v);tocar(u);auditar('Convite para novo vínculo',u.nome,`${VINC_TIPOS[v.tipo]} (${v.ref})`);save();closeModal();toast('Convite registrado.');refresh();usrDet(u.id)};
+FORM['v-corrigir']=f=>{const d=formData(f),[u,v]=achaUV({dataset:{uid:f.dataset.uid,vid:f.dataset.vid}}),e=f.querySelector('#u-err'),fail=t=>{e.textContent=t;e.hidden=false};
+ if(!d.vref)return fail('Escolha a referência.');if((d.vmot||'').trim().length<5)return fail('Escreva o motivo (pelo menos 5 caracteres).');
+ const antes=v.ref;v.ref=d.vref;if(d.vval)v.validade=fromISO(d.vval);if(situacaoVinc(v)==='revisao'){v.situacao='ativo';v.motivo='';if(v.tipo==='cliente')v.conflitoAprovado=false}
+ tocar(u);auditar('Vínculo corrigido',u.nome,`${VINC_TIPOS[v.tipo]}: ${antes||'—'} → ${v.ref}. ${d.vmot.trim()}`);save();closeModal();toast('Vínculo corrigido. O acesso foi recalculado.');refresh();usrDet(u.id)};
+Object.assign(ACT,{
+ 'usr-det':el=>usrDet(el.dataset.id),
+ 'usr-diag':el=>{UI.usrTab='arquitetura';UI.dgU=el.dataset.id;UI.dgP='';save();closeModal();refresh();setTimeout(()=>document.getElementById('diag')?.scrollIntoView({block:'start'}),50)},
+ 'v-novo':el=>{const u=S.users.find(x=>x.id===el.dataset.uid);openModal('Convidar para novo vínculo',`<form id="f-vn" data-form="v-novo" data-uid="${u.id}"><p class="small muted">${esc(u.nome)} · o vínculo começa como convite pendente e vale quando a pessoa entrar de novo.</p>${vincCampos()}<div class="err" id="u-err" hidden></div></form>`,
+  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-vn">Registrar convite</button>`,vincMount)},
+ 'v-corrigir':el=>{const [u,v]=achaUV(el);openModal('Corrigir vínculo',`<form id="f-vc" data-form="v-corrigir" data-uid="${u.id}" data-vid="${v.id}"><p class="small muted">${esc(u.nome)} · ${VINC_TIPOS[v.tipo]}. Depois de salvar, o sistema recalcula o acesso.</p>
+  ${sel('vref',VINC_REF[v.tipo],[['','Escolha…'],...refOpts(v.tipo)],v.ref)}${field('vval','Validade (opcional)',toISO(v.validade)||'','date')}<div class="field"><label for="vmot">Motivo (fica na auditoria)</label><textarea id="vmot" name="vmot" rows="2" required></textarea></div><div class="err" id="u-err" hidden></div></form>`,
+  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-vc">Salvar correção</button>`)},
+ 'v-confirmar':el=>{const [u,v]=achaUV(el),[ok,m]=vincValido({...v,situacao:'ativo'});if(!ok){toast(`Corrija antes de confirmar: ${m}.`);return}
+  motivoBox('Confirmar vínculo',`${esc(u.nome)} · ${VINC_TIPOS[v.tipo]} (${esc(v.ref)}). ${esc(v.motivo||'')}`,'Confirmar e liberar',t=>{v.situacao='ativo';if(/Conflito/.test(v.motivo||''))v.conflitoAprovado=true;v.motivo='';tocar(u);auditar('Revisão confirmada',u.nome,`${VINC_TIPOS[v.tipo]} (${v.ref}). ${t}`);save();closeModal();toast('Vínculo confirmado. O acesso foi recalculado.');refresh();usrDet(u.id)},false)},
+ 'v-revogar':el=>{const [u,v]=achaUV(el);if(v.tipo==='admin'){const b=protegeAdmin(u,'revogar-admin');if(b){toast(b);return}}
+  const s=situacaoVinc(v),rot=s==='convite'?'Cancelar convite':s==='aprovacao'?'Recusar nomeação':'Revogar vínculo';
+  motivoBox(rot,`${esc(u.nome)} perde o acesso de ${VINC_TIPOS[v.tipo]}${v.ref?' ('+esc(v.ref)+')':''} na próxima ação. O histórico continua guardado.`,rot,t=>{v.situacao='revogado';v.revogadoEm=hojeHora();v.motivo=t;tocar(u);auditar(rot,u.nome,`${VINC_TIPOS[v.tipo]}${v.ref?' ('+v.ref+')':''}. ${t}`);save();closeModal();toast('Feito. O acesso foi recalculado.');refresh();usrDet(u.id)})},
+ 'v-reenviar':el=>{const [u,v]=achaUV(el);v.desde=hoje();tocar(u);auditar('Convite reenviado',u.nome,`${VINC_TIPOS[v.tipo]} (${v.ref})`);save();toast(`Convite reenviado para ${u.email}.`);refresh();usrDet(u.id)},
+ 'adm-solicitar':el=>{const u=S.users.find(x=>x.id===el.dataset.uid);motivoBox('Solicitar nomeação de administrador',`${esc(u.nome)} só vira administrador depois que <b>outro</b> administrador aprovar (R4). Até lá, nada muda no acesso.`,'Registrar pedido',t=>{u.vinculos.push({id:nid('v'),tipo:'admin',ref:'',situacao:'aprovacao',origem:'Provisionamento autorizado',desde:hoje(),validade:'',motivo:t,solicitadoPor:me().nome,solicitadoPorId:me().id});tocar(u);auditar('Nomeação de administrador solicitada',u.nome,t);save();closeModal();toast('Pedido registrado. Falta a aprovação de outro administrador.');refresh();usrDet(u.id)},false)},
+ 'v-aprovar':el=>{const [u,v]=achaUV(el),eu=me();if(v.solicitadoPorId===eu.id||u.id===eu.id){toast('A aprovação precisa ser de outro administrador: quem pediu, ou a própria pessoa, não aprova (R4).');negar('usuarios','usuarios');return}
+  motivoBox('Aprovar nomeação de administrador',`${esc(u.nome)} passa a ter acesso completo à área do administrador. Pedido de ${esc(v.solicitadoPor||'—')}: ${esc(v.motivo||'')}`,'Aprovar',t=>{v.situacao='ativo';v.aprovadoPor=eu.nome;v.motivo='';tocar(u);auditar('Nomeação de administrador aprovada',u.nome,t);save();closeModal();toast('Nomeação aprovada.');refresh();usrDet(u.id)},false)},
+ 'conta-suspender':el=>{const u=S.users.find(x=>x.id===el.dataset.uid),b=protegeAdmin(u,'suspender');if(b){toast(b);return}
+  motivoBox('Suspender conta',`${esc(u.nome)} perde todos os acessos na próxima ação. Vínculos e histórico ficam guardados para reativar depois.`,'Suspender conta',t=>{u.bloqueado=true;tocar(u);auditar('Conta suspensa',u.nome,t);save();closeModal();toast('Conta suspensa.');refresh();usrDet(u.id)})},
+ 'conta-reativar':el=>{const u=S.users.find(x=>x.id===el.dataset.uid);motivoBox('Reativar conta',`${esc(u.nome)} volta a ter os acessos dos vínculos ativos.`,'Reativar',t=>{u.bloqueado=false;tocar(u);auditar('Conta reativada',u.nome,t);save();closeModal();toast('Conta reativada.');refresh();usrDet(u.id)},false)},
+ 'remover-usuario':el=>{const u=S.users.find(x=>x.id===el.dataset.id),b=protegeAdmin(u,'remover');if(b){toast(b);return}
+  motivoBox('Remover usuário',`${esc(u.nome)} perde o acesso e sai da lista. Cadastros de participante, respostas e histórico continuam guardados.`,'Remover',t=>{S.users=S.users.filter(x=>x!==u);auditar('Usuário removido',u.nome,t);save();closeModal();toast('Usuário removido.');refresh()})}});
+
+/* ---------- Tela: Arquitetura de acessos (análise; não concede nada) ---------- */
+const CAP_MATRIZ=[['usuarios.usuarios','Gerenciar usuários'],['cadastros.ver','Consultar clientes e cadastros'],['projetos.editar','Gerenciar projetos'],['pesquisas.criar','Criar e administrar pesquisas'],['convites.convites','Gerenciar convites'],['reunioes.ver','Acessar reuniões'],['resultados.resultados','Consultar resultados'],['transcricoes.editar','Processar dados (transcrição e análise)'],['integracoes.integracoes','Consultar integrações']];
+function matrixView(){const perf=UI.mxPerf||'transcricao';
  return `<div class="tabs" role="tablist" aria-label="Perfil">${PERFIS.map(([k,l])=>`<button type="button" role="tab" aria-selected="${perf===k}" data-act="set" data-k="mxPerf" data-v="${k}">${l}</button>`).join('')}</div>
- <div class="tablebox"><table class="matrix"><thead><tr><th>Módulo</th>${ACOES.map(a=>`<th>${a[1]}</th>`).join('')}</tr></thead><tbody>${MODULOS.map(([m,ml])=>`<tr><td><b>${ml}</b></td>${ACOES.map(([a,al])=>{if(!APLICA[m].includes(a))return '<td class="muted" aria-label="não se aplica">—</td>';const k=m+'.'+a,lock=lockAll||SO_ADMIN.includes(k);
-  return `<td><input type="checkbox" aria-label="${ml} — ${al} — ${(PERFIS.find(p=>p[0]===perf)||[])[1]}" data-act-change="mx2" data-k="${k}" ${(lockAll||d[k])&&!(SO_ADMIN.includes(k)&&!lockAll)?'checked':''} ${lock?'disabled':''}></td>`}).join('')}</tr>`).join('')}</tbody></table></div>
- <p class="small muted">Proposta inicial para validar com a Sinergia (E.4): nenhuma ação vale por padrão sem estar marcada. “Gerenciar usuários” e “Administrar integrações” ficam só com o Administrador, para impedir que um perfil se dê mais acesso (E.6). Clientes veem só os dados da própria empresa e nunca os dados individuais (A.3, C.7).</p>
- <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-act="salvar-mx2" ${dirty?'':'disabled'}>Salvar permissões</button>${dirty?'<span class="unsaved">Alterações não salvas</span><button type="button" class="linkbtn" data-act="descartar-mx2">Descartar</button>':''}</div>`}
-function auditoriaView(){return `<p class="muted small">Tentativas de abrir páginas ou executar ações sem permissão (E.6, E.7). Guardadas no navegador neste protótipo.</p><div class="tablebox"><table><thead><tr><th>Quando</th><th>Quem</th><th>Perfil</th><th>Tentativa</th><th>Endereço</th></tr></thead><tbody>${(S.auditoria||[]).map(a=>`<tr><td class="tnum">${esc(a.t)}</td><td>${esc(a.quem)}</td><td>${esc(a.perfil)}</td><td>${esc(a.acao)}</td><td><code>${esc(a.rota)}</code></td></tr>`).join('')||emptyRow(5,'Nenhuma tentativa negada.')}</tbody></table></div>`}
-/* ■ FIM · E.2/E.3/E.8 · matriz */
+ <div class="tablebox"><table class="matrix ro"><thead><tr><th>Módulo</th>${ACOES.map(a=>`<th>${a[1]}</th>`).join('')}</tr></thead><tbody>${MODULOS.map(([m,ml])=>`<tr><td><b>${ml}</b></td>${ACOES.map(([a])=>!APLICA[m].includes(a)?'<td class="muted" aria-label="não se aplica">·</td>':podePerfil(perf,m+'.'+a)?`<td class="yes" aria-label="permitido">${I.check}</td>`:'<td class="no" aria-label="negado">—</td>').join('')}</tr>`).join('')}</tbody></table></div>`}
+function fluxoHTML(){const st=[['Autenticação','Login confere a conta'],['Identificação','Quem é e qual a situação da conta'],['Validação de vínculo','Ativo, dentro da validade, com referência válida'],['Consulta de políticas','Política do papel escolhido para a sessão'],['Cálculo de permissões','Ações liberadas + escopo dos dados'],['Verificação a cada ação','guard() nas telas, exigir() nas ações'],['Permitido ou negado','Negado é registrado na auditoria']];
+ return `<ol class="flow">${st.map(([t,d],i)=>`<li${i===st.length-1?' class="end"':''}><b>${t}</b><span>${d}</span></li>`).join('')}</ol>`}
+function diagView(){const u=S.users.find(x=>x.id===UI.dgU)||S.users[0],a=avaliarConta(u),tipos=[...new Set((u.vinculos||[]).map(v=>v.tipo))];
+ const papel=tipos.includes(UI.dgP)?UI.dgP:(a.admin?'admin':a.papeis[0]||tipos[0]||'participante'),k=UI.dgK||'resultados.resultados',ex=explicar(u,papel,k);
+ const acoes=MODULOS.flatMap(([m,ml])=>APLICA[m].map(ac=>[m+'.'+ac,`${ml} · ${(ACOES.find(x=>x[0]===ac)||[,ac])[1]}`]));
+ return `<div class="filters"><label class="lbl" for="dg-u">Usuário</label><select id="dg-u" data-act-change="dg" data-k="dgU">${opts(S.users.map(x=>[x.id,`${x.nome} · ${avaliarConta(x).situacao}`]),u.id)}</select>
+ <label class="lbl" for="dg-p">Papel</label><select id="dg-p" data-act-change="dg" data-k="dgP">${opts((tipos.length?tipos:['participante']).map(t=>[t,VINC_TIPOS[t]]),papel)}</select>
+ <label class="lbl" for="dg-k">Ação</label><select id="dg-k" data-act-change="dg" data-k="dgK">${opts(acoes,k)}</select></div>
+ <ol class="steps">${ex.passos.map(p=>`<li class="${p.s?'ok':'no'}"><span class="mk" aria-hidden="true">${p.s?I.check:'×'}</span><div><b>${esc(p.t)}</b><span>${esc(p.d)}</span></div></li>`).join('')}</ol>
+ ${ex.res?`<div class="verdict ${ex.res.permitido?'ok':'no'}" role="status"><b>${ex.res.permitido?'Acesso permitido':'Acesso negado'}</b> · ${esc(ex.res.rotulo)} — ${esc(ex.res.porque)}</div>`:''}
+ <p class="small muted">O diagnóstico só explica o resultado das políticas. Ele não concede nem altera acesso.</p>`}
+PART.diag=()=>diagView();
+function arquiteturaView(){const tot=PERFIS.reduce((s,[p])=>s+Object.keys(POLITICAS[p]||{}).length,0),as=S.users.map(avaliarConta),aud=S.auditoria||[],alt=aud.filter(x=>x.tipo==='alteracao'),neg=aud.filter(x=>x.tipo!=='alteracao');
+ return `<section class="panel arq"><div><span class="eyebrow">A · Fluxo de autorização</span><h3>Do login à decisão</h3></div>${fluxoHTML()}</section>
+ <section class="panel arq"><div><span class="eyebrow">B · Matriz de papéis e capacidades</span><h3>O que cada política libera</h3><p class="small muted">Tirado das políticas que o sistema aplica (só leitura). Mudar uma política é mudança de código, revisada em pull request.</p></div>
+ <div class="tablebox"><table class="matrix ro"><thead><tr><th>Papel · política e escopo</th>${CAP_MATRIZ.map(c=>`<th>${c[1]}</th>`).join('')}</tr></thead><tbody>${PERFIS.map(([p,l])=>`<tr><td class="mx-papel"><b>${l}</b><span class="s">${esc(ESCOPO_TXT[p])}</span></td>${CAP_MATRIZ.map(([k])=>podePerfil(p,k)?`<td class="yes" aria-label="permitido">${I.check}</td>`:'<td class="no" aria-label="negado">—</td>').join('')}</tr>`).join('')}</tbody></table></div>
+ <details><summary>Matriz completa por perfil (módulo × ação)</summary>${matrixView()}</details></section>
+ <section class="panel arq"><div><span class="eyebrow">C · Regras de autorização</span><h3>Regras que decidem o acesso</h3></div><div class="tablebox"><table><thead><tr><th>Regra</th><th>Finalidade</th><th>Vínculo necessário</th><th>Onde é aplicada</th></tr></thead><tbody>${REGRAS.map(([id,t,d,v,o])=>`<tr><td><b>${id} · ${esc(t)}</b></td><td class="small">${esc(d)}</td><td class="small">${esc(v)}</td><td class="small"><code>${esc(o)}</code></td></tr>`).join('')}</tbody></table></div></section>
+ <section class="panel arq"><div class="ph"><div><span class="eyebrow">D · Auditoria</span><h3>Mudanças e tentativas recentes</h3></div><button type="button" class="linkbtn" data-act="set" data-k="usrTab" data-v="auditoria">Ver auditoria completa</button></div>
+ ${kpis([['Alterações de acesso',alt.length],['Acessos negados',neg.length],['Contas em revisão',as.filter(a=>a.revisao).length]])}
+ ${alt.length?`<ul class="hist">${alt.slice(0,6).map(h=>`<li><span class="tnum small muted">${esc(h.t)}</span> <b>${esc(h.acao)}</b> · ${esc(h.alvo)} <span class="small muted">· por ${esc(h.quem)}${h.motivo?' · '+esc(h.motivo):''}</span></li>`).join('')}</ul>`:'<p class="small muted">Nenhuma alteração registrada.</p>'}</section>
+ <section class="panel arq" id="diag"><div><span class="eyebrow">E · Diagnóstico de acesso</span><h3>Por que esta pessoa tem (ou não) este acesso?</h3></div><div id="part-diag">${diagView()}</div></section>
+ <section class="panel arq"><div><span class="eyebrow">F · Estado da arquitetura</span><h3>O que está implementado e verificado</h3><p class="small muted">Contado agora, a partir do próprio sistema. Nada aqui é estimado.</p></div>
+ <ul class="state">
+  <li><b>Fonte das permissões:</b> vínculos de cada conta + ${PERFIS.length} políticas no código (${tot} permissões no total). Caixas de área por usuário: removidas.</li>
+  <li><b>Ações que alteram dados sob a checagem central:</b> ${PROTEGIDAS.length}. Telas protegidas pelo roteador: todas as áreas internas.</li>
+  <li><b>Contas:</b> ${S.users.length} · ativas ${as.filter(a=>a.situacao==='Ativo').length} · pendentes ${as.filter(a=>a.situacao==='Pendente').length} · bloqueadas ${as.filter(a=>a.situacao==='Bloqueado').length} · em revisão ${as.filter(a=>a.revisao).length}.</li>
+  <li><b>Migração dos checkboxes:</b> ${S.acessos?`feita em ${esc(S.acessos.migradoEm)}; ${S.acessos.contas} contas, ${S.acessos.vinculos} vínculos criados, ${S.acessos.emRevisao} enviados para revisão. Valores antigos guardados em cada conta para reversão.`:'não executada.'}</li>
+  <li class="warn"><b>Limite:</b> este protótipo não tem servidor. As regras rodam no navegador e os dados ficam no <code>localStorage</code>; quem controla o navegador consegue alterá-los. Na versão real, a mesma checagem precisa rodar na API (ACESSOS.md).</li></ul></section>`}
+function auditoriaView(){const f=UI.audF||'',l=(S.auditoria||[]).filter(x=>!f||(f==='alteracao'?x.tipo==='alteracao':x.tipo!=='alteracao'));
+ return `<div class="filters"><span class="lbl">Tipo</span>${[['','Tudo'],['alteracao','Alterações de acesso'],['negado','Acessos negados']].map(([v,t])=>`<button type="button" class="chipbtn g" data-act="set" data-k="audF" data-v="${v}" aria-pressed="${f===v}">${t}</button>`).join('')}</div>
+ <p class="muted small">Quem mudou o quê, quando e por quê; e cada tentativa negada. Sem senhas, tokens ou dados pessoais além do nome. Guardado no navegador neste protótipo.</p>
+ <div class="tablebox"><table><thead><tr><th>Quando</th><th>Tipo</th><th>Quem</th><th>Perfil</th><th>Ação</th><th>Alvo</th><th>Motivo ou endereço</th></tr></thead><tbody>${l.map(a=>`<tr><td class="tnum">${esc(a.t)}</td><td>${a.tipo==='alteracao'?pillT('Alteração','info'):pillT('Negado','bad')}</td><td>${esc(a.quem)}</td><td class="small">${esc(a.perfil)}</td><td>${esc(a.acao)}</td><td>${esc(a.alvo||'—')}</td><td class="small">${a.motivo?esc(a.motivo):a.rota?`<code>${esc(a.rota)}</code>`:'—'}</td></tr>`).join('')||emptyRow(7,'Nenhum registro com esse filtro.')}</tbody></table></div>`}
+V['adm-usuarios']=r=>{const t=['usuarios','arquitetura','auditoria'].includes(UI.usrTab)?UI.usrTab:'usuarios';
+ return sys(r,head('Usuários e acessos','Os acessos são calculados pelo sistema a partir dos vínculos de cada conta e das políticas de cada papel. Aqui você acompanha e corrige vínculos; não marca permissões à mão.',t==='usuarios'?'<button type="button" class="btn btn-primary" data-act="novo-usuario">+ Convidar usuário</button>':'')+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${t==='usuarios'}" data-act="set" data-k="usrTab" data-v="usuarios">Usuários</button><button type="button" role="tab" aria-selected="${t==='arquitetura'}" data-act="set" data-k="usrTab" data-v="arquitetura">Arquitetura de acessos</button><button type="button" role="tab" aria-selected="${t==='auditoria'}" data-act="set" data-k="usrTab" data-v="auditoria">Auditoria</button></div>`+
+ (t==='usuarios'?usuariosView():t==='arquitetura'?`<div style="display:grid;gap:22px">${arquiteturaView()}</div>`:auditoriaView()))};
+/* ■ FIM · AC · acessos calculados */
+
+
 
 /* ▶ INÍCIO · A.1/A.2 · importação centralizada em Pesquisas (pesquisas por CSV e respostas por arquivo) */
 function importarEscolha(){openModal('Importar',`<p class="muted small">Toda importação fica aqui, em Pesquisas.</p><div class="grid g2"><button type="button" class="card imp-op" data-act="imp-pesq-abrir"><b>Pesquisas</b><span class="small muted">Várias pesquisas de uma vez, por CSV: nome; tipo; início; fim; meta. Entram como rascunho.</span></button><button type="button" class="card imp-op" data-act="imp-resp-abrir"><b>Respostas e resultados</b><span class="small muted">Arquivo exportado do SurveyMonkey ou do campo. CSV é lido na hora; XLSX e PDF ficam guardados.</span></button></div>`,`<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button>`)}
@@ -1992,11 +2252,10 @@ Object.assign(ACT,{
  'sel-limpar':()=>{UI.sel=[];UI.selTodos=false;save();refreshPart('cad')},
  'bulk-conv':()=>bulkConvite(),
  'exp-cad':()=>exportarCadastro(),
- 'salvar-mx2':()=>{S.perm2=UI.mx2;UI.mx2=null;save();refresh();toast('Permissões salvas. Menus e ações já seguem a nova regra.')},
- 'descartar-mx2':()=>{UI.mx2=null;save();refresh()}
+
 });
 Object.assign(CHANGE,{
- 'mx2':el=>{UI.mx2=UI.mx2||JSON.parse(JSON.stringify(S.perm2));const p=UI.mxPerf||'transcricao';UI.mx2[p]=UI.mx2[p]||{};UI.mx2[p][el.dataset.k]=el.checked?1:0;save();refresh()},
+ dg:el=>{UI[el.dataset.k]=el.value;if(el.dataset.k==='dgU')UI.dgP='';save();refreshPart('diag')}, /* AC: diagnóstico (só leitura) */
  'sel-um':el=>{const l=filtrarPart();let s=UI.selTodos?l.map(x=>x.id):[...(UI.sel||[])];UI.selTodos=false;s=el.checked?[...new Set([...s,el.dataset.id])]:s.filter(x=>x!==el.dataset.id);UI.sel=s;save();refreshPart('cad')},
  'sel-pag':el=>{const l=filtrarPart(),pg=Math.max(1,UI.cadPg||1),ids=l.slice((pg-1)*10,pg*10).map(x=>x.id);let s=UI.selTodos?l.map(x=>x.id):[...(UI.sel||[])];UI.selTodos=false;s=el.checked?[...new Set([...s,...ids])]:s.filter(x=>!ids.includes(x));UI.sel=s;save();refreshPart('cad')},
  'doc-obrig':el=>{const t=S.docTipos.find(x=>x.id===el.dataset.id);t.obrig=el.checked;save();toast(`${t.nome}: ${el.checked?'obrigatório':'opcional'} na criação de projetos.`);refresh()},
@@ -2006,15 +2265,16 @@ Object.assign(CHANGE,{
 document.addEventListener('change',e=>{const el=e.target;if(!el.dataset||!el.dataset.doc||!el.files.length)return;if(!exigir('projetos','editar')){el.value='';return}
  const pj=PJ(el.dataset.proj),f=el.files[0];pj.docs=pj.docs||{};pj.docs[el.dataset.doc]={arq:f.name,data:hoje()};el.value='';save();toast('Documento anexado ao projeto.');refresh()});
 /* ◆ MEIO · E.5 · cada ação que muda dados passa pela checagem central, mesmo se o botão for forjado no navegador */
-[[FORM,'pesquisa','pesquisas','editar'],[FORM,'imp-pesq','pesquisas','importar'],[FORM,'imp-resp','pesquisas','importar'],[FORM,'projeto','projetos','criar'],[FORM,'convite','convites','convites'],[FORM,'conv-editar','convites','convites'],[FORM,'bulk-conv','convites','convites'],
+const PROTEGIDAS=[[FORM,'pesquisa','pesquisas','editar'],[FORM,'imp-pesq','pesquisas','importar'],[FORM,'imp-resp','pesquisas','importar'],[FORM,'projeto','projetos','criar'],[FORM,'convite','convites','convites'],[FORM,'conv-editar','convites','convites'],[FORM,'bulk-conv','convites','convites'],
  [FORM,'cad','cadastros','editar'],[FORM,'usuario','usuarios','usuarios'],[FORM,'fg','reunioes','criar'],[FORM,'rec-add','pesquisas','editar'],
  [ACT,'nova-pesquisa','pesquisas','criar'],[ACT,'editar-pesquisa','pesquisas','editar'],[ACT,'excluir-pesquisa','pesquisas','excluir'],[ACT,'importar-abrir','pesquisas','importar'],[ACT,'imp-pesq-abrir','pesquisas','importar'],[ACT,'imp-resp-abrir','pesquisas','importar'],
  [ACT,'novo-projeto','projetos','criar'],[ACT,'doc-config','projetos','editar'],[ACT,'convidar','convites','convites'],[ACT,'novo-convite','convites','convites'],[ACT,'aprovar','convites','convites'],[ACT,'recusar','convites','convites'],[ACT,'reenviar','convites','convites'],[ACT,'cancelar-convite','convites','convites'],[ACT,'conv-editar','convites','convites'],
  [ACT,'cad-add','cadastros','criar'],[ACT,'cad-edit','cadastros','editar'],[ACT,'cad-del','cadastros','excluir'],[ACT,'cli-add','cadastros','criar'],[ACT,'cli-edit','cadastros','editar'],[ACT,'bulk-conv','convites','convites'],[ACT,'exp-cad','cadastros','exportar'],[ACT,'exp-res','resultados','exportar'],
- [ACT,'novo-usuario','usuarios','usuarios'],[ACT,'editar-usuario','usuarios','usuarios'],[ACT,'remover-usuario','usuarios','usuarios'],[ACT,'salvar-mx2','usuarios','usuarios'],[ACT,'reset','usuarios','usuarios'],
+ [ACT,'novo-usuario','usuarios','usuarios'],[ACT,'editar-usuario','usuarios','usuarios'],[ACT,'remover-usuario','usuarios','usuarios'],[ACT,'reset','usuarios','usuarios'],
+ /* AC: ações de vínculo e conta */[ACT,'usr-det','usuarios','usuarios'],[ACT,'usr-diag','usuarios','usuarios'],[ACT,'v-novo','usuarios','usuarios'],[ACT,'v-corrigir','usuarios','usuarios'],[ACT,'v-confirmar','usuarios','usuarios'],[ACT,'v-revogar','usuarios','usuarios'],[ACT,'v-reenviar','usuarios','usuarios'],[ACT,'adm-solicitar','usuarios','usuarios'],[ACT,'v-aprovar','usuarios','usuarios'],[ACT,'conta-suspender','usuarios','usuarios'],[ACT,'conta-reativar','usuarios','usuarios'],[FORM,'v-novo','usuarios','usuarios'],[FORM,'v-corrigir','usuarios','usuarios'],[CHANGE,'dg','usuarios','usuarios'],
  [ACT,'fg-nova','reunioes','criar'],[ACT,'fg-iniciar','reunioes','editar'],[ACT,'fg-apresentar','reunioes','editar'],[ACT,'fg-parar','reunioes','editar'],[ACT,'fg-encerrar','reunioes','editar'],[ACT,'eq-acao','transcricoes','editar'],[ACT,'tr-excluir','transcricoes','excluir'],[ACT,'ag-rec','pesquisas','editar'],
- [CHANGE,'perm','usuarios','usuarios'],[CHANGE,'mx2','usuarios','usuarios'],[CHANGE,'doc-obrig','projetos','editar'],[CHANGE,'retencao','integracoes','integracoes'],[CHANGE,'rec','pesquisas','editar']
-].forEach(([obj,k,m,a])=>{if(obj[k])obj[k]=G(m,a,obj[k])});
+ [CHANGE,'doc-obrig','projetos','editar'],[CHANGE,'retencao','integracoes','integracoes'],[CHANGE,'rec','pesquisas','editar']
+];PROTEGIDAS.forEach(([obj,k,m,a])=>{if(obj[k])obj[k]=G(m,a,obj[k])});
 /* ■ FIM · A–E · ações novas e camada E.5 */
 /* ======================= FIM DA EVOLUÇÃO 27/10/2026 ======================= */
 
