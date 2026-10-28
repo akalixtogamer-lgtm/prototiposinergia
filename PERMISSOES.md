@@ -1,0 +1,39 @@
+| Módulo | Ações que existem | Equipe · Transcrição | Equipe · Processamento (parceiro) | Equipe · Assistente de análise | Cliente Empresa | Participante |
+| --- | --- | --- | --- | --- | --- | --- |
+| Pesquisas | Visualizar, Criar, Editar, Excluir, Importar, Exportar | — | — | — | — | visualizar |
+| Projetos | Visualizar, Criar, Editar, Excluir | — | — | — | visualizar | — |
+| Convites | Visualizar, Gerenciar convites | — | — | — | — | — |
+| Cadastros | Visualizar, Criar, Editar, Excluir, Exportar, Dados detalhados | — | — | — | — | — |
+| Resultados | Consultar resultados, Dados detalhados, Exportar | — | — | consultar resultados, dados detalhados, exportar | consultar resultados | — |
+| Reuniões | Visualizar, Criar, Editar, Excluir | visualizar | visualizar | visualizar | — | visualizar |
+| Transcrições | Visualizar, Importar, Editar, Excluir, Exportar | visualizar, importar, editar | visualizar, editar | visualizar, editar, exportar | — | — |
+| Usuários | Gerenciar usuários | — | — | — | — | — |
+| Integrações | Administrar integrações | — | — | — | — | — |
+
+O administrador altera a matriz em **Usuários e permissões → Permissões por perfil**. A mudança vale na hora para menus, telas, botões e para a checagem central.
+
+## Onde a regra é aplicada
+
+| Camada | No protótipo | Em produção (pendente) |
+| --- | --- | --- |
+| Interface | Menus, abas e botões só aparecem com a permissão (`pode(módulo, ação)`) | Igual |
+| Rota | O roteador confere sessão, perfil e matriz antes de abrir qualquer tela (`guard`) | Igual, mais checagem no servidor ao carregar dados |
+| Ação | Toda ação que altera dados passa por `exigir(módulo, ação)`, mesmo se o botão for criado à mão no navegador | **Backend obrigatório**: o protótipo roda inteiro no navegador, então quem controla o navegador controla os dados dele. A mesma matriz precisa ser aplicada na API (E.5) |
+| Dados | Respostas detalhadas só por código, sem nome/e-mail; cliente vê só a própria empresa | Filtrar no servidor, nunca no navegador |
+
+## Comportamentos definidos (E.7)
+
+| Situação | O que acontece |
+| --- | --- |
+| Sem login abre uma área interna | Vai para o login com o aviso "Entre com sua conta para acessar essa página" |
+| Logado abre área de outro perfil (endereço digitado ou link) | Página **Acesso negado (403)** com o motivo; a tentativa é registrada |
+| Clica num botão sem permissão (forjado) | Nada muda; aviso "Acesso negado"; tentativa registrada |
+| Sessão parada há mais de 30 minutos | Sessão encerrada; login com o aviso "Sua sessão expirou" |
+| Conta sem nenhum perfil | Login recusado |
+| Dados do navegador adulterados para virar administrador | A conta precisa ser administradora no cadastro; a rota é negada e registrada |
+
+O registro fica em **Usuários e permissões → Acessos negados** (últimas 200 tentativas, guardadas no navegador neste protótipo).
+
+## Testes
+
+`tests/test_autorizacao.py` cobre: escalada pelo `localStorage`, rota direta sem permissão, acesso sem login, sessão expirada, ações forjadas (excluir pesquisa, remover usuário, avançar etapa de outra função), matriz alterada pelo administrador e cliente sem dados individuais.

@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sinergia Surveys</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -474,6 +477,21 @@ textarea{font:400 .85rem var(--mono)}
 .fg-row .etq{margin-right:2px}
 .sala-side p svg,.okbar svg{width:16px;height:16px;vertical-align:-3px}
 /* ■ FIM · S1–S5 · estilos */
+/* ▶ INÍCIO · evolução 27/10/2026 · paginação, seleção em massa, ciclo do convite, importação */
+.pager{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
+.pg-btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.pg-btns .chipbtn[disabled]{opacity:.45;cursor:not-allowed}
+.selbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#efedff;border:1px solid #9b8cd6;border-radius:var(--r-md);padding:10px 14px;margin-bottom:10px}
+.selbar .grow{flex:1 1 auto}
+tr.sel td{background:#f6f4ff}
+.ciclo{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.ciclo li{font:500 .78rem var(--sans);border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--fg-2)}
+.ciclo li.on{background:var(--fg-1,#1c1b1f);color:#fff;border-color:transparent}
+.imp-op{display:grid;gap:4px;text-align:left;border:1px solid var(--line);border-radius:var(--r-md);padding:14px;background:var(--surface);cursor:pointer;font:inherit}
+.imp-op:hover,.imp-op:focus-visible{border-color:var(--line-strong)}
+.matrix td,.matrix th{text-align:center}.matrix td:first-child,.matrix th:first-child{text-align:left}
+@media (max-width:640px){.selbar{flex-direction:column;align-items:flex-start}.etapas{grid-template-columns:1fr}}
+/* ■ FIM · evolução 27/10/2026 */
+.linkbtn svg,.btn svg.ext{width:13px;height:13px;vertical-align:-2px;margin-left:2px}
 </style>
 
 <header class="site-head" id="siteHead">
@@ -590,7 +608,7 @@ V.home=()=>`
  <div class="sec-head"><span class="eyebrow">Linha de serviços de cinema</span><h2>Uma pesquisa para cada momento da vida do filme</h2><p class="lead">Do roteiro à estreia, a Sinergia mede o que o público sente antes que o mercado descubra.</p></div>
  ${phases}
  <!-- ▶ INÍCIO · S2 (site) · chamada da home para o focus group online -->
- <a class="fgband" href="#focusgroup"><span class="eyebrow">Novo</span><b>Focus group online, dentro da plataforma</b><span class="muted">Debate em vídeo com trechos do filme protegidos por marca d'água individual.</span><span class="linkbtn">Conhecer →</span></a>
+ <a class="fgband" href="#focusgroup"><span class="eyebrow">Novo</span><b>Focus group online</b><span class="muted">Debate no Microsoft Teams ou Google Meet, com trechos do filme exibidos na Sinergia sob marca d'água individual.</span><span class="linkbtn">Conhecer →</span></a>
  <!-- ■ FIM · S2 (site) · chamada da home -->
 </div></section>
 <section class="section alt"><div class="wrap grid g2" style="align-items:center;gap:40px">
@@ -608,7 +626,7 @@ V.servicos=()=>pageHero([['home','Home'],[null,'Serviços']],'Serviços · Seja 
   <a class="card" href="#cinema" style="text-decoration:none;color:inherit"><span class="eyebrow">Cinema e audiovisual</span><h2>Cinema</h2><p class="muted">Testes de roteiro, de posicionamento e de comunicação para produtoras, distribuidoras e majors.</p><span class="linkbtn">Ver testes de cinema →</span></a>
   <a class="card" href="#cat" style="text-decoration:none;color:inherit"><span class="eyebrow">Mercado corporativo</span><h2>CAT</h2><p class="muted">Pesquisas Ad Hoc e B2B para empresas de outros setores, com a mesma estrutura full-service.</p><span class="linkbtn">Ver serviços CAT →</span></a>
  </div>
- <!-- ▶ INÍCIO · S2 (site) · destaque do focus group em Serviços --><a class="card" href="#focusgroup" style="text-decoration:none;color:inherit;margin-top:20px;display:grid;gap:8px"><span class="eyebrow">Novo · qualitativo online</span><h2>Focus group online</h2><p class="muted">Debates em vídeo sobre o seu filme, com trechos exibidos em ambiente protegido e análise feita pela equipe interna.</p><span class="linkbtn">Ver como funciona →</span></a><!-- ■ FIM · S2 (site) · destaque -->
+ <!-- ▶ INÍCIO · S2 (site) · destaque do focus group em Serviços --><a class="card" href="#focusgroup" style="text-decoration:none;color:inherit;margin-top:20px;display:grid;gap:8px"><span class="eyebrow">Novo · qualitativo online</span><h2>Focus group online</h2><p class="muted">Debates sobre o seu filme no Teams ou no Meet, com trechos exibidos em ambiente protegido na Sinergia e análise feita pela equipe interna.</p><span class="linkbtn">Ver como funciona →</span></a><!-- ■ FIM · S2 (site) · destaque -->
 </div></section>
 <section class="section alt" id="contato"><div class="wrap grid g2" style="gap:40px">
  <div style="display:grid;gap:14px;align-content:start"><span class="eyebrow">Seja nosso cliente</span><h2>Solicite um estudo de viabilidade para seu filme</h2><p class="muted">Conte o momento do projeto. Um especialista responde em até dois dias úteis com uma proposta. Toda conversa é coberta por acordo de confidencialidade.</p>${seals}</div>
@@ -634,16 +652,16 @@ V.cinema=()=>pageHero([['home','Home'],['servicos','Serviços'],[null,'Cinema']]
 /* ▶ INÍCIO · S2 (site público) · página "Focus group online" — solicitação da cliente (relatório de 21/10/2026)
    Mostra ao público e aos clientes o novo ambiente de debate: etapas Início → Meio → Fim, proteção dos materiais (S1)
    e quem acessa (S5). */
-V.focusgroup=()=>pageHero([['home','Home'],['servicos','Serviços'],[null,'Focus group online']],'Focus group online','Debates sobre o seu filme, dentro da plataforma Sinergia','Recrutamos o público, marcamos o horário e conduzimos o debate em vídeo, com trechos do filme exibidos em ambiente protegido. Sem depender de plataformas de terceiros.')+`
+V.focusgroup=()=>pageHero([['home','Home'],['servicos','Serviços'],[null,'Focus group online']],'Focus group online','Debates sobre o seu filme, com o material protegido na Sinergia','Recrutamos o público, marcamos o horário e conduzimos o debate no Microsoft Teams ou no Google Meet. Os trechos do filme são exibidos na Sinergia, em ambiente protegido.')/* D.1 (27/10): reunião só por link externo */+`
 <section class="section"><div class="wrap" style="display:grid;gap:22px">
  <div class="sec-head"><span class="eyebrow">Como funciona</span><h2>Do convite ao relatório, em três etapas</h2></div>
  <!-- ◆ MEIO · S2 (site) · as três etapas do fluxo -->
  <ol class="steps3"><li><span class="k">1 · INÍCIO</span><h3>Agendar e convidar</h3><p class="muted">Selecionamos participantes do painel, sem a “bolha” de cinéfilos e parentes da produção. Cada um confirma presença e aceita o termo de sigilo.</p></li>
- <li><span class="k">2 · MEIO</span><h3>Sala ao vivo</h3><p class="muted">Vídeo, chat e apresentação de trechos do filme, cartazes e roteiros. A moderação conduz; sua equipe pode observar sem aparecer.</p></li>
- <li><span class="k">3 · FIM</span><h3>Transcrição e análise</h3><p class="muted">Nossa equipe interna transcreve, processa e analisa. Você recebe os insights junto dos resultados do projeto.</p></li></ol>
+ <li><span class="k">2 · MEIO</span><h3>Reunião no Teams ou Meet</h3><p class="muted">O vídeo e o áudio acontecem no Teams ou no Meet. Trechos do filme, cartazes e roteiros aparecem na Sinergia, protegidos. Sua equipe pode observar.</p></li>
+ <li><span class="k">3 · FIM</span><h3>Transcrição e análise</h3><p class="muted">Com o consentimento dos participantes, a transcrição gerada no Teams ou Meet é importada; nossa equipe interna processa e analisa. Você recebe os insights junto dos resultados do projeto.</p></li></ol>
 </div></section>
 <section class="section alt"><div class="wrap">
- <div class="sec-head"><span class="eyebrow">Material sigiloso</span><h2>Seu corte não sai da sala</h2></div>
+ <div class="sec-head"><span class="eyebrow">Material sigiloso</span><h2>Seu corte não sai da Sinergia</h2></div>
  <!-- ◆ MEIO · S1/S5 (site) · proteção e controle de acesso -->
  <div class="grid g3">
   <div class="card"><div class="ico">${I.shield}</div><h3>Marca d'água individual</h3><p class="muted">Cada exibição leva nome, código, data e hora de quem assiste. Se uma imagem vazar, sabemos de onde veio.</p></div>
@@ -705,7 +723,66 @@ const loginArt=`<svg viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice">
 
 const PART={},FORM={};
 
-/* ======================= SISTEMA SINERGIA (rev. 21/10/2026 + solicitações da cliente) =======================
+
+/* ======================= EVOLUÇÃO 27/10/2026 · prompt master (módulos A a E) =======================
+   Cada requisito leva a etiqueta do prompt (A.1, B.3, C.4…), no mesmo padrão ▶ INÍCIO / ◆ MEIO / ■ FIM.
+   Limite de arquitetura: o sistema é um site estático (GitHub Pages), sem servidor. A "camada de API" abaixo
+   centraliza as regras e bloqueia as ações mesmo quando o botão é forjado, mas roda no navegador.
+   A proteção definitiva (E.5) precisa de um backend; ver PERMISSOES.md. */
+
+/* ▶ INÍCIO · C.1–C.6, B.3, A.3, A.4, E · dados de exemplo novos (sobre o seed anterior). Fictícios, só para o protótipo. */
+const REGIOES=['Centro','Zona Sul','Zona Norte','Zona Oeste','Niterói e São Gonçalo','Baixada Fluminense'];
+const SEXOS=['Feminino','Masculino','Outro','Prefere não informar'];
+const DISPOS=['Próprio','Cedido pela Sinergia','Cedido pelo local de aplicação','Não informado'];
+const ORIGENS=['SurveyMonkey (importado)','Online na Sinergia','Campo (importado)'];
+function evolSeed(s){
+ s.v=4;
+ const base={'P-1027':['Zona Norte',29,'Feminino'],'P-1031':['Niterói e São Gonçalo',41,'Masculino'],'P-1044':['Zona Sul',24,'Feminino'],'P-1052':['Niterói e São Gonçalo',35,'Masculino'],'P-1060':['Zona Oeste',52,'Feminino'],'P-1075':['Centro',38,'Masculino'],'P-1099':['Zona Sul',33,'Masculino']};
+ s.participantes.forEach(p=>{const b=base[p.cod];if(b){p.regiao=b[0];p.idade=b[1];p.sexo=b[2]}});
+ const NOMES=['Beatriz','Carlos','Débora','Eduardo','Fernanda','Gabriel','Helena','Igor','Juliana','Kauã','Larissa','Marcelo','Natália','Otávio','Patrícia','Renato','Sabrina','Tiago','Úrsula','Vinícius','Wesley','Yara','Alice','Bernardo','Camila','Daniel','Elisa','Felipe','Giovana','Hugo','Isabela','Júlio','Lívia'];
+ const SOBR=['Almeida','Barros','Cardoso','Dias','Esteves','Farias','Gomes','Henriques','Lima','Moraes','Nogueira','Oliveira','Pereira','Queiroz','Rocha','Santos','Teixeira'];
+ const CID={'Centro':'Rio de Janeiro','Zona Sul':'Rio de Janeiro','Zona Norte':'Rio de Janeiro','Zona Oeste':'Rio de Janeiro','Niterói e São Gonçalo':'Niterói','Baixada Fluminense':'Duque de Caxias'};
+ NOMES.forEach((n,i)=>{const cod='P-'+(1100+i*3),reg=REGIOES[(i*5)%6],nome=n+' '+SOBR[(i*7)%SOBR.length];
+  s.participantes.push({id:'rx'+i,cod,nome,email:n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')+'.'+(i+10)+'@exemplo.com',cidade:CID[reg],regiao:reg,idade:18+((i*13)%50),sexo:SEXOS[i%9===8?3:i%7===6?2:i%2],criado:rel(-(i*9+3))});
+  const pids=['p1','p3','p4','p6','p9'];[pids[i%5],...(i%3===0?[pids[(i+2)%5]]:[])].forEach((pid,k)=>s.convites.push({id:'cvx'+i+'_'+k,pid,cod,data:rel(-(i%12)-1),status:['Enviado','Aberto','Respondido'][(i+k)%3]}))});
+ // B.5: histórico do ciclo de vida de cada convite
+ s.convites.forEach(c=>{if(c.hist)return;const h=[{t:c.data,acao:c.status==='Solicitado'?'Solicitado pelo participante (recomendação)':'Criado e enviado',who:c.status==='Solicitado'?c.cod:'Helena Prado'}];
+  if(['Aberto','Respondido'].includes(c.status))h.push({t:c.data,acao:'Aberto pelo participante',who:c.cod});if(c.status==='Respondido')h.push({t:c.data,acao:'Respondido',who:c.cod});c.hist=h});
+ // A.4: link externo do SurveyMonkey (exemplos — trocar pelos links reais da conta da Sinergia)
+ const sm={p1:'https://www.surveymonkey.com/r/EXEMPLO-FILME-A',p3:'https://www.surveymonkey.com/r/EXEMPLO-TRAILER'};s.pesquisas.forEach(p=>{p.smLink=sm[p.id]||''});
+ // A.3 + C.6: respostas individuais (anônimas por código) com origem e dispositivo
+ s.respostasDet=[];const ondes=['Cinema','Streaming','TV aberta ou a cabo','Mídia física'],gens=['Comédia','Ação','Drama','Ficção científica','Romance'];
+ [['p1',40],['p3',30],['p6',12],['p9',14]].forEach(([pid,n])=>{for(let k=0;k<n;k++){const cod=s.participantes[(k*7+pid.length)%s.participantes.length].cod;
+  s.respostasDet.push({id:'rd'+pid+k,pid,cod,data:rel(-(k%15)-1),origem:ORIGENS[k%3],dispositivo:DISPOS[(k*3)%7<3?0:(k*3)%7<5?1:(k%2?2:3)],onde:ondes[(k*5)%4],genero:gens[(k*3)%5]})}});
+ // B.3: tipos de documento do projeto (nenhum obrigatório até a regra de negócio ser confirmada)
+ s.docTipos=[{id:'d1',nome:'Briefing do cliente',obrig:false},{id:'d2',nome:'Termo de confidencialidade',obrig:false},{id:'d3',nome:'Proposta ou contrato',obrig:false},{id:'d4',nome:'Questionário ou roteiro',obrig:false}];
+ s.projetos.forEach(p=>p.docs={});s.projetos[0].docs={d1:{arq:'briefing_cinema_alfa.pdf',data:'05/10/2026'},d2:{arq:'nda_cinema_alfa_assinado.pdf',data:'06/10/2026'}};s.projetos[2].docs={d4:{arq:'roteiro_grupo_focal.pdf',data:'14/10/2026'}};
+ // D: reuniões passam a ser só por link externo (Teams/Meet); sala própria e chat saíram
+ const lk=[['Google Meet','https://meet.google.com/abc-defg-hij'],['Microsoft Teams','https://teams.microsoft.com/l/meetup-join/exemplo-sinergia-filme-a'],['Google Meet','https://meet.google.com/xyz-abcd-efg'],['Microsoft Teams','https://teams.microsoft.com/l/meetup-join/exemplo-sinergia-pos-sessao']];
+ s.focus.forEach((f,i)=>{f.plataforma=lk[i%4][0];f.link=lk[i%4][1];if(f.status==='Ao vivo')f.status='Em andamento';delete f.chat;delete f.notas;delete f.maos;
+  f.convidados.forEach(c=>{if(c.st==='Confirmado'&&f.status!=='Agendada'){c.sigilo=true;c.consent=f.data}});if(f.transcricao)f.transcricao.origem=f.transcricao.status==='Aguardando transcrição'?'':'Arquivo .vtt exportado do '+f.plataforma});
+ // E: matriz módulo × ação, configurações e auditoria
+ s.perm2=permPadrao();s.config={retencao:'A definir',sessaoMin:30};s.auditoria=[];
+ return s}
+/* ■ FIM · dados de exemplo novos */
+
+/* ▶ INÍCIO · E.1–E.4, E.8 · perfis, módulos, ações e matriz padrão (proposta para validar com a Sinergia) */
+const PERFIS=[['admin','Administrador'],['transcricao','Equipe · Transcrição'],['processamento','Equipe · Processamento (parceiro)'],['analise','Equipe · Assistente de análise'],['cliente','Cliente Empresa'],['participante','Participante']];
+const MODULOS=[['pesquisas','Pesquisas'],['projetos','Projetos'],['convites','Convites'],['cadastros','Cadastros'],['resultados','Resultados'],['reunioes','Reuniões'],['transcricoes','Transcrições'],['usuarios','Usuários'],['integracoes','Integrações']];
+const ACOES=[['ver','Visualizar'],['criar','Criar'],['editar','Editar'],['excluir','Excluir'],['importar','Importar'],['exportar','Exportar'],['convites','Gerenciar convites'],['usuarios','Gerenciar usuários'],['resultados','Consultar resultados'],['detalhes','Dados detalhados'],['integracoes','Administrar integrações']];
+const APLICA={pesquisas:['ver','criar','editar','excluir','importar','exportar'],projetos:['ver','criar','editar','excluir'],convites:['ver','convites'],cadastros:['ver','criar','editar','excluir','exportar','detalhes'],resultados:['resultados','detalhes','exportar'],reunioes:['ver','criar','editar','excluir'],transcricoes:['ver','importar','editar','excluir','exportar'],usuarios:['usuarios'],integracoes:['integracoes']};
+const SO_ADMIN=['usuarios.usuarios','integracoes.integracoes']; /* E.6: só o administrador gerencia usuários e integrações (evita escalada) */
+function permPadrao(){const all={};MODULOS.forEach(([m])=>APLICA[m].forEach(a=>all[m+'.'+a]=1));const o=k=>Object.fromEntries(k.map(x=>[x,1]));
+ return {admin:all,
+  transcricao:o(['reunioes.ver','transcricoes.ver','transcricoes.importar','transcricoes.editar']),
+  processamento:o(['reunioes.ver','transcricoes.ver','transcricoes.editar']),
+  analise:o(['reunioes.ver','transcricoes.ver','transcricoes.editar','transcricoes.exportar','resultados.resultados','resultados.detalhes','resultados.exportar']),
+  cliente:o(['projetos.ver','resultados.resultados']),
+  participante:o(['pesquisas.ver','reunioes.ver'])}}
+/* ◆ MEIO · E.1–E.4 · perfis e matriz padrão continuam abaixo (sys4-evol.js) */
+
+/* ======================= SISTEMA SINERGIA (rev. 21/10/2026 + solicitações da cliente + evolução de 27/10/2026) =======================
+   A evolução de 27/10/2026 (prompt master, módulos A–E) está marcada com o código do requisito (A.1, C.4, E.5…) e o arquivo sys4-evol.js.
    ETIQUETAS DAS SOLICITAÇÕES DA CLIENTE (relatório de 21/10/2026). Cada trecho novo ou alterado vem marcado:
      ▶ INÍCIO · Sx   onde a alteração começa
      ◆ MEIO · Sx     o miolo (o que aquele pedaço faz)
@@ -737,8 +814,8 @@ const fromISO=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(d||'');return m?`${m[3]
 const dias=d=>{const i=toISO(d);if(!i)return null;const a=new Date(i+'T12:00:00'),b=new Date();b.setHours(12,0,0,0);return Math.round((a-b)/864e5)};
 
 /* ---------- Dados ---------- */
-const KEY='sinergia-sistema-v3'; /* S1–S5: dados novos (focus group, equipe interna) */
-function seed(){return {v:3,session:null,ui:{},
+const KEY='sinergia-sistema-v4'; /* evolução 27/10: dados novos (participantes, respostas, documentos, permissões) */
+function seed(){return evolSeed({v:3,session:null,ui:{},
  users:[
   {id:'u1',nome:'Helena Prado',email:'helena@sinergia.com.br',admin:true,perms:[],tel:'(21) 99876-1200'},
   /* ▶ INÍCIO · S5 · contas: agentes (entrevistadores terceirizados) perdem o login; entram 3 perfis da equipe interna */
@@ -843,10 +920,10 @@ function seed(){return {v:3,session:null,ui:{},
    transcricao:{status:'Analisada',texto:'[00:01] Moderadora: O que vocês acharam do final?\n[00:02] P-1031: Emocionante, mas longo.\n[00:04] P-1060: Eu cortaria a cena do aeroporto.',insights:['O final emociona, mas 2 de 3 participantes acharam o terceiro ato longo.','A cena do aeroporto foi a mais citada para corte.','O cartaz versão B foi associado a comédia romântica, não a drama.'],hist:[{t:rel(-11),who:'Bianca Lemos',acao:'Transcrição concluída'},{t:rel(-10),who:'Carla Nunes',acao:'Processada (falas anonimizadas)'},{t:rel(-9),who:'Lívia Rocha',acao:'Análise publicada'}]}}],
  drmLog:[{t:rel(-5)+' 18:22',quem:'P-1052 · Diego Alves',mat:'Cena de abertura — corte 2',ev:'Saiu da tela durante a exibição'},{t:rel(-5)+' 18:40',quem:'P-1027 · Ana Ribeiro',mat:'Cena de abertura — corte 2',ev:'Tentativa de captura de tela bloqueada'}]
  /* ■ FIM · S2/S3/S4 · dados de exemplo */
-}}
+})}
 let S=null;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
-if(!S||S.v!==3)S=seed();
-try{localStorage.removeItem('sinergia-sistema-v1');localStorage.removeItem('sinergia-sistema-v2')}catch(e){}
+if(!S||S.v!==4)S=seed();
+try{localStorage.removeItem('sinergia-sistema-v1');localStorage.removeItem('sinergia-sistema-v2');localStorage.removeItem('sinergia-sistema-v3')}catch(e){}
 let UI=S.ui||(S.ui={});
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 
@@ -897,8 +974,8 @@ const ROLE_DESC={equipe:'Observa focus groups e cuida da transcrição, do proce
 const ROLE_ICO={equipe:'users',cliente:'build',participante:'user'};
 /* ■ FIM · S5 · perfis */
 const MENU={
- admin:[['adm-pesquisas','Pesquisas','list'],['adm-projetos','Projetos','folder'],['adm-clientes','Clientes','build'],['adm-convites','Convites','mail'],['adm-focus','Focus group','video'],['adm-resultados','Resultados','chart'],['adm-cadastros','Cadastros','users'],['adm-usuarios','Usuários e permissões','lock']],
- equipe:[['eq-focus','Focus group','video','focus_observar'],['eq-transcricoes','Transcrição e análise','list','transcrever_analisar'],['eq-perfil','Perfil','user']], /* S5: menu da equipe interna */
+ admin:[['adm-pesquisas','Pesquisas','list'],['adm-projetos','Projetos','folder'],['adm-clientes','Clientes','build'],['adm-convites','Convites','mail'],['adm-focus','Reuniões','video'],['adm-resultados','Resultados','chart'],['adm-cadastros','Cadastros','users'],['adm-usuarios','Usuários e permissões','lock'],['adm-integracoes','Integrações','globe']], /* D.1: Reuniões; A.4/E: Integrações */
+ equipe:[['eq-focus','Reuniões','video','focus_observar'],['eq-transcricoes','Transcrição e análise','list','transcrever_analisar'],['eq-resultados','Resultados','chart','ver_resultados'],['eq-perfil','Perfil','user']], /* A.3: resultados para a análise */ /* S5: menu da equipe interna */
  cliente:[['cl-projetos','Projetos','folder','ver_projetos'],['cl-resultados','Resultados','chart','ver_resultados'],['cl-perfil','Perfil','user']],
  participante:[['pa-pesquisas','Minhas pesquisas','home','responder'],['pa-focus','Debates','video','focus_participar'],['pa-respostas','Minhas respostas','hist','responder'],['pa-perfil','Perfil','user']]};
 const PARENT={'adm-projeto':'adm-projetos','adm-cliente':'adm-clientes','adm-sala':'adm-focus','eq-sala':'eq-focus','pa-sala':'pa-focus','cl-projeto':'cl-projetos','cl-resultado':'cl-projetos','pa-preferencias':'pa-pesquisas','pa-responder':'pa-pesquisas','pa-revisao':'pa-pesquisas','pa-concluida':'pa-pesquisas'};
@@ -907,7 +984,10 @@ const MATRIX_ROWS=[['gerenciar_pesquisas','Gerenciar pesquisas (padrão e person
  /* S2/S4/S5 */['focus_moderar','Moderar focus group e apresentar materiais'],['focus_observar','Observar focus group (sem aparecer para os participantes)'],['focus_participar','Participar de focus group (só convidados)'],['transcrever_analisar','Transcrever, processar e analisar sessões'],['ver_insights','Ver insights dos focus groups']];
 const MATRIX_ROLES=['admin','equipe','cliente','participante'];
 const routeRole=r=>r.startsWith('adm-')?'admin':r.startsWith('eq-')?'equipe':r.startsWith('cl-')?'cliente':r.startsWith('pa-')?'participante':null;
-const can=(role,cap)=>!cap||!!(S.matrix[cap]||{})[role];
+/* ▶ INÍCIO · E.2 · as capacidades antigas dos menus agora consultam a matriz módulo × ação (sys4-evol.js) */
+const CAPMAP={ver_projetos:'projetos.ver',ver_resultados:'resultados.resultados',responder:'pesquisas.ver',focus_observar:'reunioes.ver',focus_participar:'reunioes.ver',focus_moderar:'reunioes.editar',transcrever_analisar:'transcricoes.ver',ver_insights:'resultados.resultados',recursos:'pesquisas.editar'};
+const can=(role,cap)=>{if(!cap)return true;const [m,a]=(CAPMAP[cap]||'x.x').split('.');return pode(m,a,role==='equipe'?perfilAtual():role)};
+/* ■ FIM · E.2 */
 const capOf=r=>{const m=Object.values(MENU).flat().find(x=>x[0]===r);return m?m[3]:CAP[r]};
 function homeOf(role){if(role==='admin')return 'adm-pesquisas';const it=MENU[role].find(([,, ,c])=>can(role,c));return it?it[0]:MENU[role][MENU[role].length-1][0]}
 function firstRoute(){const u=me();if(!u)return 'login';if(S.session.mode==='admin')return 'adm-pesquisas';if(u.perms.length>1&&!S.session.role)return 'navegar';const role=u.perms.includes(S.session.role)?S.session.role:u.perms[0];return role?homeOf(role):'login'}
@@ -915,18 +995,21 @@ function guard(r){
  /* ▶ INÍCIO · S5 · rotas antigas do Agente ficam bloqueadas para qualquer conta */
  if(r.startsWith('ag-')){toast('A área do agente foi desativada: entrevistadores e terceirizados não acessam a plataforma.');return me()?firstRoute():'login'}
  /* ■ FIM · S5 · rotas antigas do Agente */
+ /* ▶ INÍCIO · E.7 · sessão expirada, rota sem permissão e acesso direto: comportamento definido */
+ if(S.session&&!sessaoValida()){S.session=null;UI.aviso='expirada';save();return 'login'}
  if(r==='navegar'){const u=me();if(!u||S.session.mode!=='user')return 'login';return r}
  const role=routeRole(r);if(!role)return r;
- const u=me();if(!u){toast('Entre com sua conta para acessar.');return 'login'}
- if(role==='admin'){if(S.session.mode!=='admin'){toast('Área exclusiva do administrador.');return firstRoute()}return r}
- if(S.session.mode==='admin'){toast('Para navegar como '+ROLE[role]+', entre pela opção Usuário.');return 'adm-pesquisas'}
- if(!u.perms.includes(role)){toast('Sua conta não tem permissão de '+ROLE[role]+'.');S.session.role=null;return u.perms.length?firstRoute():'login'}
- const c=capOf(r);if(c&&!can(role,c)){toast('Essa função está desativada para o perfil '+ROLE[role]+'.');const h=homeOf(role);return h===r?role.slice(0,2)+'-perfil':h}
+ const u=me();if(!u){UI.aviso='login';UI.depois=r;save();return 'login'}
+ if(role==='admin'){if(S.session.mode!=='admin'||!u.admin)return negarRota(r,'Esta área é exclusiva do administrador.');return r} /* E.6: confere a conta, não só a sessão */
+ if(S.session.mode==='admin')return negarRota(r,'Para navegar como '+ROLE[role]+', entre pela opção Usuário.');
+ if(!u.perms.includes(role)){S.session.role=null;return negarRota(r,'Sua conta não tem o perfil '+ROLE[role]+'.')}
+ const c=capOf(r);if(c&&!can(role,c))return negarRota(r,'Essa área está desligada para o seu perfil na matriz de permissões.')
+ /* ■ FIM · E.7 */
  if(S.session.role!==role){S.session.role=role;save()}
  return r}
 
 /* ---------- Breadcrumb ---------- */
-const LABEL={'adm-pesquisas':'Pesquisas','adm-projetos':'Projetos','adm-clientes':'Clientes','adm-convites':'Convites','adm-resultados':'Resultados','adm-cadastros':'Cadastros','adm-usuarios':'Usuários e permissões','ag-pesquisas':'Minhas pesquisas','ag-detalhes':'Detalhes da pesquisa','ag-aplicar':'Aplicar pesquisa','ag-perfil':'Perfil','cl-projetos':'Projetos','cl-resultados':'Resultados','cl-perfil':'Perfil','pa-pesquisas':'Minhas pesquisas','pa-preferencias':'Pesquisa personalizada','pa-responder':'Responder','pa-revisao':'Revisão das respostas','pa-concluida':'Pesquisa concluída','pa-respostas':'Minhas respostas','pa-perfil':'Perfil'};
+const LABEL={'adm-integracoes':'Integrações','eq-resultados':'Resultados','adm-pesquisas':'Pesquisas','adm-projetos':'Projetos','adm-clientes':'Clientes','adm-convites':'Convites','adm-resultados':'Resultados','adm-cadastros':'Cadastros','adm-usuarios':'Usuários e permissões','ag-pesquisas':'Minhas pesquisas','ag-detalhes':'Detalhes da pesquisa','ag-aplicar':'Aplicar pesquisa','ag-perfil':'Perfil','cl-projetos':'Projetos','cl-resultados':'Resultados','cl-perfil':'Perfil','pa-pesquisas':'Minhas pesquisas','pa-preferencias':'Pesquisa personalizada','pa-responder':'Responder','pa-revisao':'Revisão das respostas','pa-concluida':'Pesquisa concluída','pa-respostas':'Minhas respostas','pa-perfil':'Perfil'};
 const CHAIN={'adm-projeto':['adm-projetos'],'adm-cliente':['adm-clientes'],'ag-detalhes':['ag-pesquisas'],'ag-aplicar':['ag-pesquisas'],'cl-projeto':['cl-projetos'],'cl-resultado':['cl-projetos','cl-projeto'],'pa-preferencias':['pa-pesquisas'],'pa-responder':['pa-pesquisas'],'pa-revisao':['pa-pesquisas','pa-responder'],'pa-concluida':['pa-pesquisas']};
 function labelOf(r){if(LABEL[r])return LABEL[r];if(r==='adm-projeto'||r==='cl-projeto')return projNome(UI.proj);if(r==='adm-cliente')return (S.clientes.find(c=>c.id===UI.cli)||{}).nome||'Cliente';if(r==='cl-resultado')return (P(UI.resPid)||{}).nome||'Resultado';return r}
 function crumbs(r){const role=routeRole(r),chain=(CHAIN[r]||[]).filter(x=>x!==r);
@@ -971,6 +1054,7 @@ V.login=()=>{const tab=UI.loginTab||'usuario',pre=UI.prefill||'';
  <div class="form-side"><div><nav class="crumbs" aria-label="Você está em"><ol><li><a href="#home">Site</a></li><li aria-current="page">Login</li></ol></nav><span class="eyebrow">Login</span><h1 style="font-size:2rem">Entrar na Sinergia</h1>
  <div class="ltabs" role="tablist" aria-label="Tipo de acesso"><button type="button" role="tab" aria-selected="${tab==='admin'}" data-act="login-tab" data-tab="admin">${I.shield}Administrador</button><button type="button" role="tab" aria-selected="${tab==='usuario'}" data-act="login-tab" data-tab="usuario">${I.user}Usuário</button></div>
  <p class="small muted">${tab==='admin'?'Gerencia pesquisas, projetos, clientes, convites, cadastros, usuários e permissões.':'Equipe interna, clientes e participantes entram aqui. Entrevistadores e terceirizados não têm acesso à plataforma.'}</p>
+ ${UI.aviso==='expirada'?'<p class="err" role="alert">Sua sessão expirou por inatividade. Entre de novo.</p>':UI.aviso==='login'?'<p class="note small" role="status">Entre com sua conta para acessar essa página.</p>':''}
  <form data-form="login" novalidate>
   <div class="field"><label for="l-mail">E-mail</label><input id="l-mail" name="email" type="email" autocomplete="username" required value="${esc(pre)}"></div>
   <div class="field"><label for="l-senha">Senha</label><input id="l-senha" name="senha" type="password" autocomplete="current-password" required></div>
@@ -995,7 +1079,7 @@ FORM.login=f=>{const d=formData(f),err=f.querySelector('#l-err'),tab=UI.loginTab
  if(tab==='admin'&&!u.admin)return fail('Esta conta não é de administrador. Entre pela opção Usuário.');
  if(tab==='usuario'&&u.admin)return fail('Contas de administrador entram pela opção Administrador.');
  if(tab==='usuario'&&!u.perms.length)return fail('Sua conta ainda não tem permissões de navegação. Peça ao administrador para liberar o acesso.');
- S.session={uid:u.id,mode:tab==='admin'?'admin':'user',role:u.perms.length===1?u.perms[0]:null};UI.prefill='';save();
+ S.session={uid:u.id,mode:tab==='admin'?'admin':'user',role:u.perms.length===1?u.perms[0]:null,last:Date.now()};UI.prefill='';UI.aviso='';save();
  toast(`Olá, ${u.nome.split(' ')[0]}.`);location.hash=firstRoute()};
 
 V.navegar=()=>{const u=me();return pageHero([['home','Site'],['login','Login'],[null,'Navegar como']],'Olá, '+esc(u.nome.split(' ')[0]),'Como você vai navegar agora?',`Sua conta tem acesso a ${u.perms.length} áreas. Você pode trocar a qualquer momento pelo menu lateral.`)+
@@ -1015,6 +1099,7 @@ function pesqForm(p){p=p||{};const proj=p.projeto||UI.novaProj||'';const cli=p.c
  <fieldset class="field" id="ag-box" ${comAg?'':'hidden'}><legend class="lg">Agentes da pesquisa</legend><div class="permbox">${agentesNomes().map(a=>`<label><input type="checkbox" name="ag:${esc(a)}" ${ags.includes(a)?'checked':''}>${esc(a)}</label>`).join('')}</div></fieldset>
  <div class="row2">${field('inicio','Início',toISO(p.inicio)||new Date().toISOString().slice(0,10),'date','required')}${field('fim','Fim',toISO(p.fim)||'','date','required')}</div>
  ${field('meta','Meta de entrevistas',p.meta||50,'number','min="1" required')}
+ ${field('smlink','Link do SurveyMonkey (opcional · A.4)',p.smLink||'','url','placeholder="https://www.surveymonkey.com/r/…"')}
  <p class="small muted">Personalizada: quem responde escolhe gêneros e nº de etapas.</p>
  <div class="err" id="pf-err" hidden></div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-pesq">Salvar pesquisa</button>`,
@@ -1028,17 +1113,19 @@ FORM.pesquisa=f=>{const d=formData(f),id=f.dataset.id,e=f.querySelector('#pf-err
  if(!modos.length)return fail('Marque se a aplicação é online, presencial ou as duas.');
  if(!d.inicio||!d.fim)return fail('Informe as datas de início e de fim.');
  if(d.fim<d.inicio)return fail('A data de fim não pode ser antes do início.');
+ const sm=(d.smlink||'').trim();if(sm&&!/^https:\/\/([\w-]+\.)?surveymonkey\.com\/\S+$/i.test(sm))return fail('Link do SurveyMonkey inválido. Use o endereço que começa com https://…surveymonkey.com/');
  if(d.agmode==='com'&&!agentes.length)return fail('Escolha pelo menos um agente, ou marque “Sem agente”.');
- const v={nome:d.nome.trim(),cliente:d.cliente,projeto:d.projeto,tipo:d.tipo,status:d.status,agentes,modos,local:modos.includes('Presencial')?(d.local||'').trim():'',inicio:fromISO(d.inicio),fim:fromISO(d.fim),meta:+d.meta||1};
+ const v={nome:d.nome.trim(),cliente:d.cliente,projeto:d.projeto,tipo:d.tipo,status:d.status,agentes,modos,local:modos.includes('Presencial')?(d.local||'').trim():'',smLink:sm,inicio:fromISO(d.inicio),fim:fromISO(d.fim),meta:+d.meta||1};
  if(id)Object.assign(P(id),v);else S.pesquisas.unshift({id:nid('p'),resp:0,feitas:0,...v});
  UI.novaProj='';save();closeModal();toast(id?'Pesquisa atualizada.':'Pesquisa criada.');refresh()};
 
 V['adm-pesquisas']=r=>{const ativ=S.pesquisas.filter(p=>p.status==='Ativa').length,cv=S.convites.filter(c=>c.status!=='Cancelado'&&c.status!=='Solicitado'),rs=cv.filter(c=>c.status==='Respondido').length;
- return sys(r,head('Pesquisas','Crie, edite e acompanhe todas as pesquisas do sistema.',`<button type="button" class="btn btn-ghost" data-act="goto" data-to="adm-resultados" data-set="resTab:importar">Importar resultados</button><button type="button" class="btn btn-primary" data-act="nova-pesquisa">+ Nova pesquisa</button>`)
+ return sys(r,head('Pesquisas','Crie, edite e acompanhe todas as pesquisas do sistema.',`${pode('pesquisas','importar')?`<button type="button" class="btn btn-ghost" data-act="importar-abrir">${I.upload}Importar</button>`:''}<button type="button" class="btn btn-primary" data-act="nova-pesquisa">+ Nova pesquisa</button>`)/* A.1: importação centralizada aqui */
  +kpis([['Pesquisas ativas',ativ],['Convites enviados',cv.length],['Taxa de conclusão dos convites',pct(rs,cv.length)]])
- +`<div class="filters"><input class="grow" type="search" data-live="pesq" data-key="pq" placeholder="Buscar por pesquisa ou cliente" aria-label="Buscar por pesquisa ou cliente" value="${esc(UI.pq||'')}"><select data-live="pesq" data-key="pst" aria-label="Filtrar por status">${opts([['','Todos os status'],'Ativa','Pausada','Encerrada','Rascunho'],UI.pst||'')}</select><select data-live="pesq" data-key="ptp" aria-label="Filtrar por tipo">${opts([['','Padrão e personalizada'],'Padrão','Personalizada'],UI.ptp||'')}</select></div><div id="part-pesq">${PART.pesq()}</div>`)};
+ +`<div class="tabs" role="tablist" data-req="A.1"><button type="button" role="tab" aria-selected="${(UI.pqTab||'lista')==='lista'}" data-act="set" data-k="pqTab" data-v="lista">Lista de pesquisas</button><button type="button" role="tab" aria-selected="${UI.pqTab==='imp'}" data-act="set" data-k="pqTab" data-v="imp">Importações ${S.arquivos.length}</button></div>`
+ +(UI.pqTab==='imp'?`<p class="note">Todas as importações do sistema ficam aqui: pesquisas (CSV) e respostas de coletas externas como SurveyMonkey e campo (CSV). XLSX e PDF ficam guardados, mas o protótipo não lê o conteúdo.</p><div id="part-imps">${PART.imps()}</div>`:`<div class="filters"><input class="grow" type="search" data-live="pesq" data-key="pq" placeholder="Buscar por pesquisa ou cliente" aria-label="Buscar por pesquisa ou cliente" value="${esc(UI.pq||'')}"><select data-live="pesq" data-key="pst" aria-label="Filtrar por status">${opts([['','Todos os status'],'Ativa','Pausada','Encerrada','Rascunho'],UI.pst||'')}</select><select data-live="pesq" data-key="ptp" aria-label="Filtrar por tipo">${opts([['','Padrão e personalizada'],'Padrão','Personalizada'],UI.ptp||'')}</select></div><div id="part-pesq">${PART.pesq()}</div>`))};
 PART.pesq=()=>{const q=(UI.pq||'').toLowerCase(),rows=S.pesquisas.filter(p=>(!q||(p.nome+' '+p.cliente).toLowerCase().includes(q))&&(!UI.pst||p.status===UI.pst)&&(!UI.ptp||p.tipo===UI.ptp));
- return `<div class="tablebox"><table><thead><tr><th>Nome</th><th>Cliente</th><th>Tipo</th><th>Aplicação</th><th>Período</th><th>Status</th><th>Resp.</th><th>Ações</th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.nome)}</b><span class="s">${esc(projNome(p.projeto))} · ${esc(agTxt(p))}</span></td><td>${esc(p.cliente)}</td><td>${p.tipo}</td><td class="small">${modoTxt(p)}</td><td class="small tnum">${p.inicio}<br>${p.fim}${p.status==='Ativa'?'<br>'+prazo(p.fim,p.feitas>=p.meta):''}</td><td>${pill(p.status)}</td><td class="tnum">${p.resp}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-pesquisa" data-id="${p.id}">Editar</button><button type="button" class="linkbtn" data-act="convidar" data-id="${p.id}">Convidar</button>${p.agentes.length?`<button type="button" class="linkbtn" data-act="ag-rec" data-id="${p.id}">Recursos</button>`:''}<button type="button" class="linkbtn" data-act="resultado" data-id="${p.id}">Resultados</button><button type="button" class="linkbtn danger" data-act="excluir-pesquisa" data-id="${p.id}">Excluir</button></td></tr>`).join('')||emptyRow(8,'Nenhuma pesquisa com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${rows.length} de ${S.pesquisas.length} pesquisas</p>`};
+ return `<div class="tablebox"><table><thead><tr><th>Nome</th><th>Cliente</th><th>Tipo</th><th>Aplicação</th><th>Período</th><th>Status</th><th>Resp.</th><th>Ações</th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.nome)}</b><span class="s">${esc(projNome(p.projeto))} · ${esc(agTxt(p))}</span></td><td>${esc(p.cliente)}</td><td>${p.tipo}</td><td class="small">${modoTxt(p)}</td><td class="small tnum">${p.inicio}<br>${p.fim}${p.status==='Ativa'?'<br>'+prazo(p.fim,p.feitas>=p.meta):''}</td><td>${pill(p.status)}</td><td class="tnum">${p.resp}</td><td class="acts">${p.smLink?`<a class="linkbtn" href="${esc(p.smLink)}" target="_blank" rel="noopener noreferrer" data-ext="surveymonkey" title="Abre o SurveyMonkey em nova aba (A.4)">SurveyMonkey ${I.ext}</a>`:''}<button type="button" class="linkbtn" data-act="editar-pesquisa" data-id="${p.id}">Editar</button><button type="button" class="linkbtn" data-act="convidar" data-id="${p.id}">Convidar</button>${p.agentes.length?`<button type="button" class="linkbtn" data-act="ag-rec" data-id="${p.id}">Recursos</button>`:''}<button type="button" class="linkbtn" data-act="resultado" data-id="${p.id}">Resultados</button><button type="button" class="linkbtn danger" data-act="excluir-pesquisa" data-id="${p.id}">Excluir</button></td></tr>`).join('')||emptyRow(8,'Nenhuma pesquisa com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${rows.length} de ${S.pesquisas.length} pesquisas</p>`};
 
 function filtroRes(scope){const pq=UI[scope+'Pesq']||'',md=UI[scope+'Modo']||'';return {pq,md,list:x=>x.filter(p=>(!pq||p.id===pq)&&(!md||p.modos.includes(md)))}}
 function painelResultados(scope,base,weeksBase,abrir){const f=filtroRes(scope),list=f.list(base),per=UI[scope+'Per']||'6';
@@ -1052,15 +1139,7 @@ function painelResultados(scope,base,weeksBase,abrir){const f=filtroRes(scope),l
  <div class="grid g2"><div class="panel" style="display:grid;gap:16px"><div class="ph"><h3>Respostas por semana</h3><span class="small muted">Barra areia: semana atual</span></div>${vbars(w)}</div>
  <div class="panel" style="display:grid;gap:14px"><div><h3>Onde o público assiste filmes</h3><p class="small muted">${f.pq?'Pesquisa selecionada':'Todas as pesquisas somadas'} · n = ${agg.reduce((a,b)=>a+b,0)}</p></div>${hbars(ONDE,agg)}</div></div>
  <div class="panel" style="padding:0"><div style="padding:18px 20px 4px"><h3>Pesquisas</h3></div>${list.map(p=>`<div class="row-item"><div class="info"><b>${esc(p.nome)}</b><span class="small muted">${esc(p.cliente)} · n = ${p.resp} · ${periodo(p)}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="${abrir||'resultado'}" data-id="${p.id}">Abrir pesquisa</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa com esses filtros.</p>'}</div>`}
-V['adm-resultados']=r=>{const tab=UI.resTab||'painel';
- return sys(r,head('Resultados','Acompanhe as respostas e importe arquivos de coleta externa.')+
- `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='painel'}" data-act="set" data-k="resTab" data-v="painel">Painel</button><button type="button" role="tab" aria-selected="${tab==='importar'}" data-act="set" data-k="resTab" data-v="importar">Importar arquivos</button></div>`+
- (tab==='painel'?`<div id="part-adm" style="display:grid;gap:22px">${PART.adm()}</div>`:importarView()))};
 PART.adm=()=>painelResultados('adm',S.pesquisas,baseWeeks);
-function importarView(){const pj=UI.impProj||S.projetos[0]?.id;
- return `<div class="panel" style="display:grid;gap:14px">${sel('imp-proj','Projeto de destino',S.projetos.map(p=>[p.id,p.nome+' · '+p.cliente]),pj,'data-act-change="impProj"')}
- <label class="drop" for="imp-file"><b>Arraste arquivos aqui ou clique para enviar</b><span class="small">CSV, XLSX ou PDF de coletas externas. Arquivos CSV têm as linhas contadas na hora.</span><input id="imp-file" type="file" multiple hidden accept=".csv,.xlsx,.xls,.pdf,.txt"></label></div>
- <div id="part-arq">${PART.arq()}</div>`}
 PART.arq=(pj)=>{const rows=S.arquivos.filter(a=>!pj||a.projeto===pj);
  return `<div class="tablebox"><table><thead><tr><th>Arquivo</th>${pj?'':'<th>Projeto</th>'}<th>Tamanho</th><th>Enviado em</th><th>Linhas</th><th>Status</th></tr></thead><tbody>${rows.map(a=>`<tr><td><b>${esc(a.nome)}</b></td>${pj?'':`<td>${esc(projNome(a.projeto))}</td>`}<td class="tnum">${a.tam}</td><td class="tnum">${a.data}</td><td class="tnum">${a.linhas}</td><td>${pill(a.status)}</td></tr>`).join('')||emptyRow(6,'Nenhum arquivo importado ainda.')}</tbody></table></div>`};
 function importar(files,pj){const fmtB=b=>b>1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(b/1024))+' KB';
@@ -1088,18 +1167,22 @@ FORM['imp-pesq']=f=>{const txt=(f.querySelector('#ip-txt').value||'').trim(),pj=
  S.pesquisas.unshift(...ok);save();closeModal();toast(`${ok.length} pesquisa(s) importada(s) para ${pj.nome} como rascunho${bad.length?`; ${bad.length} linha(s) ignorada(s)`:''}.`);refresh()};
 
 const projCard=(p,sc)=>`<article class="card"><div class="ph" style="align-items:flex-start"><div><h3 style="font-size:1.15rem">${esc(p.nome)}</h3><span class="small muted">${esc(p.cliente)}</span></div>${pill(p.status)}</div><p class="muted small">${esc(p.desc)}</p><dl class="meta" style="gap:8px 24px"><div><dt>Responsável</dt><dd>${esc(p.resp)}</dd></div><div><dt>Prazo</dt><dd class="tnum">${p.prazo}</dd></div><div><dt>Pesquisas</dt><dd class="tnum">${S.pesquisas.filter(x=>x.projeto===p.id&&(sc==='adm'||x.status!=='Rascunho')).length}</dd></div></dl><button type="button" class="btn btn-ghost" style="margin-top:auto" data-act="abrir-projeto" data-id="${p.id}" data-sc="${sc}">Abrir projeto</button></article>`;
-V['adm-projetos']=r=>sys(r,head('Projetos de pesquisa','Cada projeto reúne as pesquisas e os arquivos de um cliente.',`<button type="button" class="btn btn-ghost" data-act="importar-pesquisas">${I.upload}Importar pesquisas</button><button type="button" class="btn btn-primary" data-act="novo-projeto">+ Novo projeto</button>`)+
+V['adm-projetos']=r=>sys(r,head('Projetos de pesquisa','Cada projeto reúne as pesquisas e os arquivos de um cliente.',`${pode('projetos','criar')?'<button type="button" class="btn btn-primary" data-act="novo-projeto">+ Novo projeto</button>':''}`/* A.1: importar saiu de Projetos; fica em Pesquisas */)+
  `<div class="grid g3">${S.projetos.map(p=>projCard(p,'adm')).join('')}</div>`);
-function projForm(cli){openModal('Novo projeto',`<form id="f-proj" data-form="projeto">${field('pnome','Nome do projeto','','text','required')}<div class="row2">${sel('pcli','Cliente',S.clientes.map(c=>c.nome),cli||S.clientes[0]?.nome)}${sel('presp','Responsável',['Helena Prado','Marcos Vieira'],'Helena Prado')}</div><div class="field"><label for="pdesc">Objetivo</label><textarea id="pdesc" name="pdesc" required></textarea></div><div class="row2">${field('pprazo','Prazo','','date')}${sel('pst','Status',['Planejado','Em andamento'],'Planejado')}</div></form>`,
+function projForm(cli){openModal('Novo projeto',`<form id="f-proj" data-form="projeto">${field('pnome','Nome do projeto','','text','required')}<div class="row2">${sel('pcli','Cliente',S.clientes.map(c=>c.nome),cli||S.clientes[0]?.nome)}${sel('presp','Responsável',['Helena Prado','Marcos Vieira'],'Helena Prado')}</div><div class="field"><label for="pdesc">Objetivo</label><textarea id="pdesc" name="pdesc" required></textarea></div><div class="row2">${field('pprazo','Prazo','','date')}${sel('pst','Status',['Planejado','Em andamento'],'Planejado')}</div>
+ <fieldset class="field" data-req="B.3"><legend class="lg">Documentos do projeto</legend><p class="small muted">${S.docTipos.some(t=>t.obrig)?'Os marcados com * são obrigatórios.':'Nenhum é obrigatório agora; você pode enviar depois na aba Documentos.'}</p>${S.docTipos.map(t=>`<div class="field"><label for="pdoc-${t.id}">${esc(t.nome)}${t.obrig?' *':''}</label><input id="pdoc-${t.id}" type="file" data-pdoc="${t.id}" accept=".pdf,.doc,.docx,.xlsx,.txt"></div>`).join('')}</fieldset><div class="err" id="pj-err" hidden></div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-proj">Criar projeto</button>`)}
-FORM.projeto=f=>{const d=formData(f);if(!d.pnome.trim())return;S.projetos.unshift({id:nid('pj'),nome:d.pnome.trim(),cliente:d.pcli,resp:d.presp,desc:d.pdesc.trim()||'—',prazo:fromISO(d.pprazo),status:d.pst});save();closeModal();toast('Projeto criado.');refresh()};
+FORM.projeto=f=>{const d=formData(f);if(!d.pnome.trim())return;const docs={},falta=[];
+ S.docTipos.forEach(t=>{const i=f.querySelector('[data-pdoc="'+t.id+'"]'),fl=i&&i.files&&i.files[0];if(fl)docs[t.id]={arq:fl.name,data:hoje()};else if(t.obrig)falta.push(t.nome)});
+ if(falta.length){const e=f.querySelector('#pj-err');e.textContent='Anexe os documentos obrigatórios: '+falta.join(', ')+'.';e.hidden=false;return} /* B.4: só exige o que foi configurado como obrigatório */
+ S.projetos.unshift({id:nid('pj'),nome:d.pnome.trim(),cliente:d.pcli,resp:d.presp,desc:d.pdesc.trim()||'—',prazo:fromISO(d.pprazo),status:d.pst,docs});save();closeModal();toast('Projeto criado.');refresh()};
 
 function projetoView(r,sc){const pj=PJ(UI.proj)||S.projetos[0];if(!pj)return sys(r,'<p class="empty">Nenhum projeto.</p>');
  const tab=UI.projTab||'catalogo',adm=sc==='adm';
- return sys(r,head(esc(pj.nome),adm?`${esc(pj.cliente)} · responsável ${esc(pj.resp)} · prazo ${pj.prazo}`:esc(pj.desc),adm?`<button type="button" class="btn btn-ghost" data-act="importar-pesquisas" data-proj="${pj.id}">${I.upload}Importar pesquisas</button><button type="button" class="btn btn-primary" data-act="nova-pesquisa" data-proj="${pj.id}">+ Nova pesquisa</button>`:'',[adm?'adm-projetos':'cl-projetos','Projetos'])+
- `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='catalogo'}" data-act="set" data-k="projTab" data-v="catalogo">Catálogo de pesquisas</button><button type="button" role="tab" aria-selected="${tab==='arquivos'}" data-act="set" data-k="projTab" data-v="arquivos">Arquivos</button><button type="button" role="tab" aria-selected="${tab==='focus'}" data-act="set" data-k="projTab" data-v="focus">${adm?'Focus group':'Insights de focus group'}</button></div>`+ /* S4: aba nova liga o projeto ao focus group */
+ return sys(r,head(esc(pj.nome),adm?`${esc(pj.cliente)} · responsável ${esc(pj.resp)} · prazo ${pj.prazo}`:esc(pj.desc),adm?`<button type="button" class="btn btn-primary" data-act="nova-pesquisa" data-proj="${pj.id}">+ Nova pesquisa</button>`:'',[adm?'adm-projetos':'cl-projetos','Projetos'])+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='catalogo'}" data-act="set" data-k="projTab" data-v="catalogo">Catálogo de pesquisas</button><button type="button" role="tab" aria-selected="${tab==='documentos'}" data-act="set" data-k="projTab" data-v="documentos">Documentos</button><button type="button" role="tab" aria-selected="${tab==='focus'}" data-act="set" data-k="projTab" data-v="focus">${adm?'Focus group':'Insights de focus group'}</button></div>`+ /* S4: aba nova liga o projeto ao focus group */
  (tab==='focus'?focusProjeto(pj,sc):tab==='catalogo'?`<div class="filters"><input class="grow" type="search" data-live="cat" data-key="catq" placeholder="Buscar pesquisas" aria-label="Buscar pesquisas" value="${esc(UI.catq||'')}">${adm?`<select data-live="cat" data-key="catag" aria-label="Agente">${opts([['','Todos os agentes'],['__sem','Sem agente'],...agentesNomes()],UI.catag||'')}</select>`:''}</div><div id="part-cat" data-sc="${sc}">${PART.cat(null,sc)}</div>`
- :`${adm?`<label class="drop" for="imp-file" data-proj="${pj.id}"><b>Enviar arquivos para este projeto</b><span class="small">CSV, XLSX ou PDF.</span><input id="imp-file" type="file" multiple hidden></label>`:''}<div id="part-arq" data-pj="${pj.id}">${PART.arq(pj.id)}</div>`))}
+ :docsView(pj)))} /* B.3: aba Documentos (briefing, termo, proposta, questionário) */
 PART.cat=(_,sc)=>{sc=sc||document.getElementById('part-cat')?.dataset.sc||'adm';const pj=PJ(UI.proj)||S.projetos[0],q=(UI.catq||'').toLowerCase(),ag=sc==='adm'?UI.catag:'';
  const l=S.pesquisas.filter(p=>p.projeto===pj.id&&(sc==='adm'||p.status!=='Rascunho')&&(!q||p.nome.toLowerCase().includes(q))&&(!ag||(ag==='__sem'?!p.agentes.length:p.agentes.includes(ag))));
  return `<div class="panel" style="padding:0">${l.map(p=>`<div class="row-item">${tile(pj.nome.split(' ')[0],pj.cliente)}<div class="info"><span class="eyebrow" style="color:var(--fg-3)">${esc(pj.nome)}</span><b>${esc(p.nome)}</b><span class="small muted">${esc(agTxt(p))} · ${periodo(p)} · ${modoTxt(p)}</span></div><div class="end">${pill(p.status)}<button type="button" class="btn btn-ghost btn-sm" data-act="${sc==='cl'?'cl-res':'resultado'}" data-id="${p.id}">${sc==='cl'?'Resultado individual':'Ver resultados'}</button></div></div>`).join('')||'<p class="empty">Nenhuma pesquisa neste projeto ainda.</p>'}</div>`};
@@ -1121,43 +1204,30 @@ V['adm-cliente']=r=>{const c=S.clientes.find(x=>x.id===UI.cli);if(!c)return sys(
 V['adm-convites']=r=>sys(r,head('Convites','Envie pesquisas aos participantes, aprove pedidos de participação e acompanhe quem já respondeu.','<button type="button" class="btn btn-primary" data-act="novo-convite">+ Novo convite</button>')+
  `<div class="filters"><input class="grow" type="search" data-live="conv" data-key="cq" placeholder="Buscar por participante ou pesquisa" aria-label="Buscar convites" value="${esc(UI.cq||'')}">${['','Solicitado','Enviado','Aberto','Respondido','Cancelado'].map(s=>`<button type="button" class="chipbtn" data-act="set" data-k="cst" data-v="${s}" aria-pressed="${(UI.cst||'')===s}">${s||'Todos'} ${s?S.convites.filter(c=>c.status===s).length:S.convites.length}</button>`).join('')}</div><div id="part-conv">${PART.conv()}</div>`);
 PART.conv=()=>{const q=(UI.cq||'').toLowerCase(),l=S.convites.filter(c=>{const p=P(c.pid),pa=partBy(c.cod)||{};return (!UI.cst||c.status===UI.cst)&&(!q||((p?.nome||'')+' '+(pa.nome||'')+' '+c.cod).toLowerCase().includes(q))});
- return `<div class="tablebox"><table><thead><tr><th>Pesquisa</th><th>Participante</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead><tbody>${l.map(c=>{const p=P(c.pid),pa=partBy(c.cod)||{nome:'—',email:''};return `<tr><td>${esc(p?.nome||'Pesquisa removida')}</td><td><b>${esc(pa.nome)}</b><span class="s">${c.cod} · ${esc(pa.email)}</span></td><td class="tnum">${c.data}</td><td>${pill(c.status)}</td><td class="acts">${c.status==='Solicitado'?`<button type="button" class="linkbtn" data-act="aprovar" data-id="${c.id}">Aprovar</button><button type="button" class="linkbtn danger" data-act="recusar" data-id="${c.id}">Recusar</button>`:c.status==='Respondido'||c.status==='Cancelado'?'<span class="muted">—</span>':`<button type="button" class="linkbtn" data-act="reenviar" data-id="${c.id}">Reenviar</button><button type="button" class="linkbtn danger" data-act="cancelar-convite" data-id="${c.id}">Cancelar</button>`}</td></tr>`}).join('')||emptyRow(5,'Nenhum convite com esses filtros.')}</tbody></table></div>`};
+ return `<div class="tablebox"><table><thead><tr><th>Pesquisa</th><th>Participante</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead><tbody>${l.map(c=>{const p=P(c.pid),pa=partBy(c.cod)||{nome:'—',email:''};return `<tr><td>${esc(p?.nome||'Pesquisa removida')}</td><td><b>${esc(pa.nome)}</b><span class="s">${c.cod} · ${esc(pa.email)}</span></td><td class="tnum">${c.data}</td><td>${pill(c.status)}</td><td class="acts"><button type="button" class="linkbtn" data-act="conv-det" data-id="${c.id}">Detalhes</button>${c.status==='Solicitado'?`<button type="button" class="linkbtn" data-act="aprovar" data-id="${c.id}">Aprovar</button><button type="button" class="linkbtn danger" data-act="recusar" data-id="${c.id}">Recusar</button>`:c.status==='Respondido'||c.status==='Cancelado'?'<span class="muted">—</span>':`<button type="button" class="linkbtn" data-act="reenviar" data-id="${c.id}">Reenviar</button><button type="button" class="linkbtn danger" data-act="cancelar-convite" data-id="${c.id}">Cancelar</button>`}</td></tr>`}).join('')||emptyRow(5,'Nenhum convite com esses filtros.')}</tbody></table></div>`};
 function conviteForm(pid){const ps=S.pesquisas.filter(p=>p.status==='Ativa'||p.status==='Pausada');
  openModal('Novo convite',`<form id="f-conv" data-form="convite">${sel('cpid','Pesquisa',ps.map(p=>[p.id,p.nome]),pid||ps[0]?.id)}${sel('ccod','Participante',S.participantes.map(p=>[p.cod,`${p.nome} · ${p.cod}`]),S.participantes[0]?.cod)}<p class="small muted">O participante recebe o convite por e-mail e só vê o material depois de aceitar o termo de sigilo.</p><div class="err" id="cv-err" hidden></div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-conv">Enviar convite</button>`)}
 FORM.convite=f=>{const d=formData(f);if(S.convites.some(c=>c.pid===d.cpid&&c.cod===d.ccod&&c.status!=='Cancelado')){const e=f.querySelector('#cv-err');e.textContent='Esse participante já tem um convite ativo para essa pesquisa.';e.hidden=false;return}
- S.convites.unshift({id:nid('cv'),pid:d.cpid,cod:d.ccod,data:hoje(),status:'Enviado'});save();closeModal();toast('Convite enviado.');refresh()};
+ const nc={id:nid('cv'),pid:d.cpid,cod:d.ccod,data:hoje(),status:'Enviado'};histC(nc,'Criado e enviado');S.convites.unshift(nc);save();closeModal();toast('Convite enviado.');refresh()};
 
 /* Cadastros: agentes e participantes (clientes têm área própria) */
-const CAD={clientes:{t:'Clientes',s:'cliente',cols:[['nome','Nome da empresa'],['contato','Contato'],['email','E-mail'],['seg','Segmento'],['criado','Cadastrado em']]},agentes:{t:'Agentes',s:'agente',cols:[['nome','Nome'],['email','E-mail'],['regiao','Região de atuação'],['tel','Telefone'],['criado','Cadastrado em']]},participantes:{t:'Participantes',s:'participante',cols:[['cod','Código'],['nome','Nome'],['email','E-mail'],['cidade','Cidade'],['criado','Cadastrado em']]}};
-const pesqDe=(t,x)=>t==='agentes'?S.pesquisas.filter(p=>p.agentes.includes(x.nome)):S.convites.filter(c=>c.cod===x.cod&&c.status!=='Cancelado').map(c=>P(c.pid)).filter(Boolean);
-V['adm-cadastros']=r=>{let t=UI.cadTab;if(t!=='agentes'&&t!=='participantes')t=UI.cadTab='agentes';const c=CAD[t];
- const nota=t==='agentes'?`<p class="note sol" data-solicitacao="S5">${solTag('S5')} Agentes são entrevistadores terceirizados: ficam só no cadastro, <b>sem login</b>. A coordenação passa o material de campo e os resultados entram por <a href="#adm-resultados">Resultados → Importar arquivos</a>.</p>`:'';
- return sys(r,head('Cadastros','Agentes e participantes usados nas pesquisas. Os clientes ficam no menu Clientes.',`<button type="button" class="btn btn-primary" data-act="cad-add">+ Adicionar ${c.s}</button>`)+
- `<div class="tabs" role="tablist">${['agentes','participantes'].map(k=>`<button type="button" role="tab" aria-selected="${k===t}" data-act="set" data-k="cadTab" data-v="${k}">${CAD[k].t} ${S[k].length}</button>`).join('')}</div>
- ${nota}<div class="filters"><input class="grow" type="search" data-live="cad" data-key="cadq" placeholder="Buscar em ${c.t.toLowerCase()}" aria-label="Buscar" value="${esc(UI.cadq||'')}"><span class="lbl">${t==='agentes'?'Aplica pesquisas do tipo':'Participa de pesquisas do tipo'}</span><select data-live="cad" data-key="cadtp" aria-label="Tipo de pesquisa">${opts([['','Todos os tipos'],'Padrão','Personalizada',['__nenhuma','Sem pesquisa']],UI.cadtp||'')}</select></div><div id="part-cad">${PART.cad()}</div>`)};
-PART.cad=()=>{const t=UI.cadTab==='participantes'?'participantes':'agentes',c=CAD[t],q=(UI.cadq||'').toLowerCase(),tp=UI.cadtp||'';
- const l=S[t].filter(x=>{if(q&&!c.cols.some(([k])=>String(x[k]||'').toLowerCase().includes(q)))return false;const ps=pesqDe(t,x);if(tp==='__nenhuma')return !ps.length;return !tp||ps.some(p=>p.tipo===tp)});
- return `<div class="tablebox"><table><thead><tr>${c.cols.map(([,l])=>`<th>${l}</th>`).join('')}<th>Pesquisas</th><th>Ações</th></tr></thead><tbody>${l.map(x=>{const ps=pesqDe(t,x),pd=ps.filter(p=>p.tipo==='Padrão').length;return `<tr>${c.cols.map(([k],i)=>`<td${i===0?' style="font-weight:600"':''}${k==='criado'?' class="tnum"':''}>${esc(x[k]||'—')}</td>`).join('')}<td class="small">${ps.length?`${ps.length} <span class="muted">(${pd} padrão · ${ps.length-pd} personalizada${ps.length-pd===1?'':'s'})</span>`:'<span class="muted">Nenhuma</span>'}</td><td class="acts"><button type="button" class="linkbtn" data-act="cad-edit" data-id="${x.id}">Editar</button><button type="button" class="linkbtn danger" data-act="cad-del" data-id="${x.id}">Excluir</button></td></tr>`}).join('')||emptyRow(c.cols.length+2,'Nenhum cadastro com esses filtros.')}</tbody></table></div><p class="small muted">Mostrando ${l.length} de ${S[t].length} ${c.t.toLowerCase()}</p>`};
+const CAD={clientes:{t:'Clientes',s:'cliente',cols:[['nome','Nome da empresa'],['contato','Contato'],['email','E-mail'],['seg','Segmento'],['criado','Cadastrado em']]},agentes:{t:'Agentes',s:'agente',cols:[['nome','Nome'],['email','E-mail'],['regiao','Região de atuação'],['tel','Telefone'],['criado','Cadastrado em']]},participantes:{t:'Participantes',s:'participante',cols:[['cod','Código'],['nome','Nome'],['email','E-mail'],['cidade','Cidade'],['regiao','Região'],['idade','Idade'],['sexo','Sexo'],['criado','Cadastrado em']]}}; /* C.2/C.5: região, idade e sexo informados no cadastro, sem classificação automática */
 function cadForm(id,t){t=t||UI.cadTab||'agentes';const c=CAD[t],x=id?S[t].find(i=>i.id===id):{};
- openModal((id?'Editar ':'Adicionar ')+c.s,`<form id="f-cad" data-form="cad" data-id="${id||''}" data-t="${t}">${c.cols.filter(([k])=>k!=='criado').map(([k,l])=>k==='cod'?field('cad-'+k,l+' (gerado automaticamente se vazio)',x[k]||'','text','pattern="P-\\d{4}" placeholder="P-0000"'):field('cad-'+k,l,x[k]||'',k==='email'?'email':'text',k==='nome'?'required':'')).join('')}${id?`<p class="small muted">Cadastrado em ${x.criado||'—'}</p>`:''}</form>`,
+ openModal((id?'Editar ':'Adicionar ')+c.s,`<form id="f-cad" data-form="cad" data-id="${id||''}" data-t="${t}">${c.cols.filter(([k])=>k!=='criado').map(([k,l])=>t==='participantes'&&k==='regiao'?sel('cad-regiao',l,[['','Não informada'],...REGIOES],x.regiao||''):t==='participantes'&&k==='sexo'?sel('cad-sexo',l,[['','Não informado'],...SEXOS],x.sexo||''):k==='idade'?field('cad-idade',l+' (anos)',x.idade||'','number','min="16" max="110"'):k==='cod'?field('cad-'+k,l+' (gerado automaticamente se vazio)',x[k]||'','text','pattern="P-\\d{4}" placeholder="P-0000"'):field('cad-'+k,l,x[k]||'',k==='email'?'email':'text',k==='nome'?'required':'')).join('')}${id?`<p class="small muted">Cadastrado em ${x.criado||'—'}</p>`:''}</form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-cad">Salvar</button>`)}
-FORM.cad=f=>{const t=f.dataset.t,d=formData(f),v={};CAD[t].cols.filter(([k])=>k!=='criado').forEach(([k])=>v[k]=(d['cad-'+k]||'').trim());if(!v.nome)return;if(t==='participantes'&&!v.cod)v.cod=nextCod();
+FORM.cad=f=>{const t=f.dataset.t,d=formData(f),v={};CAD[t].cols.filter(([k])=>k!=='criado').forEach(([k])=>v[k]=(d['cad-'+k]||'').trim());if(!v.nome)return;if('idade' in v)v.idade=v.idade?+v.idade:null;if(t==='participantes'&&!v.cod)v.cod=nextCod();
  const id=f.dataset.id;if(id){const x=S[t].find(i=>i.id===id),old=x.nome;Object.assign(x,v);if(t==='clientes'&&old!==v.nome){S.projetos.forEach(p=>{if(p.cliente===old)p.cliente=v.nome});S.pesquisas.forEach(p=>{if(p.cliente===old)p.cliente=v.nome});S.users.forEach(u=>{if(u.empresa===old)u.empresa=v.nome})}}
  else S[t].unshift({id:nid(t[0]),criado:hoje(),...v});save();closeModal();toast('Cadastro salvo.');refresh()};
 
 /* Usuários e permissões */
 V['adm-usuarios']=r=>{const t=UI.usrTab||'usuarios';
  return sys(r,head('Usuários e permissões','Defina o tipo de acesso de cada conta e o que cada perfil pode fazer.',t==='usuarios'?'<button type="button" class="btn btn-primary" data-act="novo-usuario">+ Novo usuário</button>':'')+
- `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${t==='usuarios'}" data-act="set" data-k="usrTab" data-v="usuarios">Usuários</button><button type="button" role="tab" aria-selected="${t==='perm'}" data-act="set" data-k="usrTab" data-v="perm">Permissões por perfil</button></div>`+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${t==='usuarios'}" data-act="set" data-k="usrTab" data-v="usuarios">Usuários</button><button type="button" role="tab" aria-selected="${t==='perm'}" data-act="set" data-k="usrTab" data-v="perm">Permissões por perfil</button><button type="button" role="tab" aria-selected="${t==='auditoria'}" data-act="set" data-k="usrTab" data-v="auditoria">Acessos negados</button></div>`+
  (t==='usuarios'?`<p class="note">O login tem duas entradas: <b>Administrador</b> e <b>Usuário</b>. Marque abaixo como cada usuário pode navegar. Quem tem mais de uma permissão troca de perfil pelo menu lateral.</p>
  <p class="note sol" data-solicitacao="S5">${solTag('S5')} <b>Entrevistadores e terceirizados não têm conta.</b> Eles ficam só em Cadastros → Agentes. Só a equipe interna (transcrição, processamento e assistentes de análise) recebe o perfil <b>Equipe interna</b>.</p>
  <div class="tablebox"><table><thead><tr><th>Usuário</th><th>Acesso</th><th>Navega como</th><th>Função / empresa / código</th><th>Ações</th></tr></thead><tbody>${S.users.map(u=>`<tr><td><b>${esc(u.nome)}</b><span class="s">${esc(u.email)}</span></td><td>${pill(u.admin?'Administrador':'Usuário')}</td><td>${u.admin?'<span class="small muted">Acesso total pela área do administrador</span>':`<div class="permbox">${USER_ROLES.map(p=>`<label><input type="checkbox" data-act-change="perm" data-uid="${u.id}" data-p="${p}" ${u.perms.includes(p)?'checked':''}>${ROLE_SHORT[p]}</label>`).join('')}</div>${u.perms.length?'':'<span class="s" style="color:var(--warn-fg)">Sem permissões: não consegue entrar</span>'}`}</td><td class="small">${u.perms.includes('equipe')?`${esc(u.funcao||'—')}${u.parceiro?' · '+esc(u.parceiro):''}<br>`:''}${u.perms.includes('cliente')?esc(u.empresa||'—'):''}${u.perms.includes('cliente')&&u.perms.includes('participante')?'<br>':''}${u.perms.includes('participante')?`<span class="tnum">${u.codigo||'—'}</span>`:''}${u.admin?'—':''}</td><td class="acts"><button type="button" class="linkbtn" data-act="editar-usuario" data-id="${u.id}">Editar</button>${u.id===S.session.uid?'':`<button type="button" class="linkbtn danger" data-act="remover-usuario" data-id="${u.id}">Remover</button>`}</td></tr>`).join('')}</tbody></table></div>`
- :matrixView()))};
-function matrixView(){const d=UI.mx||JSON.parse(JSON.stringify(S.matrix)),dirty=!!UI.mx;
- return `<div class="tablebox"><table class="matrix"><thead><tr><th>Permissão</th>${MATRIX_ROLES.map(r=>`<th>${ROLE[r]}</th>`).join('')}</tr></thead><tbody>${MATRIX_ROWS.map(([k,l])=>`<tr><td>${l}</td>${MATRIX_ROLES.map(role=>{const lock=k==='gerenciar_usuarios'||role==='admin';return `<td><input type="checkbox" aria-label="${l} — ${ROLE[role]}" data-act-change="mx" data-k="${k}" data-r="${role}" ${(d[k]||{})[role]?'checked':''} ${lock?'disabled':''}></td>`}).join('')}</tr>`).join('')}</tbody></table></div>
- <p class="small muted">“Gerenciar usuários e permissões” fica sempre com o Administrador, para ninguém perder o acesso ao sistema. As colunas de Equipe interna, Cliente e Participante liberam ou escondem itens do menu e botões desses perfis. Dentro da Equipe interna, cada função só age na sua etapa (transcrição, processamento ou análise). Não existe coluna de Agente: entrevistadores e terceirizados não acessam a plataforma (S5).</p>
- <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-act="salvar-mx" ${dirty?'':'disabled'}>Salvar permissões</button>${dirty?'<span class="unsaved">Alterações não salvas</span><button type="button" class="linkbtn" data-act="descartar-mx">Descartar</button>':''}</div>`}
+ :t==='perm'?matrixView():auditoriaView()))}; /* E.2: matriz módulo × ação; E.6: registro de acessos negados */
 function userForm(id){const u=id?S.users.find(x=>x.id===id):{perms:['participante']},adm=!!u.admin;
  openModal(id?'Editar usuário':'Novo usuário',`<form id="f-usr" data-form="usuario" data-id="${id||''}">${field('unome','Nome',u.nome||'','text','required')}${field('umail','E-mail',u.email||'','email','required')}
  <fieldset class="field"><legend class="lg">Tipo de acesso</legend><div class="permbox"><label><input type="radio" name="uacc" value="usuario" ${adm?'':'checked'}>Usuário</label><label><input type="radio" name="uacc" value="admin" ${adm?'checked':''} ${id===S.session.uid?'disabled':''}>Administrador</label></div></fieldset>
@@ -1227,7 +1297,7 @@ function stOf(pid){const g=myProg()[pid];return g?.done?'Concluída':g&&g.step>0
 const meusConvites=()=>{const c=me().codigo;return S.convites.filter(x=>x.cod===c&&x.status!=='Cancelado'&&x.status!=='Solicitado'&&P(x.pid))};
 function config(pid){const p=P(pid),pr=myPrefs()[pid];if(p.tipo==='Personalizada'&&pr)return {total:pr.etapas,imagens:pr.imagens,pular:pr.pular,resumo:pr.resumo};return {total:6,imagens:true,pular:true,resumo:true}}
 const qsFor=(pid)=>{const c=config(pid);return QUESTOES.slice(0,c.total).map(q=>q.img&&!c.imagens?{...q,img:false}:q)};
-function startPesquisa(pid){const p=P(pid),cv=S.convites.find(c=>c.pid===pid&&c.cod===me().codigo&&c.status!=='Cancelado');if(cv&&cv.status==='Enviado')cv.status='Aberto';
+function startPesquisa(pid){const p=P(pid),cv=S.convites.find(c=>c.pid===pid&&c.cod===me().codigo&&c.status!=='Cancelado');if(cv&&cv.status==='Enviado'){cv.status='Aberto';histC(cv,'Aberto pelo participante')}
  UI.paPid=pid;save();if(p.tipo==='Personalizada'&&!myPrefs()[pid]&&!myProg()[pid]){location.hash='pa-preferencias';return}
  const g=myProg()[pid];if(!g||g.done){myProg()[pid]={step:0,total:config(pid).total,ans:[],start:Date.now()}}save();location.hash='pa-responder'}
 const paCard=(p,st,cv)=>{const g=myProg()[p.id],done=st==='Concluída';return `<article class="pcard${lateCls(p.fim,done||p.status!=='Ativa')}">${tile(p.nome.split(' ')[0],p.cliente,'')}<div class="top"><b>${esc(p.nome)}</b>${pill(st)}</div><span class="small muted">${done?`Concluída em ${g?.data||cv?.data}`:`Prazo: ${p.fim}`} · ${p.tipo}</span>${done?'':prazo(p.fim,p.status!=='Ativa')}${done?`<button type="button" class="btn btn-ghost" data-act="ver-resp" data-id="${p.id}">Ver resposta enviada</button>`:`<button type="button" class="btn btn-primary" data-act="pa-start" data-id="${p.id}">${st==='Em andamento'?'Continuar':'Responder pesquisa'}</button>`}</article>`};
@@ -1274,10 +1344,12 @@ V['pa-responder']=r=>{const p=P(UI.paPid),g=p&&myProg()[p.id];if(!p||!g||g.done)
 V['pa-revisao']=r=>{const p=P(UI.paPid),g=p&&myProg()[p.id];if(!g||g.done)return sys(r,head('Revise suas respostas','Nada para revisar.','',['pa-pesquisas','Minhas pesquisas']));const qs=qsFor(p.id);
  return sys(r,`<div class="ph"><h1>Revise suas respostas</h1><span class="small muted tnum">Etapa ${qs.length} de ${qs.length}</span></div><div class="pbar wide"><i style="width:100%"></i></div>
  <div class="panel" style="padding:0">${qs.map((q,i)=>`<div class="row-item"><span class="tnum muted" style="width:20px">${i+1}.</span><div class="info"><b>${q.q}</b><span>${g.ans[i]?esc(g.ans[i]):'<span class="muted">Pulada</span>'}</span></div><button type="button" class="btn btn-ghost btn-sm" data-act="pa-edit" data-i="${i}">Editar</button></div>`).join('')}</div>
+ ${dispositivoBloco(g)}
  <div class="nav-q"><button type="button" class="btn btn-ghost" data-act="pa-edit" data-i="${qs.length-1}">Voltar</button><button type="button" class="btn btn-primary" data-act="pa-send">Enviar respostas</button></div>`)};
 function enviarParticipante(){const p=P(UI.paPid),g=myProg()[p.id],qs=qsFor(p.id);g.done=true;g.data=hoje();g.tempo=Math.max(1,Math.round((Date.now()-(g.start||Date.now()))/60000));g.total=qs.length;
- p.resp++;const cv=S.convites.find(c=>c.pid===p.id&&c.cod===me().codigo&&c.status!=='Cancelado');if(cv)cv.status='Respondido';
+ p.resp++;const cv=S.convites.find(c=>c.pid===p.id&&c.cod===me().codigo&&c.status!=='Cancelado');if(cv){cv.status='Respondido';histC(cv,'Respondido')}
  const onde=qs.findIndex(q=>q.q.startsWith('Onde'));S.respostas.push({pid:p.id,onde:onde>=0?g.ans[onde]:null,genero:g.ans[0],via:'participante'});
+ S.respostasDet.push({id:nid('rd'),pid:p.id,cod:me().codigo,data:hoje(),origem:'Online na Sinergia',dispositivo:g.disp||'Não informado',onde:onde>=0?(g.ans[onde]||'—'):'—',genero:g.ans[0]||'—'}); /* A.3/C.6 */
  UI.paLast=p.id;UI.backToReview=false;save();location.hash='pa-concluida'}
 V['pa-concluida']=r=>{const p=P(UI.paLast),g=p&&myProg()[p.id];if(!g)return sys(r,head('Pesquisa','Nada por aqui.','',['pa-pesquisas','Minhas pesquisas']));
  return sys(r,`<div class="done"><div class="ok-ico">${I.check}</div><h2>A pesquisa foi concluída com sucesso</h2><p class="muted">Obrigado por responder! Veja abaixo o resumo.</p></div>`+kpis([['Etapas respondidas',`${g.ans.filter(Boolean).length} / ${g.total}`],['Tempo total',`${g.tempo} min`],['Gênero favorito',esc(g.ans[0]||'—')]])+
@@ -1313,23 +1385,21 @@ const ACT={
  'cli-add':()=>cadForm(null,'clientes'),
  'cli-edit':el=>cadForm(el.dataset.id,'clientes'),
  'novo-convite':()=>conviteForm(),
- reenviar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.data=hoje();save();refreshPart('conv');toast('Convite reenviado.')},
- aprovar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.status='Enviado';c.data=hoje();save();refresh();toast('Participação aprovada. O convite foi enviado.')},
- recusar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.status='Cancelado';save();refresh();toast('Pedido recusado: o perfil não entra nesta amostra.')},
- 'cancelar-convite':el=>{const c=S.convites.find(x=>x.id===el.dataset.id);confirmBox('Cancelar convite',`O participante deixa de ver a pesquisa “${esc(P(c.pid)?.nome||'')}”.`,'Cancelar convite',()=>{c.status='Cancelado';save();refresh();toast('Convite cancelado.')})},
+ reenviar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.data=hoje();histC(c,'Reenviado');save();refreshPart('conv');toast('Convite reenviado.')},
+ aprovar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.status='Enviado';histC(c,'Pedido aprovado e convite enviado');c.data=hoje();save();refresh();toast('Participação aprovada. O convite foi enviado.')},
+ recusar:el=>{const c=S.convites.find(x=>x.id===el.dataset.id);c.status='Cancelado';histC(c,'Pedido recusado');save();refresh();toast('Pedido recusado: o perfil não entra nesta amostra.')},
+ 'cancelar-convite':el=>{const c=S.convites.find(x=>x.id===el.dataset.id);confirmBox('Cancelar convite',`O participante deixa de ver a pesquisa “${esc(P(c.pid)?.nome||'')}”.`,'Cancelar convite',()=>{c.status='Cancelado';histC(c,'Cancelado');save();refresh();toast('Convite cancelado.')})},
  'cad-add':()=>cadForm(),
  'cad-edit':el=>cadForm(el.dataset.id),
  'cad-del':el=>{const t=UI.cadTab==='participantes'?'participantes':'agentes',x=S[t].find(i=>i.id===el.dataset.id);confirmBox('Excluir cadastro',`Excluir ${esc(x.nome)} de ${CAD[t].t.toLowerCase()}?`,'Excluir',()=>{S[t]=S[t].filter(i=>i!==x);save();refresh();toast('Cadastro excluído.')})},
  'novo-usuario':()=>userForm(),
  'editar-usuario':el=>userForm(el.dataset.id),
  'remover-usuario':el=>{const u=S.users.find(x=>x.id===el.dataset.id);confirmBox('Remover usuário',`${esc(u.nome)} perde o acesso ao sistema.`,'Remover',()=>{S.users=S.users.filter(x=>x!==u);save();refresh();toast('Usuário removido.')})},
- 'salvar-mx':()=>{S.matrix=UI.mx;UI.mx=null;save();refresh();toast('Permissões salvas. Os menus dos perfis já seguem a nova regra.')},
- 'descartar-mx':()=>{UI.mx=null;save();refresh()},
  'ag-rec':el=>modalRecursos(el.dataset.id),
  'rec-close':()=>{closeModal();refresh()},
  'rec-del':el=>{S.recursos[UI.recPesq].splice(+el.dataset.i,1);save();redrawRec()},
  'pa-start':el=>startPesquisa(el.dataset.id),
- 'pa-quero':el=>{const pid=el.dataset.id;S.convites.unshift({id:nid('cv'),pid,cod:me().codigo,data:hoje(),status:'Solicitado'});save();refresh();toast('Pedido enviado. A equipe confere seu perfil e libera o convite se você se encaixar na amostra.')},
+ 'pa-quero':el=>{const pid=el.dataset.id;{const nc={id:nid('cv'),pid,cod:me().codigo,data:hoje(),status:'Solicitado'};histC(nc,'Participação solicitada pelo participante');S.convites.unshift(nc)}save();refresh();toast('Pedido enviado. A equipe confere seu perfil e libera o convite se você se encaixar na amostra.')},
  'pref-et':el=>{curPref().etapas=+el.dataset.v;save();refresh()},
  'pref-gen':el=>{const pr=curPref(),g=el.dataset.v;pr.generos=pr.generos.includes(g)?pr.generos.filter(x=>x!==g):[...pr.generos,g];save();refresh()},
  'pref-save':()=>{const p=P(UI.paPid),pr={...curPref()};delete pr.pid;myPrefs()[p.id]=pr;save();toast('Rascunho salvo. Você pode iniciar quando quiser.')},
@@ -1339,7 +1409,7 @@ const ACT={
  'pa-skip':()=>{const g=myProg()[UI.paPid],qs=qsFor(UI.paPid),i=Math.min(g.step,qs.length-1);g.ans[i]=null;paAdvance(g,qs,i)},
  'pa-prev':()=>{const g=myProg()[UI.paPid];if(g.step===0){save();location.hash='pa-pesquisas';return}g.step--;UI.backToReview=false;save();refresh()},
  'pa-edit':el=>{myProg()[UI.paPid].step=+el.dataset.i;UI.backToReview=true;save();location.hash='pa-responder'},
- 'pa-send':()=>enviarParticipante(),
+ 'pa-send':()=>{const g=myProg()[UI.paPid];if(!g.disp){const e=document.getElementById('disp-err');if(e){e.hidden=false;e.previousElementSibling?.querySelector('input')?.focus()}return}enviarParticipante()}, /* C.6: aparelho obrigatório (com opção "Prefiro não informar") */
  'ver-resp':el=>verResposta(el.dataset.id)
 };
 function paAdvance(g,qs,i){if(UI.backToReview){UI.backToReview=false;g.step=qs.length-1;save();location.hash='pa-revisao';return}
@@ -1350,7 +1420,6 @@ const CHANGE={
   if(el.checked&&p==='cliente'&&!u.empresa){u.empresa=S.clientes[0]?.nome;toast(`Empresa definida como ${u.empresa}. Ajuste em Editar, se precisar.`)}
   if(el.checked)garantirCadastros(u);
   save();refresh();if(!(el.checked&&p==='cliente'&&u.empresa===S.clientes[0]?.nome))toast(`${u.nome}: ${el.checked?'pode':'não pode mais'} navegar como ${ROLE[p]}.`)},
- mx:el=>{UI.mx=UI.mx||JSON.parse(JSON.stringify(S.matrix));const k=el.dataset.k;UI.mx[k]=UI.mx[k]||{};UI.mx[k][el.dataset.r]=el.checked?1:0;save();refresh()},
  impProj:el=>{UI.impProj=el.value;save()},
  rec:el=>{S.recursos[UI.recPesq][+el.dataset.i].ok=el.checked;save();redrawRec()},
  pref:el=>{curPref()[el.dataset.k]=el.checked;save();refresh()}
@@ -1365,23 +1434,28 @@ FORM.cadastro=f=>{const v=id=>(f.querySelector('#'+id)?.value||'').trim(),email=
  UI.prefill=email;UI.loginTab='usuario';save();toast(`Cadastro criado com o código ${cod}. Entre pela opção Usuário.`);location.hash='login'};
 
 
-/* ▶ INÍCIO · S1–S4 · bloco novo das solicitações da cliente (relatório de 21/10/2026)
-   S1 Proteção anti-vazamento · S2 Ambiente de focus group · S3 Apresentação de materiais no chat · S4 Integração
-   Etapas do fluxo mostradas nas telas: 1 INÍCIO (agendar e convidar) → 2 MEIO (sala ao vivo) → 3 FIM (transcrição e análise) */
+/* ▶ INÍCIO · S1–S4 + D.1–D.5 · focus group (solicitações de 21/10/2026, revistas pela evolução de 27/10/2026)
+   Decisão de 27/10/2026 (D): a reunião acontece SÓ em plataforma externa (Microsoft Teams ou Google Meet), aberta por link.
+   A sala própria com vídeo simulado saiu. Na Sinergia ficam: agendamento, convite, termo de sigilo e consentimento,
+   a apresentação protegida dos materiais (S1/S3) e a esteira de transcrição e análise (S4).
+   Transcrição ao vivo NÃO é simulada: não existe serviço de captura; a transcrição entra por arquivo ou texto colado.
+   Etapas mostradas nas telas: 1 INÍCIO (agendar e convidar) → 2 MEIO (reunião externa + material protegido) → 3 FIM (transcrição e análise) */
 I.video='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10.5l5-3v9l-5-3"/></svg>';
-I.mic='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>';
-I.hand='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V5.5a1.5 1.5 0 013 0V12M11 11V4a1.5 1.5 0 013 0v7M14 11V5.5a1.5 1.5 0 013 0V14c0 4-2.5 7-6 7s-5-2-6.5-5l-1.6-3a1.4 1.4 0 012.4-1.4L8 13"/></svg>';
-Object.assign(TONE,{Agendada:'info','Ao vivo':'acc',Confirmado:'ok',Convidado:'neu',Recusou:'neu','Aguardando transcrição':'neu',Transcrita:'info',Processada:'acc',Analisada:'ok',Alto:'acc','Médio':'info'});
-Object.assign(LABEL,{'adm-focus':'Focus group','adm-sala':'Sala ao vivo','eq-focus':'Focus group','eq-sala':'Sala ao vivo (observação)','eq-transcricoes':'Transcrição e análise','eq-perfil':'Perfil','pa-focus':'Debates','pa-sala':'Sala ao vivo'});
+I.ext='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>';
+Object.assign(TONE,{Agendada:'info',Confirmado:'ok',Convidado:'neu',Recusou:'neu','Aguardando transcrição':'neu',Transcrita:'info',Processada:'acc',Analisada:'ok',Excluída:'neu',Alto:'acc','Médio':'info',Indisponível:'neu'});
+Object.assign(LABEL,{'adm-focus':'Reuniões (focus group)','adm-sala':'Apresentação protegida','eq-focus':'Reuniões (focus group)','eq-sala':'Apresentação protegida','eq-transcricoes':'Transcrição e análise','eq-perfil':'Perfil','pa-focus':'Debates','pa-sala':'Material protegido'});
 Object.assign(CHAIN,{'adm-sala':['adm-focus'],'eq-sala':['eq-focus'],'pa-sala':['pa-focus']});
 
 /* ◆ MEIO · S1–S5 · etiquetas visíveis: solicitação da cliente e etapa do fluxo */
-const SOL={S1:'Proteção anti-vazamento',S2:'Focus group',S3:'Materiais no chat',S4:'Integração',S5:'Controle de acesso'};
-const solTag=(...ids)=>`<span class="soltag" title="Solicitação da cliente · relatório de 21/10/2026">${ids.map(i=>`<b>${i}</b>${SOL[i]}`).join('<i aria-hidden="true">·</i>')}</span>`;
-const ETAPAS=[['INÍCIO','Agendar e convidar','O moderador agenda; os recrutados confirmam e aceitam o termo de sigilo'],['MEIO','Sala ao vivo','Debate com vídeo, chat e materiais protegidos'],['FIM','Transcrição e análise','A equipe interna transcreve, processa e publica os insights']];
+const SOL={S1:'Proteção anti-vazamento',S2:'Focus group',S3:'Materiais',S4:'Integração',S5:'Controle de acesso'};
+const solTag=(...ids)=>`<span class="soltag" title="Solicitação da cliente ou requisito da evolução">${ids.map(i=>`<b>${i}</b>${SOL[i]||''}`).join('<i aria-hidden="true">·</i>')}</span>`;
+const ETAPAS=[['INÍCIO','Agendar e convidar','A moderação agenda e cola o link do Teams/Meet; os recrutados confirmam e aceitam o termo'],['MEIO','Reunião externa','Vídeo e áudio no Teams/Meet; os materiais aparecem protegidos na Sinergia'],['FIM','Transcrição e análise','A equipe interna importa a transcrição, processa e publica os insights']];
 const etapas=(n,sub)=>`<ol class="etapas" aria-label="Etapas do focus group">${ETAPAS.map(([k,t,d],i)=>`<li class="${i===n?'on':i<n?'done':''}"${i===n?' aria-current="step"':''}><span class="k">${i+1} · ${k}</span><b>${t}</b><small>${sub?sub[i]:d}</small></li>`).join('')}</ol>`;
 
-/* ◆ MEIO · S2 · utilidades do focus group */
+/* ◆ MEIO · S2/D.1–D.2 · utilidades: plataformas aceitas e validação do link (redirecionamento, sem integração técnica) */
+const PLATAFORMAS={'Microsoft Teams':/^https:\/\/teams\.(microsoft|live)\.com\/\S+$/i,'Google Meet':/^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}(\?\S*)?$/i};
+const linkOk=f=>!!(f&&f.link&&PLATAFORMAS[f.plataforma]&&PLATAFORMAS[f.plataforma].test(f.link));
+const linkReuniao=(f,cls='btn btn-primary btn-sm')=>linkOk(f)?`<a class="${cls}" href="${esc(f.link)}" target="_blank" rel="noopener noreferrer" data-ext="reuniao">${I.ext} Entrar no ${esc(f.plataforma)}</a>`:`<span class="due late">Link da reunião ausente ou inválido</span>`;
 const FG=id=>S.focus.find(f=>f.id===id);
 const MAT=id=>S.materiais.find(m=>m.id===id);
 const confirmados=f=>f.convidados.filter(c=>c.st==='Confirmado');
@@ -1390,12 +1464,12 @@ const mmss=s=>Math.floor(s/60)+':'+pad(s%60);
 const nomeCod=cod=>{const p=partBy(cod);return cod+(p?' · '+p.nome.split(' ')[0]:'')};
 const quemSou=()=>{const u=me();if(!u)return 'Visitante';if(S.session.mode==='admin')return u.nome+' · Moderação';const r=S.session.role;return r==='participante'?(u.codigo||'')+' · '+u.nome:r==='equipe'?u.nome+' · '+(u.funcao||'Equipe'):u.nome};
 const fgQuando=f=>`${f.data} às ${f.hora} · ${f.dur} min`;
-const etapaDe=f=>f.status==='Agendada'?0:f.status==='Ao vivo'?1:2;
+const etapaDe=f=>f.status==='Agendada'?0:f.status==='Em andamento'?1:2;
 const STEPS=['Aguardando transcrição','Transcrita','Processada','Analisada'];
 const DONO={'Aguardando transcrição':'Transcrição','Transcrita':'Processamento (parceiro)','Processada':'Assistente de análise'};
-const etapaResumo=()=>{const c=s=>S.focus.filter(f=>f.status===s).length;const fim=S.focus.filter(f=>f.transcricao&&f.transcricao.status!=='Analisada').length;
- return [`${c('Agendada')} sessão(ões) agendada(s)`,`${c('Ao vivo')} ao vivo agora`,`${fim} na esteira · ${S.focus.filter(f=>f.transcricao&&f.transcricao.status==='Analisada').length} analisada(s)`]};
-
+const etapaResumo=()=>{const c=s=>S.focus.filter(f=>f.status===s).length;const fim=S.focus.filter(f=>f.transcricao&&!['Analisada','Excluída'].includes(f.transcricao.status)).length;
+ return [`${c('Agendada')} reunião(ões) agendada(s)`,`${c('Em andamento')} em andamento agora`,`${fim} na esteira · ${S.focus.filter(f=>f.transcricao&&f.transcricao.status==='Analisada').length} analisada(s)`]};
+const aoVivoTransc=()=>`<div class="note" data-req="D.3"><b>Transcrição ao vivo: indisponível.</b> Este protótipo não tem serviço de captura de áudio. Ative a transcrição no próprio Teams ou Meet e, ao final, a equipe importa o arquivo (.vtt ou .txt) na esteira. ${pill('Indisponível')}</div>`;
 /* ▶ INÍCIO · S1 Proteção anti-vazamento (DRM no navegador)
    O que o navegador consegue fazer: marca d'água com nome, código, data e hora de quem assiste (identifica quem vazou),
    pausa e véu quando a janela perde o foco, bloqueio de clique direito, arrastar, copiar, imprimir e atalhos de captura,
@@ -1437,114 +1511,113 @@ function drmLog(ev){const f=FG(UI.fg),m=f&&MAT(f.apresentando);if(!m)return;S.dr
 })();
 /* ■ FIM · S1 Proteção anti-vazamento */
 
-/* ▶ INÍCIO · S2 Ambiente de focus group · telas do administrador (moderação) */
+/* ▶ INÍCIO · S2 + D.1 · reuniões: telas do administrador (moderação) */
 V['adm-focus']=r=>{const t=UI.fgTab||'sessoes';
- return sys(r,`<div class="sol-wrap" data-solicitacao="S2" data-etapa="inicio">`+head('Focus group',`Debates online sobre os filmes, dentro da própria plataforma. ${solTag('S2','S3','S1')}`,'<button type="button" class="btn btn-primary" data-act="fg-nova">+ Agendar sessão</button>')+
+ return sys(r,`<div class="sol-wrap" data-solicitacao="S2" data-req="D.1" data-etapa="inicio">`+head('Reuniões (focus group)',`Debates sobre os filmes no Microsoft Teams ou no Google Meet. A Sinergia agenda, convida, protege os materiais e cuida da transcrição. ${solTag('S2','S1')}`,'<button type="button" class="btn btn-primary" data-act="fg-nova">+ Agendar reunião</button>')+
  etapas(-1,etapaResumo())+
- `<div class="tabs" role="tablist">${[['sessoes','Sessões'],['materiais','Materiais protegidos'],['registro','Registro de acesso']].map(([k,l])=>`<button type="button" role="tab" aria-selected="${t===k}" data-act="set" data-k="fgTab" data-v="${k}">${l}</button>`).join('')}</div>`+
+ `<div class="tabs" role="tablist">${[['sessoes','Reuniões'],['materiais','Materiais protegidos'],['registro','Registro de acesso']].map(([k,l])=>`<button type="button" role="tab" aria-selected="${t===k}" data-act="set" data-k="fgTab" data-v="${k}">${l}</button>`).join('')}</div>`+
  (t==='sessoes'?fgLista('adm'):t==='materiais'?materiaisView():registroView())+`</div>`)};
 function fgLista(sc,filtro){const l=S.focus.filter(filtro||(()=>true)).sort((a,b)=>etapaDe(a)-etapaDe(b)||(toISO(a.data)<toISO(b.data)?-1:1));
- if(!l.length)return '<p class="empty panel">Nenhuma sessão de focus group.</p>';
+ if(!l.length)return '<p class="empty panel">Nenhuma reunião agendada ainda. Use “+ Agendar reunião” para começar.</p>';
  return `<div class="panel" style="padding:0">${l.map(f=>{const c=confirmados(f).length,e=etapaDe(f),tr=f.transcricao;
   let acts='';
-  if(sc==='adm'){acts=f.status==='Agendada'?`<button type="button" class="btn btn-ghost btn-sm" data-act="fg-conv" data-id="${f.id}">Convidados</button><button type="button" class="btn btn-primary btn-sm" data-act="fg-iniciar" data-id="${f.id}">Iniciar sessão</button>`
-   :f.status==='Ao vivo'?`<button type="button" class="btn btn-primary btn-sm" data-act="fg-entrar" data-id="${f.id}" data-to="adm-sala">Entrar como moderadora</button>`
+  if(sc==='adm'){acts=f.status==='Agendada'?`<button type="button" class="btn btn-ghost btn-sm" data-act="fg-conv" data-id="${f.id}">Convidados</button><button type="button" class="btn btn-primary btn-sm" data-act="fg-iniciar" data-id="${f.id}">Iniciar reunião</button>`
+   :f.status==='Em andamento'?`${linkReuniao(f,'btn btn-ghost btn-sm')}<button type="button" class="btn btn-primary btn-sm" data-act="fg-entrar" data-id="${f.id}" data-to="adm-sala">Apresentar materiais</button>`
    :`<button type="button" class="btn btn-ghost btn-sm" data-act="fg-transc" data-id="${f.id}">Ver transcrição</button>`}
-  else if(sc==='eq'){acts=f.status==='Ao vivo'?`<button type="button" class="btn btn-primary btn-sm" data-act="fg-entrar" data-id="${f.id}" data-to="eq-sala">Observar (invisível)</button>`:f.status==='Encerrada'?`<a class="btn btn-ghost btn-sm" href="#eq-transcricoes">Ver na esteira</a>`:'<span class="small muted">Abre no horário</span>'}
-  return `<div class="row-item fg-row"><span class="etq e${e}" title="Etapa do fluxo">${e+1} · ${['INÍCIO','MEIO','FIM'][e]}</span><div class="info"><b>${esc(f.nome)}</b><span class="small muted">${esc(projNome(f.projeto))} · ${esc(f.cliente)} · ${fgQuando(f)}</span><span class="small muted">${c} de ${f.convidados.length} confirmados · ${f.materiais.length} material(is) protegido(s)${tr?' · transcrição: '+tr.status.toLowerCase():''}</span></div><div class="end">${pill(f.status)}${acts}</div></div>`}).join('')}</div>`}
+  else if(sc==='eq'){acts=f.status==='Em andamento'?`${linkReuniao(f,'btn btn-ghost btn-sm')}<button type="button" class="btn btn-primary btn-sm" data-act="fg-entrar" data-id="${f.id}" data-to="eq-sala">Ver material protegido</button>`:f.status==='Encerrada'?`<a class="btn btn-ghost btn-sm" href="#eq-transcricoes">Ver na esteira</a>`:'<span class="small muted">Abre no horário</span>'}
+  return `<div class="row-item fg-row"><span class="etq e${e}" title="Etapa do fluxo">${e+1} · ${['INÍCIO','MEIO','FIM'][e]}</span><div class="info"><b>${esc(f.nome)}</b><span class="small muted">${esc(projNome(f.projeto))} · ${esc(f.cliente)} · ${fgQuando(f)} · ${esc(f.plataforma||'—')}</span><span class="small muted">${c} de ${f.convidados.length} confirmados · ${f.materiais.length} material(is) protegido(s)${tr?' · transcrição: '+tr.status.toLowerCase():''}</span></div><div class="end">${pill(f.status)}${acts}</div></div>`}).join('')}</div>`}
 function materiaisView(){
- return `<div class="note sol" data-solicitacao="S1">${solTag('S1')} <span><b>Os materiais só abrem dentro da sala, nunca para download.</b> Cada exibição leva marca d'água com nome, código, data e hora de quem assiste; a tela escurece quando a pessoa sai da janela; captura, impressão e clique direito são bloqueados e registrados. <b>Limite honesto:</b> o navegador não impede uma foto da tela feita com outro aparelho; a marca d'água identifica a origem. Na versão real, o vídeo deve usar DRM (Widevine, FairPlay ou PlayReady), que bloqueia gravação de tela nos aparelhos compatíveis.</span></div>
- <label class="drop" for="mat-file"><b>Enviar material protegido</b><span class="small">Trechos do filme, cartazes ou roteiros. O arquivo fica guardado só para exibição na sala.</span><input id="mat-file" type="file" hidden accept="video/*,image/*,.pdf"></label>
- <div class="tablebox"><table><thead><tr><th>Material</th><th>Tipo</th><th>Projeto</th><th>Sigilo</th><th>Enviado em</th><th>Usado em</th></tr></thead><tbody>${S.materiais.map(m=>`<tr><td><b>${esc(m.titulo)}</b>${m.dur?`<span class="s tnum">${mmss(m.dur)}</span>`:''}</td><td>${esc(m.tipo)}</td><td>${esc(projNome(m.projeto))}</td><td>${pill(m.sigilo)}</td><td class="tnum">${m.enviado}</td><td class="small">${S.focus.filter(f=>f.materiais.includes(m.id)).map(f=>esc(f.nome)).join('<br>')||'<span class="muted">—</span>'}</td></tr>`).join('')}</tbody></table></div>`}
+ return `<div class="note sol" data-solicitacao="S1">${solTag('S1')} <span><b>Os materiais só abrem dentro da Sinergia, nunca para download, e não passam pelo Teams/Meet.</b> Cada exibição leva marca d'água com nome, código, data e hora de quem assiste; a tela escurece quando a pessoa sai da janela; captura, impressão e clique direito são bloqueados e registrados. <b>Limite:</b> o navegador não impede foto da tela com outro aparelho; a marca d'água identifica a origem. Na versão real, o vídeo deve usar DRM (Widevine, FairPlay ou PlayReady).</span></div>
+ <label class="drop" for="mat-file"><b>Enviar material protegido</b><span class="small">Trechos do filme, cartazes ou roteiros. O arquivo fica guardado só para exibição protegida.</span><input id="mat-file" type="file" hidden accept="video/*,image/*,.pdf"></label>
+ <div class="tablebox"><table><thead><tr><th>Material</th><th>Tipo</th><th>Projeto</th><th>Sigilo</th><th>Enviado em</th><th>Usado em</th></tr></thead><tbody>${S.materiais.map(m=>`<tr><td><b>${esc(m.titulo)}</b>${m.dur?`<span class="s tnum">${mmss(m.dur)}</span>`:''}</td><td>${esc(m.tipo)}</td><td>${esc(projNome(m.projeto))}</td><td>${pill(m.sigilo)}</td><td class="tnum">${m.enviado}</td><td class="small">${S.focus.filter(f=>f.materiais.includes(m.id)).map(f=>esc(f.nome)).join('<br>')||'<span class="muted">—</span>'}</td></tr>`).join('')||emptyRow(6,'Nenhum material enviado.')}</tbody></table></div>`}
 function registroView(){return `<p class="muted small">Cada vez que alguém assiste, sai da tela ou tenta capturar um material, fica registrado aqui. Serve para auditorias de estúdio e para achar a origem de um vazamento.</p>
  <div class="tablebox"><table><thead><tr><th>Quando</th><th>Quem</th><th>Material</th><th>Evento</th></tr></thead><tbody>${S.drmLog.map(x=>`<tr><td class="tnum">${esc(x.t)}</td><td>${esc(x.quem)}</td><td>${esc(x.mat)}</td><td>${/bloquead|Saiu/.test(x.ev)?`<span class="due ${/bloquead/.test(x.ev)?'late':'near'}">${esc(x.ev)}</span>`:esc(x.ev)}</td></tr>`).join('')||emptyRow(4,'Nenhum acesso registrado ainda.')}</tbody></table></div>`}
-/* ◆ MEIO · S2 · ETAPA 1 (INÍCIO): agendar sessão e convidar os recrutados */
+/* ◆ MEIO · S2/D.1/D.5 · ETAPA 1 (INÍCIO): agendar a reunião, colar o link e convidar os recrutados */
 function fgForm(pj){const proj=pj||S.projetos[0].id;
- openModal('Agendar sessão de focus group',`<form id="f-fg" data-form="fg">${etapas(0)}
- ${field('fgnome','Nome da sessão','','text','required placeholder="Ex.: Debate — Trailer final do Filme B"')}
+ openModal('Agendar reunião de focus group',`<form id="f-fg" data-form="fg">${etapas(0)}
+ ${field('fgnome','Nome da reunião','','text','required placeholder="Ex.: Debate — Trailer final do Filme B"')}
  <div class="row2">${sel('fgproj','Projeto',S.projetos.map(p=>[p.id,p.nome+' · '+p.cliente]),proj)}${sel('fgdur','Duração',[['60','60 min'],['90','90 min'],['120','120 min']],'90')}</div>
  <div class="row2">${field('fgdata','Data','','date','required')}${field('fghora','Horário','19:00','time','required')}</div>
- <fieldset class="field"><legend class="lg">Convidados (participantes recrutados)</legend><div class="permbox">${S.participantes.map(p=>`<label><input type="checkbox" name="cv:${p.cod}">${esc(p.cod)} · ${esc(p.nome.split(' ')[0])}</label>`).join('')}</div><span class="small muted">Só quem foi recrutado entra. Entrevistadores e terceirizados não aparecem aqui (S5).</span></fieldset>
+ <div class="row2">${sel('fgplat','Plataforma',Object.keys(PLATAFORMAS),'Google Meet')}${field('fglink','Link da reunião','','url','required placeholder="https://meet.google.com/abc-defg-hij"')}</div>
+ <p class="small muted">Crie a reunião no Teams ou no Meet e cole o link aqui. A Sinergia só abre o link: não cria a reunião nem lê a gravação (integração técnica não implementada).</p>
+ <fieldset class="field"><legend class="lg">Convidados (participantes recrutados)</legend><div class="permbox">${S.participantes.slice(0,14).map(p=>`<label><input type="checkbox" name="cv:${p.cod}">${esc(p.cod)} · ${esc(p.nome.split(' ')[0])}</label>`).join('')}</div><span class="small muted">Só quem foi recrutado entra. Entrevistadores e terceirizados não aparecem aqui (S5). Para convidar muitos de uma vez, use Cadastros → seleção.</span></fieldset>
  <fieldset class="field"><legend class="lg">Materiais que podem ser apresentados</legend><div class="permbox">${S.materiais.map(m=>`<label><input type="checkbox" name="mt:${m.id}">${esc(m.titulo)}</label>`).join('')}</div></fieldset>
  <div class="err" id="fg-err" hidden></div></form>`,
  `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-fg">Agendar e enviar convites</button>`)}
 FORM.fg=f=>{const d=formData(f),e=f.querySelector('#fg-err'),fail=t=>{e.textContent=t;e.hidden=false};
  const cvs=Object.keys(d).filter(k=>k.startsWith('cv:')).map(k=>k.slice(3)),mts=Object.keys(d).filter(k=>k.startsWith('mt:')).map(k=>k.slice(3));
- if(!d.fgnome.trim())return fail('Dê um nome à sessão.');if(!d.fgdata)return fail('Escolha a data.');if(cvs.length<2)return fail('Convide pelo menos 2 participantes.');
- const pj=PJ(d.fgproj);S.focus.unshift({id:nid('fg'),nome:d.fgnome.trim(),projeto:pj.id,pid:'',cliente:pj.cliente,data:fromISO(d.fgdata),hora:d.fghora||'19:00',dur:+d.fgdur,status:'Agendada',moderador:me().nome,convidados:cvs.map(cod=>({cod,st:'Convidado'})),materiais:mts,apresentando:null,chat:[],notas:[],maos:[],transcricao:null});
- save();closeModal();toast(`Sessão agendada. ${cvs.length} convites enviados.`);refresh()};
-function fgConvModal(id){const f=FG(id);openModal('Convidados — '+esc(f.nome),`${etapas(0)}<div class="panel" style="padding:0">${f.convidados.map(c=>`<div class="row-item"><div class="info"><b>${esc(nomeCod(c.cod))}</b><span class="small muted">${c.sigilo?'Termo de sigilo aceito':'Termo de sigilo pendente'}</span></div><div class="end">${pill(c.st)}</div></div>`).join('')}</div>`,`<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
-function transcModal(id){const f=FG(id),t=f.transcricao;if(!t)return;
- openModal('Transcrição — '+esc(f.nome),`${etapas(2)}<p>${pill(t.status)} <span class="small muted">${fgQuando(f)}</span></p><pre class="transc">${esc(t.texto||'(ainda não transcrita)')}</pre>
- ${t.insights.length?`<h3>Insights publicados</h3><ul>${t.insights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}<h3>Histórico</h3><ul class="small">${(t.hist||[]).map(h=>`<li>${esc(h.t)} · ${esc(h.who)}: ${esc(h.acao)}</li>`).join('')}</ul>`,`<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
+ if(!d.fgnome.trim())return fail('Dê um nome à reunião.');if(!d.fgdata)return fail('Escolha a data.');
+ const link=(d.fglink||'').trim();if(!PLATAFORMAS[d.fgplat].test(link))return fail(d.fgplat==='Google Meet'?'Link inválido. O Meet usa o formato https://meet.google.com/abc-defg-hij.':'Link inválido. O Teams usa https://teams.microsoft.com/… ou https://teams.live.com/…');
+ if(cvs.length<2)return fail('Convide pelo menos 2 participantes.');
+ const pj=PJ(d.fgproj);S.focus.unshift({id:nid('fg'),nome:d.fgnome.trim(),projeto:pj.id,pid:'',cliente:pj.cliente,data:fromISO(d.fgdata),hora:d.fghora||'19:00',dur:+d.fgdur,status:'Agendada',moderador:me().nome,plataforma:d.fgplat,link,convidados:cvs.map(cod=>({cod,st:'Convidado'})),materiais:mts,apresentando:null,transcricao:null});
+ save();closeModal();toast(`Reunião agendada. ${cvs.length} convites enviados.`);refresh()};
+function fgConvModal(id){const f=FG(id);openModal('Convidados — '+esc(f.nome),`${etapas(0)}<div class="panel" style="padding:0">${f.convidados.map(c=>`<div class="row-item"><div class="info"><b>${esc(nomeCod(c.cod))}</b><span class="small muted">${c.sigilo?'Termo de sigilo e consentimento aceitos':'Termo de sigilo e consentimento pendentes'}</span></div><div class="end">${pill(c.st)}</div></div>`).join('')}</div>`,`<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
+function transcModal(id){const f=FG(id),t=f.transcricao;if(!t)return;const podeExcluir=typeof pode==='function'&&pode('transcricoes','excluir')&&t.status!=='Excluída';
+ openModal('Transcrição — '+esc(f.nome),`${etapas(2)}<p>${pill(t.status)} <span class="small muted">${fgQuando(f)} · origem: ${esc(t.origem||'—')} · retenção: ${esc(S.config.retencao)}</span></p><pre class="transc">${esc(t.texto||(t.status==='Excluída'?'(transcrição excluída)':'(ainda não importada)'))}</pre>
+ ${t.insights.length?`<h3>Insights publicados</h3><ul>${t.insights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}<h3>Histórico</h3><ul class="small">${(t.hist||[]).map(h=>`<li>${esc(h.t)} · ${esc(h.who)}: ${esc(h.acao)}</li>`).join('')}</ul>`,
+ `${podeExcluir?`<button type="button" class="btn btn-danger" data-act="tr-excluir" data-id="${f.id}">Excluir transcrição</button>`:''}<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
 
-/* ◆ MEIO · S2/S3 · ETAPA 2 (MEIO): sala ao vivo — vídeo, chat e apresentação de materiais */
+/* ◆ MEIO · S1/S3/D.1 · ETAPA 2 (MEIO): o vídeo é no Teams/Meet; aqui só a apresentação protegida dos materiais */
 function salaView(r,papel){const f=FG(UI.fg),back=papel==='mod'?'adm-focus':papel==='obs'?'eq-focus':'pa-focus';
- if(!f||f.status!=='Ao vivo')return sys(r,head('Sala ao vivo','Nenhuma sessão ao vivo agora.','',[back,'Voltar']));
+ if(!f||f.status!=='Em andamento')return sys(r,head('Apresentação protegida','Nenhuma reunião em andamento agora.','',[back,'Voltar']));
  const m=MAT(f.apresentando),u=me(),meuCod=u.codigo;
- if(papel==='part'){const c=f.convidados.find(x=>x.cod===meuCod);if(!c||c.st!=='Confirmado'||!c.sigilo)return sys(r,head('Sala ao vivo','Você precisa confirmar presença e aceitar o termo de sigilo antes de entrar.','',['pa-focus','Voltar aos debates']))}
+ if(papel==='part'){const c=f.convidados.find(x=>x.cod===meuCod);if(!c||c.st!=='Confirmado'||!c.sigilo)return sys(r,head('Material protegido','Confirme presença e aceite o termo de sigilo antes de ver o material.','',['pa-focus','Voltar aos debates']))}
  if(m&&!(UI.vistos||{})[f.id+m.id]){UI.vistos=UI.vistos||{};UI.vistos[f.id+m.id]=1;S.drmLog.unshift({t:hoje()+' '+tstr(),quem:quemSou(),mat:m.titulo,ev:'Assistiu'});save()}
- const obs=S.users.filter(x=>x.perms.includes('equipe'));
- const tiles=[{n:f.moderador,s:'Moderação',me:papel==='mod'},...confirmados(f).map(c=>({n:nomeCod(c.cod),s:f.maos.includes(c.cod)?'Mão levantada':'',me:c.cod===meuCod,hand:f.maos.includes(c.cod)}))];
- const ini=n=>n.replace(/^P-\d+ · /,'').split(' ').map(x=>x[0]).slice(0,2).join('');
- const ctrl=papel==='mod'?`<div class="sala-ctrl" data-solicitacao="S3"><span class="lbl">${solTag('S3')}</span><select id="fg-mat" aria-label="Material para apresentar">${opts(f.materiais.map(id=>[id,MAT(id)?.titulo||id]),f.apresentando||f.materiais[0])}</select><button type="button" class="btn btn-primary btn-sm" data-act="fg-apresentar">Apresentar para a sala</button>${m?'<button type="button" class="btn btn-ghost btn-sm" data-act="fg-parar">Parar apresentação</button>':''}<button type="button" class="btn btn-danger btn-sm" data-act="fg-encerrar">Encerrar sessão</button></div>`
-  :papel==='part'?`<div class="sala-ctrl"><button type="button" class="chipbtn" data-act="fg-toggle" data-k="mic" aria-pressed="${UI.fgMic!==false}">${I.mic} Microfone</button><button type="button" class="chipbtn" data-act="fg-toggle" data-k="cam" aria-pressed="${UI.fgCam!==false}">${I.video} Câmera</button><button type="button" class="chipbtn" data-act="fg-mao" aria-pressed="${f.maos.includes(meuCod)}">${I.hand} Levantar a mão</button><a class="btn btn-ghost btn-sm" href="#pa-focus">Sair da sala</a></div>`
-  :`<div class="sala-ctrl"><span class="pill p-info">Você está observando: os participantes não veem você.</span><a class="btn btn-ghost btn-sm" href="#eq-focus">Sair</a></div>`;
- const side=papel==='obs'?`<div class="panel sala-chat"><h3>Chat da sala</h3><div id="part-chat" class="chat-list">${PART.chat()}</div><p class="small muted">Observadores leem o chat, mas não escrevem nele.</p></div>
-  <div class="panel"><h3>Anotações da equipe</h3><div id="part-notas">${PART.notas()}</div><form data-form="fg-nota" class="chat-form"><input name="t" aria-label="Nova anotação" placeholder="Anotação (só a equipe interna vê)" required><button class="btn btn-ghost btn-sm" type="submit">Anotar</button></form></div>`
-  :`<div class="panel sala-chat"><h3>Chat da sala</h3><div id="part-chat" class="chat-list">${PART.chat()}</div><form data-form="fg-chat" class="chat-form"><input name="t" aria-label="Mensagem" placeholder="Escreva para a sala" required autocomplete="off"><button class="btn btn-primary btn-sm" type="submit">Enviar</button></form></div>
-  ${papel==='mod'?`<div class="panel"><h3>Na sala</h3><p class="small">${f.maos.length?`${I.hand} Mão levantada: ${f.maos.map(c=>esc(nomeCod(c))).join(', ')}`:'Ninguém com a mão levantada.'}</p><p class="small muted">Observadores invisíveis: ${obs.map(x=>esc(x.nome.split(' ')[0])+' ('+esc(x.funcao||'')+')').join(', ')}</p></div>`:''}`;
- return sys(r,`<div class="sol-wrap" data-solicitacao="S2" data-etapa="meio">`+head(esc(f.nome),`<span class="live">AO VIVO</span> <span class="tnum" id="fg-clock">0:00:00</span> · ${esc(projNome(f.projeto))} · ${confirmados(f).length} participantes ${solTag('S2','S3','S1')}`,'',[back,'Voltar'])+etapas(1)+
- `<div class="sala"><div class="sala-main">${protegido(m)}${ctrl}<div class="tiles" aria-label="Vídeos">${tiles.map(t=>`<div class="vtile${t.me?' me':''}${t.hand?' hand':''}"><span class="av">${esc(ini(t.n))}</span><b>${esc(t.n)}${t.me?' (você)':''}</b>${t.s?`<small>${esc(t.s)}</small>`:''}</div>`).join('')}</div></div>
- <div class="sala-side">${side}</div></div></div>`)}
-PART.chat=()=>{const f=FG(UI.fg);if(!f)return '';return f.chat.map(c=>`<div class="msg ${c.papel}"><b>${esc(c.who)}</b><span>${esc(c.txt)}</span><small class="tnum">${esc(c.t)}</small></div>`).join('')||'<p class="small muted">Ninguém escreveu ainda.</p>'};
-PART.notas=()=>{const f=FG(UI.fg);return (f?.notas||[]).map(n=>`<p class="small"><b>${esc(n.who)}:</b> ${esc(n.txt)}</p>`).join('')||'<p class="small muted">Sem anotações.</p>'};
-const RESP=['Concordo, essa parte prende a atenção.','Pra mim o ritmo caiu um pouco aqui.','Eu riria mais se a cena fosse mais curta.','Essa trilha sonora combinou muito com a cena.','Fiquei curioso pra saber o que acontece depois.'];
-const chatScroll=()=>{const l=document.getElementById('part-chat');if(l)l.scrollTop=l.scrollHeight};
-FORM['fg-chat']=f=>{const t=(formData(f).t||'').trim(),g=FG(UI.fg);if(!t||!g)return;const u=me(),mod=S.session.mode==='admin';
- g.chat.push({who:mod?u.nome:nomeCod(u.codigo),papel:mod?'mod':'part',txt:t,t:tstr()});save();refreshPart('chat');f.reset();f.querySelector('input').focus();chatScroll();
- const outros=confirmados(g).filter(c=>c.cod!==u.codigo);if(!outros.length)return;
- setTimeout(()=>{const g2=FG(UI.fg);if(!g2||g2.status!=='Ao vivo')return;const c=outros[g2.chat.length%outros.length];g2.chat.push({who:nomeCod(c.cod),papel:'part',txt:RESP[g2.chat.length%RESP.length],t:tstr()});save();refreshPart('chat');chatScroll()},1800)};
-FORM['fg-nota']=f=>{const t=(formData(f).t||'').trim(),g=FG(UI.fg);if(!t||!g)return;g.notas.push({who:me().nome,txt:t});save();refreshPart('notas');f.reset()};
-['ag-pesquisas','ag-detalhes','ag-aplicar','ag-recursos','ag-perfil'].forEach(k=>V[k]=()=>''); /* S5: rotas antigas existem só para o guard redirecionar */
+ const ctrl=papel==='mod'?`<div class="sala-ctrl" data-solicitacao="S3"><span class="lbl">${solTag('S3')}</span><select id="fg-mat" aria-label="Material para apresentar">${opts(f.materiais.map(id=>[id,MAT(id)?.titulo||id]),f.apresentando||f.materiais[0])}</select><button type="button" class="btn btn-primary btn-sm" data-act="fg-apresentar">Apresentar</button>${m?'<button type="button" class="btn btn-ghost btn-sm" data-act="fg-parar">Parar</button>':''}<button type="button" class="btn btn-danger btn-sm" data-act="fg-encerrar">Encerrar reunião</button></div>`
+  :papel==='obs'?`<div class="sala-ctrl"><span class="pill p-info">Equipe interna: você vê o mesmo material que os participantes.</span><a class="btn btn-ghost btn-sm" href="#eq-focus">Sair</a></div>`
+  :`<div class="sala-ctrl"><a class="btn btn-ghost btn-sm" href="#pa-focus">Sair</a></div>`;
+ const vendo=confirmados(f).filter(c=>c.sigilo);
+ const lado=`<div class="panel" style="display:grid;gap:10px"><h3>Reunião</h3><p class="small">${esc(f.plataforma)} · ${fgQuando(f)}</p>${linkReuniao(f)}<p class="small muted">Vídeo, áudio e chat acontecem no ${esc(f.plataforma)}. Se a plataforma gravar ou transcrever, isso fica na conta da Sinergia na plataforma.</p></div>
+  ${papel==='mod'?`<div class="panel" style="display:grid;gap:6px"><h3>Quem pode ver o material</h3>${vendo.map(c=>`<p class="small">${esc(nomeCod(c.cod))}</p>`).join('')||'<p class="small muted">Ninguém aceitou o termo ainda.</p>'}</div>`:''}${aoVivoTransc()}`;
+ return sys(r,`<div class="sol-wrap" data-solicitacao="S1" data-req="D.1" data-etapa="meio">`+head(esc(f.nome),`<span class="live">EM ANDAMENTO</span> <span class="tnum" id="fg-clock">0:00:00</span> · ${esc(projNome(f.projeto))} · ${confirmados(f).length} participantes ${solTag('S1','S3')}`,'',[back,'Voltar'])+etapas(1)+
+ `<div class="sala"><div class="sala-main">${protegido(m)}${ctrl}</div><div class="sala-side">${lado}</div></div></div>`)};
 V['adm-sala']=r=>salaView(r,'mod');
 V['eq-sala']=r=>salaView(r,'obs');
 V['pa-sala']=r=>salaView(r,'part');
-/* ■ FIM · S2 · telas do administrador e sala */
+/* ■ FIM · S2 + D.1 · telas do administrador e apresentação */
 
-/* ▶ INÍCIO · S2 · participante: convites para debates e entrada na sala (com termo de sigilo) */
+/* ▶ INÍCIO · S2 + D.5 · participante: convite, termo de sigilo, consentimento de gravação e link externo */
 V['pa-focus']=r=>{const cod=me().codigo,l=S.focus.filter(f=>f.convidados.some(c=>c.cod===cod));
- return sys(r,`<div class="sol-wrap" data-solicitacao="S2" data-etapa="inicio">`+head('Debates (focus group)',`Debates online para os quais você foi convidado. Só entra quem foi recrutado e aceitou o termo de sigilo. ${solTag('S2')}`)+etapas(0)+
+ return sys(r,`<div class="sol-wrap" data-solicitacao="S2" data-etapa="inicio">`+head('Debates (focus group)',`Debates online para os quais você foi convidado, no Teams ou no Meet. Só entra quem foi recrutado e aceitou o termo de sigilo. ${solTag('S2')}`)+etapas(0)+
  (l.length?`<div class="grid g3">${l.map(f=>{const c=f.convidados.find(x=>x.cod===cod),e=etapaDe(f);
   const act=f.status==='Encerrada'?'<p class="small muted">Debate encerrado. Obrigado pela participação!</p>'
    :c.st==='Convidado'?`<button type="button" class="btn btn-primary" data-act="fg-conf" data-id="${f.id}">Confirmar presença</button><button type="button" class="btn btn-ghost" data-act="fg-rec" data-id="${f.id}">Não posso ir</button>`
    :c.st==='Recusou'?'<p class="small muted">Você recusou este convite.</p>'
-   :f.status==='Ao vivo'?`<button type="button" class="btn btn-primary" data-act="fg-sigilo" data-id="${f.id}">Entrar na sala</button>`
+   :f.status==='Em andamento'?(c.sigilo?`${linkReuniao(f,'btn btn-primary')}<button type="button" class="btn btn-ghost" data-act="fg-entrar" data-id="${f.id}" data-to="pa-sala">Ver material protegido</button>`:`<button type="button" class="btn btn-primary" data-act="fg-sigilo" data-id="${f.id}">Aceitar termo e entrar</button>`)
    :`<button type="button" class="btn btn-ghost" disabled>Abre em ${f.data} às ${f.hora}</button><button type="button" class="linkbtn" data-act="fg-rec" data-id="${f.id}">Cancelar presença</button>`;
-  return `<article class="pcard"><div class="top"><span class="etq e${e}">${e+1} · ${['INÍCIO','MEIO','FIM'][e]}</span>${pill(f.status)}</div><b>${esc(f.nome)}</b><span class="small muted">${fgQuando(f)}</span><span class="small">Sua presença: ${pill(c.st)}</span>${act}</article>`}).join('')}</div>`:'<p class="empty panel">Você ainda não foi convidado para nenhum debate.</p>')+`</div>`)};
-function focusAviso(){const u=me();if(!u||!u.codigo)return '';const live=S.focus.find(f=>f.status==='Ao vivo'&&f.convidados.some(c=>c.cod===u.codigo&&c.st==='Confirmado'));
+  return `<article class="pcard"><div class="top"><span class="etq e${e}">${e+1} · ${['INÍCIO','MEIO','FIM'][e]}</span>${pill(f.status)}</div><b>${esc(f.nome)}</b><span class="small muted">${fgQuando(f)} · ${esc(f.plataforma)}</span><span class="small">Sua presença: ${pill(c.st)}</span>${act}</article>`}).join('')}</div>`:'<p class="empty panel">Você ainda não foi convidado para nenhum debate.</p>')+`</div>`)};
+function focusAviso(){const u=me();if(!u||!u.codigo)return '';const live=S.focus.find(f=>f.status==='Em andamento'&&f.convidados.some(c=>c.cod===u.codigo&&c.st==='Confirmado'));
  const conv=S.focus.find(f=>f.status==='Agendada'&&f.convidados.some(c=>c.cod===u.codigo&&c.st==='Convidado'));
- if(live)return `<div class="okbar" data-solicitacao="S2">${I.video}<span><b>Seu debate está ao vivo agora:</b> ${esc(live.nome)}</span><button type="button" class="btn btn-primary btn-sm" data-act="fg-sigilo" data-id="${live.id}">Entrar na sala</button></div>`;
+ if(live)return `<div class="okbar" data-solicitacao="S2">${I.video}<span><b>Seu debate está em andamento:</b> ${esc(live.nome)}</span><a class="btn btn-primary btn-sm" href="#pa-focus">Ir para o debate</a></div>`;
  if(conv)return `<div class="okbar" data-solicitacao="S2">${I.mail}<span><b>Você foi convidado para um debate</b> em ${conv.data} às ${conv.hora}.</span><a class="btn btn-ghost btn-sm" href="#pa-focus">Responder convite</a></div>`;return ''}
-function sigiloModal(id){const f=FG(id),c=f.convidados.find(x=>x.cod===me().codigo);if(c.sigilo){UI.fg=id;save();location.hash='pa-sala';return}
- openModal('Termo de sigilo',`${etapas(0)}<p>Antes de entrar, leia e aceite:</p><ul class="small"><li>O material exibido é confidencial e pertence ao cliente.</li><li>É proibido fotografar, filmar ou gravar a tela.</li><li>Cada exibição mostra seu nome e código na imagem e fica registrada.</li><li>Quem descumprir pode responder pelo vazamento.</li></ul>
- <label class="check-row"><span><input type="checkbox" id="sig-ok"> Li e aceito o termo de sigilo</span></label><div class="err" id="sig-err" hidden>Marque a caixa para aceitar o termo.</div>`,
- `<button type="button" class="btn btn-ghost" data-act="close">Agora não</button><button type="button" class="btn btn-primary" id="sig-go">Aceitar e entrar</button>`,
- m=>{m.querySelector('#sig-go').onclick=()=>{if(!m.querySelector('#sig-ok').checked){m.querySelector('#sig-err').hidden=false;return}c.sigilo=true;UI.fg=id;save();closeModal();toast('Termo aceito. Bem-vindo à sala.');location.hash='pa-sala'}})}
-/* ■ FIM · S2 · participante */
+function sigiloModal(id){const f=FG(id),c=f.convidados.find(x=>x.cod===me().codigo);if(c.sigilo){UI.fg=id;save();location.hash='pa-focus';return}
+ openModal('Termo de sigilo e consentimento',`${etapas(0)}<p>Antes de entrar, leia e aceite:</p><ul class="small"><li>O material exibido é confidencial e pertence ao cliente.</li><li>É proibido fotografar, filmar ou gravar a tela.</li><li>Cada exibição mostra seu nome e código na imagem e fica registrada.</li><li>A reunião acontece no ${esc(f.plataforma)} e pode ser gravada e transcrita pela plataforma. A transcrição é usada só nesta pesquisa, pela equipe interna, e guardada pelo prazo definido pela Sinergia.</li></ul>
+ <label class="check-row"><span><input type="checkbox" id="sig-ok"> Li e aceito o termo de sigilo</span></label><label class="check-row"><span><input type="checkbox" id="sig-rec"> Autorizo a gravação e a transcrição desta reunião</span></label><div class="err" id="sig-err" hidden>Marque as duas caixas para entrar. Se não quiser ser gravado, avise a moderação pelo convite.</div>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Agora não</button><button type="button" class="btn btn-primary" id="sig-go">Aceitar</button>`,
+ m=>{m.querySelector('#sig-go').onclick=()=>{if(!m.querySelector('#sig-ok').checked||!m.querySelector('#sig-rec').checked){m.querySelector('#sig-err').hidden=false;return}c.sigilo=true;c.consent=hoje()+' '+tstr();UI.fg=id;save();closeModal();toast('Termo aceito. Use o botão para entrar na reunião.');refresh()}})}
+/* ■ FIM · S2 + D.5 · participante */
 
-/* ▶ INÍCIO · S4 Integração · ETAPA 3 (FIM): esteira da equipe interna e insights nos resultados do cliente */
-V['eq-focus']=r=>sys(r,`<div class="sol-wrap" data-solicitacao="S2" data-etapa="meio">`+head('Focus group',`Sessões em que a equipe interna pode observar sem aparecer. ${solTag('S2','S5')}`)+etapas(-1,etapaResumo())+fgLista('eq')+`</div>`);
-V['eq-transcricoes']=r=>{const u=me(),fn=u.funcao||'';const l=S.focus.filter(f=>f.transcricao);
- return sys(r,`<div class="sol-wrap" data-solicitacao="S4" data-etapa="fim">`+head('Transcrição e análise',`Sua função: <b>${esc(fn)}</b>${u.parceiro?' ('+esc(u.parceiro)+')':''}. Cada função só age na sua etapa. ${solTag('S4','S5')}`)+etapas(2)+
+/* ▶ INÍCIO · S4 + D.3 · ETAPA 3 (FIM): esteira da equipe interna (transcrição importada, sem captura automática) */
+V['eq-focus']=r=>sys(r,`<div class="sol-wrap" data-solicitacao="S2" data-etapa="meio">`+head('Reuniões (focus group)',`A equipe interna entra pelo link da plataforma e vê os materiais protegidos aqui. ${solTag('S2','S5')}`)+etapas(-1,etapaResumo())+fgLista('eq')+`</div>`);
+V['eq-transcricoes']=r=>{const u=me(),fn=u.funcao||'';const l=S.focus.filter(f=>f.transcricao&&f.transcricao.status!=='Excluída');
+ return sys(r,`<div class="sol-wrap" data-solicitacao="S4" data-req="D.3" data-etapa="fim">`+head('Transcrição e análise',`Sua função: <b>${esc(fn)}</b>${u.parceiro?' ('+esc(u.parceiro)+')':''}. Cada função só age na sua etapa. ${solTag('S4','S5')}`)+etapas(2)+aoVivoTransc()+
  `<div class="board">${STEPS.map(st=>{const cards=l.filter(f=>f.transcricao.status===st);return `<section class="col"><h3>${st} <span class="tnum muted">${cards.length}</span></h3>${cards.map(f=>{const dono=DONO[st],minha=dono===fn;
   return `<article class="bcard"><b>${esc(f.nome)}</b><span class="small muted">${esc(f.cliente)} · ${f.data}</span>${st==='Analisada'?`<span class="small">${f.transcricao.insights.length} insight(s) publicados para o cliente</span>`:dono?`<span class="small ${minha?'':'muted'}">Próxima etapa: ${esc(dono)}</span>`:''}
-  ${minha?`<button type="button" class="btn btn-primary btn-sm" data-act="eq-acao" data-id="${f.id}">${st==='Aguardando transcrição'?'Transcrever':st==='Transcrita'?'Processar':'Analisar'}</button>`:`<button type="button" class="btn btn-ghost btn-sm" data-act="fg-transc" data-id="${f.id}">Ver</button>`}</article>`}).join('')||'<p class="small muted">Vazio</p>'}</section>`}).join('')}</div>`+`</div>`)};
+  ${minha?`<button type="button" class="btn btn-primary btn-sm" data-act="eq-acao" data-id="${f.id}">${st==='Aguardando transcrição'?'Importar transcrição':st==='Transcrita'?'Processar':'Analisar'}</button>`:`<button type="button" class="btn btn-ghost btn-sm" data-act="fg-transc" data-id="${f.id}">Ver</button>`}</article>`}).join('')||'<p class="small muted">Vazio</p>'}</section>`}).join('')}</div>`+`</div>`)};
+/* ◆ MEIO · D.3 · leitura do arquivo de transcrição do Teams/Meet (.vtt ou .txt). Nada é inventado: sem arquivo ou texto, nada entra. */
+function lerTranscricao(txt){txt=String(txt||'').replace(/\r/g,'');if(/^WEBVTT/.test(txt)){const out=[];let hora='';
+  for(const l of txt.split('\n')){const tm=/^(\d\d:)?(\d\d):(\d\d)[.,]\d+\s*-->/.exec(l);if(tm){hora=(tm[1]||'00:')+tm[2];continue}
+   if(!l.trim()||/^WEBVTT|^NOTE|^[\w-]+$/.test(l.trim()))continue;const v=/<v ([^>]+)>(.*?)(<\/v>)?$/.exec(l);out.push(`[${hora}] ${v?v[1]+': '+v[2]:l.trim()}`)}return out.join('\n')}
+ return txt.trim()}
 function eqAcao(id){const f=FG(id),t=f.transcricao,st=t.status,u=me();
- if(st==='Aguardando transcrição'){openModal('Transcrever — '+esc(f.nome),`${etapas(2)}<div class="field"><label for="tx">Transcrição (o chat da sala já vem como rascunho)</label><textarea id="tx" rows="10">${esc(t.texto)}</textarea></div>`,
+ if(S.session.mode!=='admin'&&DONO[st]&&!DONO[st].startsWith(u.funcao||'—')){negar('transcricoes','editar');return} /* E.6: cada função só age na própria etapa, mesmo com clique forjado */
+ if(st==='Aguardando transcrição'){openModal('Importar transcrição — '+esc(f.nome),`${etapas(2)}<p class="small muted">Baixe a transcrição gerada pelo ${esc(f.plataforma)} (.vtt ou .txt) e envie aqui, ou cole o texto. Arquivos .docx não são lidos no protótipo: abra no Word e cole o texto.</p>
+  <div class="field"><label for="tx-file">Arquivo da transcrição</label><input id="tx-file" type="file" accept=".vtt,.txt,text/vtt,text/plain"></div>
+  <div class="field"><label for="tx">Texto da transcrição</label><textarea id="tx" rows="10" placeholder="[00:02] Moderadora: …"></textarea></div><div class="err" id="tx-err" hidden>Envie um arquivo ou cole o texto. Nada é gerado automaticamente.</div>`,
   `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button type="button" class="btn btn-primary" id="tx-ok">Concluir transcrição</button>`,
-  m=>m.querySelector('#tx-ok').onclick=()=>{t.texto=m.querySelector('#tx').value;t.status='Transcrita';t.hist.push({t:hoje(),who:u.nome,acao:'Transcrição concluída'});save();closeModal();toast('Transcrição concluída. Segue para o processamento.');refresh()})}
- else if(st==='Transcrita'){openModal('Processar — '+esc(f.nome),`${etapas(2)}<label class="check-row"><span><input type="checkbox" id="pr-an" checked> Trocar nomes por códigos (anonimizar)</span></label><label class="check-row"><span><input type="checkbox" id="pr-sep" checked> Separar as falas por participante</span></label><pre class="transc">${esc(t.texto)}</pre>`,
+  m=>{let origem='Texto colado';m.querySelector('#tx-file').onchange=e=>{const fl=e.target.files[0];if(!fl)return;if(/\.docx?$/i.test(fl.name)){toast('Arquivo .docx não é lido no protótipo. Cole o texto.');return}const rd=new FileReader();rd.onload=()=>{m.querySelector('#tx').value=lerTranscricao(rd.result);origem='Arquivo '+fl.name};rd.readAsText(fl)};
+   m.querySelector('#tx-ok').onclick=()=>{const v=m.querySelector('#tx').value.trim();if(!v){m.querySelector('#tx-err').hidden=false;return}t.texto=v;t.origem=origem;t.status='Transcrita';t.hist.push({t:hoje(),who:u.nome,acao:'Transcrição importada ('+origem+')'});save();closeModal();toast('Transcrição registrada. Segue para o processamento.');refresh()}})}
+ else if(st==='Transcrita'){openModal('Processar — '+esc(f.nome),`${etapas(2)}<label class="check-row"><span><input type="checkbox" id="pr-an" checked> Trocar nomes por códigos (anonimizar)</span></label><pre class="transc">${esc(t.texto)}</pre>`,
   `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button type="button" class="btn btn-primary" id="pr-ok">Marcar como processada</button>`,
   m=>m.querySelector('#pr-ok').onclick=()=>{if(m.querySelector('#pr-an').checked)S.participantes.forEach(p=>{t.texto=t.texto.split(p.nome).join(p.cod).split(p.nome.split(' ')[0]+':').join(p.cod+':')});
    t.status='Processada';t.hist.push({t:hoje(),who:u.nome+(u.parceiro?' ('+u.parceiro+')':''),acao:'Processada'+(m.querySelector('#pr-an').checked?' (falas anonimizadas)':'')});save();closeModal();toast('Processada. Segue para a análise.');refresh()})}
@@ -1554,34 +1627,248 @@ function eqAcao(id){const f=FG(id),t=f.transcricao,st=t.status,u=me();
    t.insights=l;t.status='Analisada';t.hist.push({t:hoje(),who:u.nome,acao:'Análise publicada'});save();closeModal();toast('Análise publicada. O cliente já vê os insights nos resultados.');refresh()})}}
 function insightsPanel(projIds){if(S.session&&S.session.mode!=='admin'&&!can(S.session.role,'ver_insights'))return '';
  const l=S.focus.filter(f=>projIds.includes(f.projeto)&&f.transcricao&&f.transcricao.status==='Analisada');if(!l.length)return '';
- return `<div class="panel ins" data-solicitacao="S4" data-etapa="fim"><div class="ph"><h3>Insights do focus group</h3>${solTag('S4')}</div>${l.map(f=>`<div><b>${esc(f.nome)}</b> <span class="small muted">${f.data} · ${confirmados(f).length} participantes</span><ul>${f.transcricao.insights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}<p class="small muted">Você recebe só a análise. Vídeo, chat e transcrição ficam com a equipe interna.</p></div>`}
+ return `<div class="panel ins" data-solicitacao="S4" data-etapa="fim"><div class="ph"><h3>Insights do focus group</h3>${solTag('S4')}</div>${l.map(f=>`<div><b>${esc(f.nome)}</b> <span class="small muted">${f.data} · ${confirmados(f).length} participantes</span><ul>${f.transcricao.insights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}<p class="small muted">Você recebe só a análise. Gravação e transcrição ficam com a equipe interna.</p></div>`}
 function focusProjeto(pj,sc){if(sc!=='adm')return insightsPanel([pj.id])||'<p class="empty panel">Ainda não há insights de focus group publicados para este projeto.</p>';
- return `<div class="ph"><p class="muted" style="margin:0">Sessões ligadas a este projeto. Os insights analisados aparecem para o cliente nos resultados.</p><button type="button" class="btn btn-primary btn-sm" data-act="fg-nova" data-proj="${pj.id}">+ Agendar sessão</button></div>${fgLista('adm',f=>f.projeto===pj.id)}${insightsPanel([pj.id])}`}
-/* ■ FIM · S4 Integração */
+ return `<div class="ph"><p class="muted" style="margin:0">Reuniões ligadas a este projeto. Os insights analisados aparecem para o cliente nos resultados.</p><button type="button" class="btn btn-primary btn-sm" data-act="fg-nova" data-proj="${pj.id}">+ Agendar reunião</button></div>${fgLista('adm',f=>f.projeto===pj.id)}${insightsPanel([pj.id])}`}
+/* ■ FIM · S4 + D.3 · esteira */
 
-/* ▶ INÍCIO · S1–S4 · ações dos botões */
+/* ▶ INÍCIO · S1–S4 + D · ações dos botões */
 Object.assign(ACT,{
  'fg-nova':el=>fgForm(el.dataset.proj),
  'fg-conv':el=>fgConvModal(el.dataset.id),
  'fg-transc':el=>transcModal(el.dataset.id),
- 'fg-iniciar':el=>{const f=FG(el.dataset.id);confirmBox('Iniciar sessão',`A sala de “${esc(f.nome)}” abre para os ${confirmados(f).length} confirmados.`,'Iniciar agora',()=>{f.status='Ao vivo';const d=new Date();f.data=hoje();f.hora=pad(d.getHours())+':'+pad(d.getMinutes());UI.fg=f.id;save();location.hash='adm-sala'})},
+ 'fg-iniciar':el=>{const f=FG(el.dataset.id);if(!linkOk(f)){toast('Cadastre um link válido do Teams/Meet antes de iniciar.');return}confirmBox('Iniciar reunião',`A reunião “${esc(f.nome)}” passa para “em andamento” e os ${confirmados(f).length} confirmados veem o botão de entrar. O link abre no ${esc(f.plataforma)}.`,'Iniciar agora',()=>{f.status='Em andamento';const d=new Date();f.data=hoje();f.hora=pad(d.getHours())+':'+pad(d.getMinutes());UI.fg=f.id;save();location.hash='adm-sala'})},
  'fg-entrar':el=>{UI.fg=el.dataset.id;save();location.hash=el.dataset.to},
- 'fg-apresentar':()=>{const f=FG(UI.fg),v=document.getElementById('fg-mat').value;f.apresentando=v;UI.drmPlay=true;f.chat.push({who:'Sistema',papel:'sys',txt:'Apresentando: '+(MAT(v)?.titulo||''),t:tstr()});save();refresh()},
+ 'fg-apresentar':()=>{const f=FG(UI.fg),v=document.getElementById('fg-mat').value;f.apresentando=v;UI.drmPlay=true;save();refresh()},
  'fg-parar':()=>{const f=FG(UI.fg);f.apresentando=null;save();refresh()},
- 'fg-encerrar':()=>{const f=FG(UI.fg);confirmBox('Encerrar sessão','A sala fecha para todos. O chat vira rascunho de transcrição e segue para a equipe interna.','Encerrar',()=>{f.status='Encerrada';f.apresentando=null;f.maos=[];
-  f.transcricao={status:'Aguardando transcrição',texto:f.chat.filter(c=>c.papel!=='sys').map(c=>`[${c.t}] ${c.who}: ${c.txt}`).join('\n'),insights:[],hist:[{t:hoje(),who:me().nome,acao:'Sessão encerrada'}]};save();toast('Sessão encerrada. A transcrição entrou na esteira da equipe interna.');location.hash='adm-focus'})},
+ 'fg-encerrar':()=>{const f=FG(UI.fg);confirmBox('Encerrar reunião','A apresentação fecha para todos. A reunião entra na esteira esperando a transcrição exportada do '+esc(f.plataforma)+'.','Encerrar',()=>{f.status='Encerrada';f.apresentando=null;
+  f.transcricao={status:'Aguardando transcrição',texto:'',origem:'',insights:[],hist:[{t:hoje(),who:me().nome,acao:'Reunião encerrada'}]};save();toast('Reunião encerrada. Aguardando a transcrição do '+f.plataforma+'.');location.hash='adm-focus'})},
  'fg-conf':el=>{const f=FG(el.dataset.id),c=f.convidados.find(x=>x.cod===me().codigo);c.st='Confirmado';save();refresh();toast('Presença confirmada.')},
  'fg-rec':el=>{const f=FG(el.dataset.id),c=f.convidados.find(x=>x.cod===me().codigo);c.st='Recusou';save();refresh();toast('Tudo bem. Avisamos a moderação.')},
  'fg-sigilo':el=>sigiloModal(el.dataset.id),
- 'fg-mao':()=>{const f=FG(UI.fg),c=me().codigo;f.maos=f.maos.includes(c)?f.maos.filter(x=>x!==c):[...f.maos,c];save();refresh()},
- 'fg-toggle':el=>{const k=el.dataset.k==='mic'?'fgMic':'fgCam';UI[k]=UI[k]===false;save();refresh()},
  'drm-play':()=>{UI.drmPlay=UI.drmPlay===false;refresh()},
- 'eq-acao':el=>eqAcao(el.dataset.id)
+ 'eq-acao':el=>eqAcao(el.dataset.id),
+ 'tr-excluir':el=>{const f=FG(el.dataset.id);closeModal();confirmBox('Excluir transcrição',`O texto da transcrição de “${esc(f.nome)}” será apagado. Os insights já publicados continuam. Essa ação não pode ser desfeita.`,'Excluir',()=>{const t=f.transcricao;t.texto='';t.status='Excluída';t.hist.push({t:hoje(),who:me().nome,acao:'Transcrição excluída'});save();toast('Transcrição excluída.');refresh()})}
 });
-document.addEventListener('change',e=>{const el=e.target;if(el.id!=='mat-file'||!el.files.length)return;const f=el.files[0],tipo=/^video/.test(f.type)?'Trecho do filme':/pdf/.test(f.type)?'Roteiro':'Arte';
- S.materiais.unshift({id:nid('m'),titulo:f.name.replace(/\.[^.]+$/,''),tipo,dur:tipo==='Trecho do filme'?120:0,projeto:S.projetos[0].id,sigilo:'Alto',enviado:hoje()});el.value='';save();toast('Material guardado. Ele só abre dentro da sala, com marca d’água.');refresh()});
-/* ■ FIM · S1–S4 · ações dos botões */
-/* ■ FIM · S1–S4 · bloco novo das solicitações da cliente */
+document.addEventListener('change',e=>{const el=e.target;if(el.id!=='mat-file'||!el.files.length)return;if(!pode('reunioes','editar')){negar('reunioes','editar');el.value='';return}const f=el.files[0],tipo=/^video/.test(f.type)?'Trecho do filme':/pdf/.test(f.type)?'Roteiro':'Arte';
+ S.materiais.unshift({id:nid('m'),titulo:f.name.replace(/\.[^.]+$/,''),tipo,dur:tipo==='Trecho do filme'?120:0,projeto:S.projetos[0].id,sigilo:'Alto',enviado:hoje()});el.value='';save();toast('Material guardado. Ele só abre na apresentação protegida, com marca d’água.');refresh()});
+/* ■ FIM · S1–S4 + D · ações dos botões */
+/* ■ FIM · S1–S4 + D.1–D.5 · focus group */
+
+/* ======================= EVOLUÇÃO 27/10/2026 · continuação (dados e matriz padrão em sys4-evol-dados.js, carregado antes) ======================= */
+const FUNC_PERFIL={'Transcrição':'transcricao','Processamento (parceiro)':'processamento','Assistente de análise':'analise'};
+function perfilAtual(){const u=me();if(!u||!S.session)return null;if(S.session.mode==='admin')return u.admin?'admin':null;const r=S.session.role;if(!u.perms.includes(r))return null;return r==='equipe'?FUNC_PERFIL[u.funcao]||null:r}
+function pode(mod,ac,perfil){perfil=perfil||perfilAtual();if(!perfil)return false;if(SO_ADMIN.includes(mod+'.'+ac)&&perfil!=='admin')return false;return !!((S.perm2||{})[perfil]||{})[mod+'.'+ac]}
+/* ◆ MEIO · E.5–E.7 · camada central de autorização: toda ação que muda dados passa por exigir() */
+const SESSAO_MIN=()=>S.config&&S.config.sessaoMin||30;
+function sessaoValida(){return !!(S.session&&(Date.now()-(S.session.last||0))<SESSAO_MIN()*60000)}
+function expirar(){S.session=null;UI.aviso='expirada';save();location.hash='login'}
+function negar(mod,ac){const u=me();S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hoje()+' '+tstr(),quem:u?u.nome:'—',perfil:perfilAtual()||'sem sessão',acao:(MODULOS.find(m=>m[0]===mod)||[,mod])[1]+' · '+(ACOES.find(a=>a[0]===ac)||[,ac])[1],rota:location.hash});S.auditoria=S.auditoria.slice(0,200);save();
+ toast(`Acesso negado: seu perfil não pode “${((ACOES.find(a=>a[0]===ac)||[,ac])[1]).toLowerCase()}” em ${(MODULOS.find(m=>m[0]===mod)||[,mod])[1]}.`);return false}
+function exigir(mod,ac){if(!sessaoValida()){expirar();return false}return pode(mod,ac)||negar(mod,ac)}
+const G=(mod,ac,fn)=>function(...a){return exigir(mod,ac)?fn.apply(this,a):undefined};
+['click','keydown'].forEach(ev=>document.addEventListener(ev,()=>{if(S.session&&sessaoValida()){S.session.last=Date.now();save()}},true));
+V.negado=()=>{const n=UI.negado||{},u=me();return pageHero([['home','Site'],[null,'Acesso negado']],'Erro 403 · acesso negado','Você não tem permissão para abrir esta página',esc(n.motivo||'Seu perfil não inclui esta área.'))+
+ `<section class="section"><div class="wrap" style="display:grid;gap:14px;max-width:720px"><p class="muted">Endereço pedido: <code>${esc(n.rota||'')}</code>. A tentativa foi registrada. Se você precisa deste acesso, peça ao administrador para revisar seu perfil em <b>Usuários e permissões</b>.</p><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-primary" href="#${u?firstRoute():'login'}">${u?'Voltar para a minha área':'Entrar'}</a><a class="btn btn-ghost" href="#home">Ir para o site</a></div></div></section>`};
+function negarRota(r,motivo){UI.negado={rota:'#'+r,motivo};const u=me();S.auditoria=S.auditoria||[];S.auditoria.unshift({t:hoje()+' '+tstr(),quem:u?u.nome:'—',perfil:perfilAtual()||'sem sessão',acao:'Abrir '+r,rota:'#'+r});save();return 'negado'}
+/* ■ FIM · E.1–E.8 · camada de autorização */
+
+/* ▶ INÍCIO · E.2/E.3/E.8 · tela da matriz módulo × ação por perfil */
+function matrixView(){const perf=UI.mxPerf||'transcricao',base=UI.mx2||JSON.parse(JSON.stringify(S.perm2)),dirty=!!UI.mx2,d=base[perf]||{},lockAll=perf==='admin';
+ return `<div class="tabs" role="tablist" aria-label="Perfil">${PERFIS.map(([k,l])=>`<button type="button" role="tab" aria-selected="${perf===k}" data-act="set" data-k="mxPerf" data-v="${k}">${l}</button>`).join('')}</div>
+ <div class="tablebox"><table class="matrix"><thead><tr><th>Módulo</th>${ACOES.map(a=>`<th>${a[1]}</th>`).join('')}</tr></thead><tbody>${MODULOS.map(([m,ml])=>`<tr><td><b>${ml}</b></td>${ACOES.map(([a,al])=>{if(!APLICA[m].includes(a))return '<td class="muted" aria-label="não se aplica">—</td>';const k=m+'.'+a,lock=lockAll||SO_ADMIN.includes(k);
+  return `<td><input type="checkbox" aria-label="${ml} — ${al} — ${(PERFIS.find(p=>p[0]===perf)||[])[1]}" data-act-change="mx2" data-k="${k}" ${(lockAll||d[k])&&!(SO_ADMIN.includes(k)&&!lockAll)?'checked':''} ${lock?'disabled':''}></td>`}).join('')}</tr>`).join('')}</tbody></table></div>
+ <p class="small muted">Proposta inicial para validar com a Sinergia (E.4): nenhuma ação vale por padrão sem estar marcada. “Gerenciar usuários” e “Administrar integrações” ficam só com o Administrador, para impedir que um perfil se dê mais acesso (E.6). Clientes veem só os dados da própria empresa e nunca os dados individuais (A.3, C.7).</p>
+ <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-act="salvar-mx2" ${dirty?'':'disabled'}>Salvar permissões</button>${dirty?'<span class="unsaved">Alterações não salvas</span><button type="button" class="linkbtn" data-act="descartar-mx2">Descartar</button>':''}</div>`}
+function auditoriaView(){return `<p class="muted small">Tentativas de abrir páginas ou executar ações sem permissão (E.6, E.7). Guardadas no navegador neste protótipo.</p><div class="tablebox"><table><thead><tr><th>Quando</th><th>Quem</th><th>Perfil</th><th>Tentativa</th><th>Endereço</th></tr></thead><tbody>${(S.auditoria||[]).map(a=>`<tr><td class="tnum">${esc(a.t)}</td><td>${esc(a.quem)}</td><td>${esc(a.perfil)}</td><td>${esc(a.acao)}</td><td><code>${esc(a.rota)}</code></td></tr>`).join('')||emptyRow(5,'Nenhuma tentativa negada.')}</tbody></table></div>`}
+/* ■ FIM · E.2/E.3/E.8 · matriz */
+
+/* ▶ INÍCIO · A.1/A.2 · importação centralizada em Pesquisas (pesquisas por CSV e respostas por arquivo) */
+function importarEscolha(){openModal('Importar',`<p class="muted small">Toda importação fica aqui, em Pesquisas.</p><div class="grid g2"><button type="button" class="card imp-op" data-act="imp-pesq-abrir"><b>Pesquisas</b><span class="small muted">Várias pesquisas de uma vez, por CSV: nome; tipo; início; fim; meta. Entram como rascunho.</span></button><button type="button" class="card imp-op" data-act="imp-resp-abrir"><b>Respostas e resultados</b><span class="small muted">Arquivo exportado do SurveyMonkey ou do campo. CSV é lido na hora; XLSX e PDF ficam guardados.</span></button></div>`,`<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button>`)}
+const MODELO_RESP='codigo;data;dispositivo;onde;genero\nP-1027;20/10/2026;Próprio;Cinema;Comédia\nP-1031;20/10/2026;Cedido pela Sinergia;Streaming;Ação';
+function importarRespostasForm(pid){const ps=S.pesquisas.filter(p=>p.status!=='Rascunho');
+ openModal('Importar respostas',`<form id="f-ir" data-form="imp-resp">${sel('ir-pesq','Pesquisa',ps.map(p=>[p.id,p.nome]),pid||ps[0]?.id)}
+ <div class="field"><label for="ir-file">Arquivo (CSV, XLSX ou PDF)</label><input id="ir-file" type="file" accept=".csv,.txt,.xlsx,.xls,.pdf"></div>
+ <div class="field"><label for="ir-txt">Ou cole as linhas (CSV)</label><textarea id="ir-txt" rows="5" placeholder="${esc(MODELO_RESP)}"></textarea></div>
+ <p class="small muted">Colunas: <b>código; data; dispositivo; onde assiste; gênero favorito</b>. Dispositivo aceita: ${DISPOS.join(', ')} (C.6). No SurveyMonkey, exporte as respostas em CSV e ajuste as colunas para este modelo. Sincronização automática pela API não está implementada (A.4).</p>
+ <button type="button" class="linkbtn" data-act="ir-modelo" style="justify-self:start">Preencher com um exemplo</button><div class="err" id="ir-err" hidden></div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-ir">Importar respostas</button>`,
+ m=>{m.querySelector('#ir-file').onchange=e=>{const f=e.target.files[0];if(!f)return;if(/\.(csv|txt)$/i.test(f.name)){const rd=new FileReader();rd.onload=()=>{m.querySelector('#ir-txt').value=String(rd.result)};rd.readAsText(f)}}})}
+FORM['imp-resp']=f=>{const p=P(f.querySelector('#ir-pesq').value),file=f.querySelector('#ir-file').files[0],txt=(f.querySelector('#ir-txt').value||'').trim(),e=f.querySelector('#ir-err'),fail=t=>{e.textContent=t;e.hidden=false};
+ if(file&&!/\.(csv|txt)$/i.test(file.name)){S.arquivos.unshift({id:nid('f'),nome:file.name,projeto:p.projeto,pid:p.id,tam:Math.max(1,Math.round(file.size/1024))+' KB',data:hoje(),linhas:'—',status:'Recebido (não lido no protótipo)'});save();closeModal();toast('Arquivo guardado. XLSX e PDF não são lidos no protótipo: exporte em CSV para entrar nos resultados.');refresh();return}
+ if(!txt)return fail('Escolha um arquivo CSV ou cole as linhas.');
+ const lines=txt.split(/\r?\n/).map(l=>l.trim()).filter(Boolean),ok=[],bad=[];let semDisp=0;
+ lines.forEach((l,i)=>{const c=l.split(/[;,]/).map(x=>x.trim());if(i===0&&/^c[oó]digo$/i.test(c[0]))return;const [cod,data,disp,onde,gen]=c;
+  if(!cod||!/^\d\d\/\d\d\/\d{4}$/.test(data||'')){bad.push(i+1);return}const d=DISPOS.find(x=>x.toLowerCase()===(disp||'').toLowerCase());if(!d)semDisp++;
+  ok.push({id:nid('rd'),pid:p.id,cod,data,origem:/surveymonkey/i.test(file?.name||'')?'SurveyMonkey (importado)':'Campo (importado)',dispositivo:d||'Não informado',onde:onde||'—',genero:gen||'—'})});
+ if(!ok.length)return fail(`Nenhuma linha válida${bad.length?` (linhas ${bad.slice(0,8).join(', ')})`:''}. Confira o código e a data no formato dd/mm/aaaa.`);
+ S.respostasDet.push(...ok);p.resp+=ok.length;S.arquivos.unshift({id:nid('f'),nome:file?file.name:'linhas coladas',projeto:p.projeto,pid:p.id,tam:'—',data:hoje(),linhas:ok.length,status:'Importado'});save();closeModal();
+ toast(`${ok.length} resposta(s) importada(s) em “${p.nome}”${bad.length?`; ${bad.length} linha(s) ignorada(s)`:''}${semDisp?`; ${semDisp} sem dispositivo válido ficaram como “Não informado”`:''}.`);refresh()};
+PART.imps=()=>`<div class="tablebox"><table><thead><tr><th>Arquivo</th><th>Pesquisa / projeto</th><th>Tamanho</th><th>Enviado em</th><th>Linhas</th><th>Situação</th></tr></thead><tbody>${S.arquivos.map(a=>`<tr><td><b>${esc(a.nome)}</b></td><td>${esc(a.pid?(P(a.pid)||{}).nome||'—':projNome(a.projeto))}</td><td class="tnum">${a.tam}</td><td class="tnum">${a.data}</td><td class="tnum">${a.linhas}</td><td>${pill(a.status)}</td></tr>`).join('')||emptyRow(6,'Nenhuma importação ainda.')}</tbody></table></div>`;
+/* ■ FIM · A.1/A.2 · importação */
+
+/* ▶ INÍCIO · A.3 · resultados por perfil: painel agregado + respostas detalhadas só para quem pode */
+function detalhesView(scope){const pq=UI[scope+'DetP']||'',dp=UI[scope+'DetD']||'',og=UI[scope+'DetO']||'';
+ const l=S.respostasDet.filter(r=>(!pq||r.pid===pq)&&(!dp||r.dispositivo===dp)&&(!og||r.origem===og)),pg=Math.min(UI[scope+'DetPg']||1,Math.max(1,Math.ceil(l.length/10)));
+ return `<div class="filters"><select data-live="det-${scope}" data-key="${scope}DetP" aria-label="Pesquisa">${opts([['','Todas as pesquisas'],...S.pesquisas.filter(p=>S.respostasDet.some(r=>r.pid===p.id)).map(p=>[p.id,p.nome])],pq)}</select><select data-live="det-${scope}" data-key="${scope}DetD" aria-label="Dispositivo">${opts([['','Todos os dispositivos'],...DISPOS],dp)}</select><select data-live="det-${scope}" data-key="${scope}DetO" aria-label="Origem">${opts([['','Todas as origens'],...ORIGENS],og)}</select>${pode('resultados','exportar')?`<button type="button" class="btn btn-ghost btn-sm" data-act="exp-res" data-scope="${scope}">Exportar CSV</button>`:''}</div>
+ <p class="note small">Dados individuais identificados só por código (sem nome, e-mail ou telefone), conforme a LGPD (C.7). Clientes não veem esta aba.</p>
+ <div id="part-det-${scope}">${PART['det-'+scope]?PART['det-'+scope]():''}</div>`}
+function detTabela(scope){const pq=UI[scope+'DetP']||'',dp=UI[scope+'DetD']||'',og=UI[scope+'DetO']||'';const l=S.respostasDet.filter(r=>(!pq||r.pid===pq)&&(!dp||r.dispositivo===dp)&&(!og||r.origem===og));
+ const tp=Math.max(1,Math.ceil(l.length/10)),pg=Math.min(Math.max(1,UI[scope+'DetPg']||1),tp),pag=l.slice((pg-1)*10,pg*10);
+ if(!l.length)return '<p class="empty panel">Nenhuma resposta com esses filtros. Ajuste os filtros ou importe respostas em Pesquisas → Importar.</p>';
+ return `<div class="tablebox"><table><thead><tr><th>Código</th><th>Pesquisa</th><th>Data</th><th>Origem</th><th>Dispositivo</th><th>Onde assiste</th><th>Gênero favorito</th></tr></thead><tbody>${pag.map(r=>`<tr><td class="tnum">${esc(r.cod)}</td><td>${esc((P(r.pid)||{}).nome||'—')}</td><td class="tnum">${r.data}</td><td class="small">${esc(r.origem)}</td><td>${esc(r.dispositivo)}</td><td>${esc(r.onde)}</td><td>${esc(r.genero)}</td></tr>`).join('')}</tbody></table></div>${paginacao(l.length,pg,scope+'DetPg','det-'+scope)}`}
+PART['det-adm']=()=>detTabela('adm');PART['det-eq']=()=>detTabela('eq');
+V['adm-resultados']=r=>{const tab=UI.resTab==='det'?'det':'painel';
+ return sys(r,head('Resultados','Painel com indicadores e gráficos; respostas detalhadas para quem tem permissão. A importação fica em Pesquisas → Importar.')+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='painel'}" data-act="set" data-k="resTab" data-v="painel">Painel</button>${pode('resultados','detalhes')?`<button type="button" role="tab" aria-selected="${tab==='det'}" data-act="set" data-k="resTab" data-v="det">Respostas detalhadas</button>`:''}</div>`+
+ (tab==='painel'?`<div id="part-adm" style="display:grid;gap:22px">${PART.adm()}</div>`:detalhesView('adm')))};
+V['eq-resultados']=r=>{const tab=UI.eqResTab==='det'?'det':'painel';
+ return sys(r,head('Resultados','Visão da assistente de análise: painel agregado e respostas detalhadas por código.')+
+ `<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${tab==='painel'}" data-act="set" data-k="eqResTab" data-v="painel">Painel</button>${pode('resultados','detalhes')?`<button type="button" role="tab" aria-selected="${tab==='det'}" data-act="set" data-k="eqResTab" data-v="det">Respostas detalhadas</button>`:''}</div>`+
+ (tab==='painel'?`<div id="part-eqr" style="display:grid;gap:22px">${PART.eqr()}</div>`:detalhesView('eq')))};
+PART.eqr=()=>painelResultados('eqr',S.pesquisas,baseWeeks);
+function paginacao(total,pg,key,part){const tp=Math.max(1,Math.ceil(total/10));if(tp<=1)return `<p class="small muted">Mostrando ${total} de ${total}</p>`;
+ const ini=(pg-1)*10+1,fim=Math.min(total,pg*10);const nums=[];for(let i=1;i<=tp;i++)if(i===1||i===tp||Math.abs(i-pg)<=1)nums.push(i);else if(nums[nums.length-1]!=='…')nums.push('…');
+ return `<nav class="pager" aria-label="Paginação"><span class="small muted">Mostrando ${ini}–${fim} de ${total}</span><div class="pg-btns"><button type="button" class="chipbtn" data-act="pag" data-k="${key}" data-v="${pg-1}" data-part="${part}" ${pg<=1?'disabled':''} aria-label="Página anterior">‹</button>${nums.map(n=>n==='…'?'<span class="muted">…</span>':`<button type="button" class="chipbtn" data-act="pag" data-k="${key}" data-v="${n}" data-part="${part}" aria-pressed="${n===pg}" aria-label="Página ${n}">${n}</button>`).join('')}<button type="button" class="chipbtn" data-act="pag" data-k="${key}" data-v="${pg+1}" data-part="${part}" ${pg>=tp?'disabled':''} aria-label="Próxima página">›</button></div></nav>`}
+function baixarCSV(nome,linhas){const csv='﻿'+linhas.map(l=>l.map(v=>/[;"\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':v).join(';')).join('\n');
+ try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=nome;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}catch(_){}
+ UI.ultimoCSV={nome,linhas:linhas.length-1};toast(`Arquivo ${nome} gerado com ${linhas.length-1} linha(s).`)}
+/* ■ FIM · A.3 · resultados */
+
+/* ▶ INÍCIO · B.2/B.5 · convites: detalhes com histórico do ciclo de vida e edição enquanto não foram abertos */
+const histC=(c,acao)=>{(c.hist=c.hist||[]).push({t:hoje()+' '+tstr(),acao,who:me()?me().nome:'Sistema'})};
+const CICLO=['Solicitado','Enviado','Aberto','Respondido','Cancelado'];
+function conviteDetalhes(id){const c=S.convites.find(x=>x.id===id),p=P(c.pid),pa=partBy(c.cod)||{nome:'—'};
+ openModal('Convite',`<p><b>${esc(p?.nome||'Pesquisa removida')}</b><br><span class="small muted">${esc(c.cod)} · ${esc(pa.nome)}</span></p><p>${pill(c.status)}</p>
+ <ol class="ciclo" aria-label="Ciclo de vida do convite">${CICLO.map(s=>`<li class="${s===c.status?'on':''}">${s}</li>`).join('')}</ol>
+ <h3>Histórico</h3><ul class="small">${(c.hist||[]).map(h=>`<li>${esc(h.t)} · ${esc(h.who)}: ${esc(h.acao)}</li>`).join('')||'<li>Sem registros.</li>'}</ul>`,
+ `${['Solicitado','Enviado'].includes(c.status)&&pode('convites','convites')?`<button type="button" class="btn btn-ghost" data-act="conv-editar" data-id="${c.id}">Editar</button>`:''}<button type="button" class="btn btn-primary" data-act="close">Fechar</button>`)}
+function conviteEditar(id){const c=S.convites.find(x=>x.id===id);if(!['Solicitado','Enviado'].includes(c.status)){toast('Só é possível editar convites ainda não abertos.');return}
+ const ps=S.pesquisas.filter(p=>p.status==='Ativa'||p.status==='Pausada');
+ openModal('Editar convite',`<form id="f-ce" data-form="conv-editar" data-id="${c.id}">${sel('ce-pid','Pesquisa',ps.map(p=>[p.id,p.nome]),c.pid)}${sel('ce-cod','Participante',S.participantes.map(p=>[p.cod,`${p.nome} · ${p.cod}`]),c.cod)}<p class="small muted">Só convites ainda não abertos pelo participante podem ser editados. A mudança entra no histórico.</p><div class="err" id="ce-err" hidden></div></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-ce">Salvar</button>`)}
+FORM['conv-editar']=f=>{const c=S.convites.find(x=>x.id===f.dataset.id),d=formData(f),e=f.querySelector('#ce-err');
+ if(S.convites.some(x=>x!==c&&x.pid===d['ce-pid']&&x.cod===d['ce-cod']&&x.status!=='Cancelado')){e.textContent='Esse participante já tem convite ativo para essa pesquisa.';e.hidden=false;return}
+ const mud=[];if(c.pid!==d['ce-pid'])mud.push('pesquisa');if(c.cod!==d['ce-cod'])mud.push('participante');c.pid=d['ce-pid'];c.cod=d['ce-cod'];histC(c,'Editado'+(mud.length?' ('+mud.join(' e ')+')':' (sem mudanças)'));save();closeModal();toast('Convite atualizado.');refresh()};
+/* ■ FIM · B.2/B.5 · convites */
+
+/* ▶ INÍCIO · B.3/B.4 · documentos do projeto (tipos configuráveis; obrigatoriedade desligada até a regra ser confirmada) */
+function docsView(pj){const adm=S.session.mode==='admin';
+ return `<div class="ph"><p class="muted" style="margin:0">Documentos do projeto. ${S.docTipos.some(t=>t.obrig)?'Os marcados como obrigatórios são exigidos na criação.':'Nenhum é obrigatório enquanto a regra de negócio não for confirmada.'}</p>${adm?'<button type="button" class="btn btn-ghost btn-sm" data-act="doc-config">Configurar documentos</button>':''}</div>
+ <div class="tablebox"><table><thead><tr><th>Documento</th><th>Exigência</th><th>Arquivo</th><th>Enviado em</th>${adm?'<th>Ação</th>':''}</tr></thead><tbody>${S.docTipos.map(t=>{const d=pj.docs&&pj.docs[t.id];return `<tr><td><b>${esc(t.nome)}</b></td><td>${pill(t.obrig?'Obrigatório':'Opcional')}</td><td>${d?esc(d.arq):'<span class="muted">Não enviado</span>'}</td><td class="tnum">${d?d.data:'—'}</td>${adm?`<td><label class="linkbtn" for="doc-${t.id}">${d?'Substituir':'Enviar'}</label><input id="doc-${t.id}" type="file" hidden data-doc="${t.id}" data-proj="${pj.id}" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg"></td>`:''}</tr>`}).join('')}</tbody></table></div>`}
+function docConfig(){openModal('Configurar documentos do projeto',`<p class="small muted">Defina quais documentos são exigidos ao criar um projeto. Decisão de negócio pendente: por padrão nenhum é obrigatório (B.4).</p>
+ <div>${S.docTipos.map(t=>`<div class="trow"><span>${esc(t.nome)}</span><label class="toggle"><input type="checkbox" data-act-change="doc-obrig" data-id="${t.id}" ${t.obrig?'checked':''} aria-label="${esc(t.nome)} obrigatório"><span></span></label></div>`).join('')}</div>`,`<button type="button" class="btn btn-primary" data-act="close">Concluir</button>`)}
+Object.assign(TONE,{Obrigatório:'acc',Opcional:'neu','Recebido (não lido no protótipo)':'neu',Indisponível:'neu'});
+/* ■ FIM · B.3/B.4 · documentos */
+
+/* ▶ INÍCIO · C.1–C.5, C.7 · cadastros com paginação, filtros, ordenação e seleção (individual, página, conjunto filtrado) */
+const FAIXAS=[['','Todas as idades'],['18-24','18 a 24'],['25-34','25 a 34'],['35-44','35 a 44'],['45-59','45 a 59'],['60-200','60 ou mais']];
+const projetosDe=x=>[...new Set(S.convites.filter(c=>c.cod===x.cod&&c.status!=='Cancelado').map(c=>P(c.pid)?.projeto).filter(Boolean))];
+const pesqDe=(t,x)=>t==='agentes'?S.pesquisas.filter(p=>p.agentes.includes(x.nome)):S.convites.filter(c=>c.cod===x.cod&&c.status!=='Cancelado').map(c=>P(c.pid)).filter(Boolean);
+function filtrarPart(){const q=(UI.cadq||'').toLowerCase(),rg=UI.cadReg||'',pj=UI.cadProj||'',sx=UI.cadSexo||'',fx=UI.cadIdade||'',tp=UI.cadtp||'';
+ let l=S.participantes.filter(x=>{if(q&&!(x.cod+' '+x.nome+' '+x.cidade).toLowerCase().includes(q))return false;if(rg&&x.regiao!==rg)return false;if(pj&&!projetosDe(x).includes(pj))return false;if(sx&&x.sexo!==sx)return false;
+  if(fx){const [a,b]=fx.split('-').map(Number);if(!(x.idade>=a&&x.idade<=b))return false}const ps=pesqDe('participantes',x);if(tp==='__nenhuma')return !ps.length;return !tp||ps.some(p=>p.tipo===tp)});
+ const o=UI.cadOrd||'nome',cmp={nome:(a,b)=>a.nome.localeCompare(b.nome),'idade-asc':(a,b)=>(a.idade||0)-(b.idade||0),'idade-desc':(a,b)=>(b.idade||0)-(a.idade||0),regiao:(a,b)=>(a.regiao||'').localeCompare(b.regiao||'')||a.nome.localeCompare(b.nome),recentes:(a,b)=>toISO(b.criado).localeCompare(toISO(a.criado))}[o];return l.sort(cmp)}
+V['adm-cadastros']=r=>{let t=UI.cadTab;if(t!=='agentes'&&t!=='participantes')t=UI.cadTab='participantes';const c=CAD[t];
+ const nota=t==='agentes'?`<p class="note sol" data-solicitacao="S5">${solTag('S5')} Agentes são entrevistadores terceirizados: ficam só no cadastro, <b>sem login</b>. Os resultados de campo entram por <a href="#adm-pesquisas">Pesquisas → Importar</a>.</p>`:'';
+ const det=pode('cadastros','detalhes');
+ const filtros=t==='participantes'?`<div class="filters" data-req="C.2"><input class="grow" type="search" data-live="cad" data-key="cadq" placeholder="Buscar por código, nome ou cidade" aria-label="Buscar" value="${esc(UI.cadq||'')}">
+  <select data-live="cad" data-key="cadReg" aria-label="Região">${opts([['','Todas as regiões'],...REGIOES],UI.cadReg||'')}</select>
+  <select data-live="cad" data-key="cadProj" aria-label="Projeto">${opts([['','Todos os projetos'],...S.projetos.map(p=>[p.id,p.nome])],UI.cadProj||'')}</select>
+  ${det?`<select data-live="cad" data-key="cadSexo" aria-label="Sexo">${opts([['','Todos os sexos'],...SEXOS],UI.cadSexo||'')}</select><select data-live="cad" data-key="cadIdade" aria-label="Faixa de idade">${opts(FAIXAS,UI.cadIdade||'')}</select>`:''}
+  <select data-live="cad" data-key="cadtp" aria-label="Tipo de pesquisa">${opts([['','Qualquer tipo de pesquisa'],'Padrão','Personalizada',['__nenhuma','Sem pesquisa']],UI.cadtp||'')}</select>
+  <select data-live="cad" data-key="cadOrd" aria-label="Ordenar por">${opts([['nome','Ordenar: nome'],...(det?[['idade-asc','Idade: menor primeiro'],['idade-desc','Idade: maior primeiro']]:[]),['regiao','Região'],['recentes','Cadastro mais recente']],UI.cadOrd||'nome')}</select></div>`
+  :`<div class="filters"><input class="grow" type="search" data-live="cad" data-key="cadq" placeholder="Buscar em agentes" aria-label="Buscar" value="${esc(UI.cadq||'')}"><span class="lbl">Aplica pesquisas do tipo</span><select data-live="cad" data-key="cadtp" aria-label="Tipo de pesquisa">${opts([['','Todos os tipos'],'Padrão','Personalizada',['__nenhuma','Sem pesquisa']],UI.cadtp||'')}</select></div>`;
+ return sys(r,head('Cadastros','Participantes e agentes usados nas pesquisas. Os clientes ficam no menu Clientes.',pode('cadastros','criar')?`<button type="button" class="btn btn-primary" data-act="cad-add">+ Adicionar ${c.s}</button>`:'')+
+ `<div class="tabs" role="tablist">${['participantes','agentes'].map(k=>`<button type="button" role="tab" aria-selected="${k===t}" data-act="set" data-k="cadTab" data-v="${k}">${CAD[k].t} ${S[k].length}</button>`).join('')}</div>${nota}${filtros}<div id="part-cad">${PART.cad()}</div>`)};
+PART.cad=()=>{const t=UI.cadTab==='agentes'?'agentes':'participantes';if(t==='agentes')return cadAgentes();
+ const det=pode('cadastros','detalhes'),l=filtrarPart(),sig=JSON.stringify([UI.cadq,UI.cadReg,UI.cadProj,UI.cadSexo,UI.cadIdade,UI.cadtp]);
+ if(UI.selSig!==sig){if(UI.selSig!==undefined&&((UI.sel||[]).length||UI.selTodos))UI.selAviso='Os filtros mudaram: a seleção foi limpa.';UI.sel=[];UI.selTodos=false;UI.selSig=sig;UI.cadPg=1}
+ const tp=Math.max(1,Math.ceil(l.length/10)),pg=Math.min(Math.max(1,UI.cadPg||1),tp),pag=l.slice((pg-1)*10,pg*10),sel=new Set(UI.sel||[]);
+ const marcado=x=>UI.selTodos||sel.has(x.id),nSel=UI.selTodos?l.length:sel.size,pagToda=pag.length&&pag.every(marcado);
+ const aviso=UI.selAviso?`<p class="note small" role="status">${esc(UI.selAviso)}</p>`:'';UI.selAviso='';
+ const barra=nSel?`<div class="selbar" role="region" aria-label="Seleção" data-req="C.4"><b>${nSel} selecionado(s)</b>${UI.selTodos?` <span class="small">— todos os ${l.length} que atendem aos filtros, inclusive em outras páginas</span>`:pagToda&&l.length>pag.length?` <span class="small">— os ${pag.length} desta página.</span> <button type="button" class="linkbtn" data-act="sel-filtrados">Selecionar todos os ${l.length} filtrados</button>`:''}
+  <span class="grow"></span>${pode('convites','convites')?'<button type="button" class="btn btn-primary btn-sm" data-act="bulk-conv">Convidar para pesquisa</button>':''}${pode('cadastros','exportar')?'<button type="button" class="btn btn-ghost btn-sm" data-act="exp-cad">Exportar CSV</button>':''}<button type="button" class="linkbtn" data-act="sel-limpar">Limpar seleção</button></div>`:'';
+ if(!l.length)return aviso+'<p class="empty panel">Nenhum participante com esses filtros. Limpe ou ajuste os filtros.</p>';
+ return aviso+barra+`<div class="tablebox"><table><thead><tr><th><input type="checkbox" data-act-change="sel-pag" aria-label="Selecionar os ${pag.length} desta página" ${pagToda?'checked':''}></th><th>Código</th><th>Nome</th><th>Região</th>${det?'<th>Idade</th><th>Sexo</th>':''}<th>Projetos</th><th>Cadastrado em</th><th>Ações</th></tr></thead><tbody>${pag.map(x=>`<tr${marcado(x)?' class="sel"':''}><td><input type="checkbox" data-act-change="sel-um" data-id="${x.id}" aria-label="Selecionar ${esc(x.nome)}" ${marcado(x)?'checked':''}></td><td class="tnum">${esc(x.cod)}</td><td><b>${esc(x.nome)}</b><span class="s">${esc(x.cidade||'')}</span></td><td>${esc(x.regiao||'—')}</td>${det?`<td class="tnum">${x.idade??'—'}</td><td>${esc(x.sexo||'—')}</td>`:''}<td class="small">${projetosDe(x).map(id=>esc(projNome(id))).join('<br>')||'<span class="muted">—</span>'}</td><td class="tnum">${x.criado}</td><td class="acts">${pode('cadastros','editar')?`<button type="button" class="linkbtn" data-act="cad-edit" data-id="${x.id}">Editar</button>`:''}${pode('cadastros','excluir')?`<button type="button" class="linkbtn danger" data-act="cad-del" data-id="${x.id}">Excluir</button>`:''}</td></tr>`).join('')}</tbody></table></div>`+paginacao(l.length,pg,'cadPg','cad')+
+ (det?'':'<p class="small muted">Idade e sexo aparecem só para perfis com acesso a dados detalhados (C.7).</p>')};
+function cadAgentes(){const c=CAD.agentes,q=(UI.cadq||'').toLowerCase(),tp=UI.cadtp||'';
+ const l=S.agentes.filter(x=>{if(q&&!c.cols.some(([k])=>String(x[k]||'').toLowerCase().includes(q)))return false;const ps=pesqDe('agentes',x);if(tp==='__nenhuma')return !ps.length;return !tp||ps.some(p=>p.tipo===tp)});
+ const tp2=Math.max(1,Math.ceil(l.length/10)),pg=Math.min(Math.max(1,UI.agPg||1),tp2),pag=l.slice((pg-1)*10,pg*10);
+ if(!l.length)return '<p class="empty panel">Nenhum agente com esses filtros.</p>';
+ return `<div class="tablebox"><table><thead><tr>${c.cols.map(([,lb])=>`<th>${lb}</th>`).join('')}<th>Pesquisas</th><th>Acesso</th><th>Ações</th></tr></thead><tbody>${pag.map(x=>{const ps=pesqDe('agentes',x);return `<tr>${c.cols.map(([k],i)=>`<td${i===0?' style="font-weight:600"':''}${k==='criado'?' class="tnum"':''}>${esc(x[k]||'—')}</td>`).join('')}<td class="small">${ps.length||'<span class="muted">Nenhuma</span>'}</td><td>${pill('Sem login')}</td><td class="acts">${pode('cadastros','editar')?`<button type="button" class="linkbtn" data-act="cad-edit" data-id="${x.id}">Editar</button>`:''}${pode('cadastros','excluir')?`<button type="button" class="linkbtn danger" data-act="cad-del" data-id="${x.id}">Excluir</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`+paginacao(l.length,pg,'agPg','cad')}
+function selecionados(){const l=filtrarPart();return UI.selTodos?l:S.participantes.filter(x=>(UI.sel||[]).includes(x.id))}
+function bulkConvite(){const alvo=selecionados(),ps=S.pesquisas.filter(p=>p.status==='Ativa');
+ openModal('Convidar selecionados',`<form id="f-bc" data-form="bulk-conv">${sel('bc-pid','Pesquisa',ps.map(p=>[p.id,p.nome]),ps[0]?.id)}<div id="bc-resumo" class="note" role="status"></div><p class="small muted">Ação de grande impacto: confira o número antes de confirmar (C.4).</p></form>`,
+ `<button type="button" class="btn btn-ghost" data-act="close">Cancelar</button><button class="btn btn-primary" type="submit" form="f-bc" id="bc-ok">Confirmar envio</button>`,
+ m=>{const up=()=>{const pid=m.querySelector('#bc-pid').value,ja=alvo.filter(x=>S.convites.some(c=>c.pid===pid&&c.cod===x.cod&&c.status!=='Cancelado')).length,n=alvo.length-ja;
+  m.querySelector('#bc-resumo').innerHTML=`<b>${n} convite(s) serão enviados</b> para “${esc((P(pid)||{}).nome||'')}”.${ja?` ${ja} participante(s) já tinham convite ativo e serão ignorados.`:''}`;m.querySelector('#bc-ok').textContent=`Confirmar envio de ${n} convite(s)`;m.querySelector('#bc-ok').disabled=!n};
+  m.querySelector('#bc-pid').onchange=up;up()})}
+FORM['bulk-conv']=f=>{const pid=f.querySelector('#bc-pid').value,alvo=selecionados();let n=0;
+ alvo.forEach(x=>{if(S.convites.some(c=>c.pid===pid&&c.cod===x.cod&&c.status!=='Cancelado'))return;const c={id:nid('cv'),pid,cod:x.cod,data:hoje(),status:'Enviado'};histC(c,'Criado e enviado (convite em massa)');S.convites.unshift(c);n++});
+ UI.sel=[];UI.selTodos=false;save();closeModal();toast(`${n} convite(s) enviados. Acompanhe em Convites.`);refresh()};
+function exportarCadastro(){const det=pode('cadastros','detalhes'),l=selecionados();
+ baixarCSV('participantes_selecionados.csv',[['codigo','regiao',...(det?['idade','sexo']:[]),'projetos','cadastrado_em'],...l.map(x=>[x.cod,x.regiao||'',...(det?[x.idade??'',x.sexo||'']:[]),projetosDe(x).map(projNome).join(' | '),x.criado])])}
+/* ■ FIM · C.1–C.5, C.7 · cadastros */
+
+/* ▶ INÍCIO · C.6 · dispositivo usado ao responder (pergunta na revisão do participante; também vem na importação) */
+function dispositivoBloco(g){return `<fieldset class="panel q" data-req="C.6"><legend>Em que aparelho você respondeu?</legend><div class="radio-list">${DISPOS.map(d=>`<label><input type="radio" name="disp" value="${esc(d)}" ${g.disp===d?'checked':''} data-act-change="pa-disp">${d==='Não informado'?'Prefiro não informar':d==='Próprio'?'Meu próprio aparelho':d}</label>`).join('')}</div><div class="err" id="disp-err" hidden>Escolha uma opção (pode ser “Prefiro não informar”).</div></fieldset>`}
+/* ■ FIM · C.6 */
+
+/* ▶ INÍCIO · A.4, D.2, D.4, D.5, E.4 · Integrações: o que é real, o que é só link e o que falta */
+V['adm-integracoes']=r=>sys(r,head('Integrações','O que está funcionando de verdade, o que é só redirecionamento e o que depende de credenciais ou decisão.')+
+ `<div class="tablebox"><table><thead><tr><th>Integração</th><th>Hoje no protótipo</th><th>Situação</th><th>Para ativar de verdade</th></tr></thead><tbody>
+ <tr><td><b>SurveyMonkey · abrir pesquisa</b></td><td>Cada pesquisa guarda o link e abre em nova aba</td><td>${pill('Funcionando')}</td><td>Trocar os links de exemplo pelos links reais da conta</td></tr>
+ <tr><td><b>SurveyMonkey · importar respostas</b></td><td>Arquivo CSV exportado do SurveyMonkey, em Pesquisas → Importar</td><td>${pill('Funcionando')}</td><td>Padronizar as colunas da exportação</td></tr>
+ <tr><td><b>SurveyMonkey · sincronizar pela API</b></td><td>Não implementado (fora do escopo aprovado)</td><td>${pill('Não implementado')}</td><td>Conta com acesso à API, app registrado, token guardado no servidor e tratamento de limites de uso</td></tr>
+ <tr><td><b>Microsoft Teams / Google Meet · abrir reunião</b></td><td>Link colado no agendamento, validado e aberto em nova aba</td><td>${pill('Funcionando')}</td><td>Nada além do link</td></tr>
+ <tr><td><b>Teams / Meet · criar reunião e buscar gravação</b></td><td>Não implementado</td><td>${pill('Não implementado')}</td><td>Microsoft Graph ou Google Calendar/Meet API, consentimento do administrador da conta e servidor</td></tr>
+ <tr><td><b>Transcrição ao vivo</b></td><td>Não implementada; a transcrição entra por arquivo .vtt/.txt</td><td>${pill('Indisponível')}</td><td>Serviço de captura e reconhecimento de fala, armazenamento seguro e consentimento</td></tr></tbody></table></div>
+ <div class="panel" style="display:grid;gap:12px;max-width:640px" data-req="D.5"><h3>Retenção de transcrições</h3><p class="small muted">Por quanto tempo guardar as transcrições. Decisão de negócio pendente (LGPD).</p>${sel('ret','Prazo de retenção',['A definir','90 dias','180 dias','1 ano'],S.config.retencao,'data-act-change="retencao"')}</div>`);
+Object.assign(TONE,{Funcionando:'ok','Não implementado':'neu','Sem login':'neu'});
+/* ■ FIM · A.4, D.2, D.4, D.5 · Integrações */
+
+/* ▶ INÍCIO · A–E · ações novas */
+Object.assign(ACT,{
+ 'importar-abrir':()=>importarEscolha(),
+ 'imp-pesq-abrir':()=>{closeModal();importarPesquisasForm()},
+ 'imp-resp-abrir':()=>{closeModal();importarRespostasForm()},
+ 'ir-modelo':()=>{const t=document.getElementById('ir-txt');t.value=MODELO_RESP;t.focus()},
+ 'exp-res':el=>{const s=el.dataset.scope,pq=UI[s+'DetP']||'',dp=UI[s+'DetD']||'',og=UI[s+'DetO']||'';const l=S.respostasDet.filter(r=>(!pq||r.pid===pq)&&(!dp||r.dispositivo===dp)&&(!og||r.origem===og));
+  baixarCSV('respostas_detalhadas.csv',[['codigo','pesquisa','data','origem','dispositivo','onde','genero'],...l.map(r=>[r.cod,(P(r.pid)||{}).nome||'',r.data,r.origem,r.dispositivo,r.onde,r.genero])])},
+ 'pag':el=>{const v=+el.dataset.v;if(!v)return;UI[el.dataset.k]=v;save();refreshPart(el.dataset.part)},
+ 'conv-det':el=>conviteDetalhes(el.dataset.id),
+ 'conv-editar':el=>{closeModal();conviteEditar(el.dataset.id)},
+ 'doc-config':()=>docConfig(),
+ 'sel-filtrados':()=>{UI.selTodos=true;save();refreshPart('cad')},
+ 'sel-limpar':()=>{UI.sel=[];UI.selTodos=false;save();refreshPart('cad')},
+ 'bulk-conv':()=>bulkConvite(),
+ 'exp-cad':()=>exportarCadastro(),
+ 'salvar-mx2':()=>{S.perm2=UI.mx2;UI.mx2=null;save();refresh();toast('Permissões salvas. Menus e ações já seguem a nova regra.')},
+ 'descartar-mx2':()=>{UI.mx2=null;save();refresh()}
+});
+Object.assign(CHANGE,{
+ 'mx2':el=>{UI.mx2=UI.mx2||JSON.parse(JSON.stringify(S.perm2));const p=UI.mxPerf||'transcricao';UI.mx2[p]=UI.mx2[p]||{};UI.mx2[p][el.dataset.k]=el.checked?1:0;save();refresh()},
+ 'sel-um':el=>{const l=filtrarPart();let s=UI.selTodos?l.map(x=>x.id):[...(UI.sel||[])];UI.selTodos=false;s=el.checked?[...new Set([...s,el.dataset.id])]:s.filter(x=>x!==el.dataset.id);UI.sel=s;save();refreshPart('cad')},
+ 'sel-pag':el=>{const l=filtrarPart(),pg=Math.max(1,UI.cadPg||1),ids=l.slice((pg-1)*10,pg*10).map(x=>x.id);let s=UI.selTodos?l.map(x=>x.id):[...(UI.sel||[])];UI.selTodos=false;s=el.checked?[...new Set([...s,...ids])]:s.filter(x=>!ids.includes(x));UI.sel=s;save();refreshPart('cad')},
+ 'doc-obrig':el=>{const t=S.docTipos.find(x=>x.id===el.dataset.id);t.obrig=el.checked;save();toast(`${t.nome}: ${el.checked?'obrigatório':'opcional'} na criação de projetos.`);refresh()},
+ 'retencao':el=>{S.config.retencao=el.value;save();toast('Prazo de retenção: '+el.value+'.')},
+ 'pa-disp':el=>{const g=myProg()[UI.paPid];if(g){g.disp=el.value;save()}}
+});
+document.addEventListener('change',e=>{const el=e.target;if(!el.dataset||!el.dataset.doc||!el.files.length)return;if(!exigir('projetos','editar')){el.value='';return}
+ const pj=PJ(el.dataset.proj),f=el.files[0];pj.docs=pj.docs||{};pj.docs[el.dataset.doc]={arq:f.name,data:hoje()};el.value='';save();toast('Documento anexado ao projeto.');refresh()});
+/* ◆ MEIO · E.5 · cada ação que muda dados passa pela checagem central, mesmo se o botão for forjado no navegador */
+[[FORM,'pesquisa','pesquisas','editar'],[FORM,'imp-pesq','pesquisas','importar'],[FORM,'imp-resp','pesquisas','importar'],[FORM,'projeto','projetos','criar'],[FORM,'convite','convites','convites'],[FORM,'conv-editar','convites','convites'],[FORM,'bulk-conv','convites','convites'],
+ [FORM,'cad','cadastros','editar'],[FORM,'usuario','usuarios','usuarios'],[FORM,'fg','reunioes','criar'],[FORM,'rec-add','pesquisas','editar'],
+ [ACT,'nova-pesquisa','pesquisas','criar'],[ACT,'editar-pesquisa','pesquisas','editar'],[ACT,'excluir-pesquisa','pesquisas','excluir'],[ACT,'importar-abrir','pesquisas','importar'],[ACT,'imp-pesq-abrir','pesquisas','importar'],[ACT,'imp-resp-abrir','pesquisas','importar'],
+ [ACT,'novo-projeto','projetos','criar'],[ACT,'doc-config','projetos','editar'],[ACT,'convidar','convites','convites'],[ACT,'novo-convite','convites','convites'],[ACT,'aprovar','convites','convites'],[ACT,'recusar','convites','convites'],[ACT,'reenviar','convites','convites'],[ACT,'cancelar-convite','convites','convites'],[ACT,'conv-editar','convites','convites'],
+ [ACT,'cad-add','cadastros','criar'],[ACT,'cad-edit','cadastros','editar'],[ACT,'cad-del','cadastros','excluir'],[ACT,'cli-add','cadastros','criar'],[ACT,'cli-edit','cadastros','editar'],[ACT,'bulk-conv','convites','convites'],[ACT,'exp-cad','cadastros','exportar'],[ACT,'exp-res','resultados','exportar'],
+ [ACT,'novo-usuario','usuarios','usuarios'],[ACT,'editar-usuario','usuarios','usuarios'],[ACT,'remover-usuario','usuarios','usuarios'],[ACT,'salvar-mx2','usuarios','usuarios'],[ACT,'reset','usuarios','usuarios'],
+ [ACT,'fg-nova','reunioes','criar'],[ACT,'fg-iniciar','reunioes','editar'],[ACT,'fg-apresentar','reunioes','editar'],[ACT,'fg-parar','reunioes','editar'],[ACT,'fg-encerrar','reunioes','editar'],[ACT,'eq-acao','transcricoes','editar'],[ACT,'tr-excluir','transcricoes','excluir'],[ACT,'ag-rec','pesquisas','editar'],
+ [CHANGE,'perm','usuarios','usuarios'],[CHANGE,'mx2','usuarios','usuarios'],[CHANGE,'doc-obrig','projetos','editar'],[CHANGE,'retencao','integracoes','integracoes'],[CHANGE,'rec','pesquisas','editar']
+].forEach(([obj,k,m,a])=>{if(obj[k])obj[k]=G(m,a,obj[k])});
+/* ■ FIM · A–E · ações novas e camada E.5 */
+/* ======================= FIM DA EVOLUÇÃO 27/10/2026 ======================= */
 
 /* ======================= Roteador ======================= */
 const publicNav=[['home','Home'],['servicos','Serviços'],['focusgroup','Focus group'],['cia','CIA'],['pesquisa','Pesquisa aberta']]; /* S2 (site): item novo no menu público */

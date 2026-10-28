@@ -7,7 +7,12 @@ Site institucional e sistema de pesquisas da Sinergia Research & Intelligence, m
 ```
 index.html                 site completo (HTML, CSS e JS num arquivo só)
 assets/logo-sinergia.png   logo
-SOLICITACOES.md            mapa das etiquetas ▶ INÍCIO / ◆ MEIO / ■ FIM das solicitações da cliente
+SOLICITACOES.md            mapa das etiquetas ▶ INÍCIO / ◆ MEIO / ■ FIM (solicitações S1–S5 e requisitos A–E)
+EVOLUCAO.md                evolução de 27/10/2026: o que mudou, arquivos, status por requisito e pendências
+PERMISSOES.md              perfis, matriz módulo × ação, regras de rota, sessão e auditoria
+INTEGRACOES.md             SurveyMonkey, Teams/Meet e transcrição: o que existe e como ativar de verdade
+REVERSAO.md                plano de reversão (ponto de restauração e passos)
+tests/                     testes automatizados (pytest + Playwright)
 ```
 
 ## Login e permissões
@@ -17,7 +22,7 @@ O login tem duas entradas:
 - **Administrador**: gerencia pesquisas, projetos, convites, resultados, cadastros, usuários e permissões.
 - **Usuário**: navega como **Equipe interna**, **Cliente Empresa** e/ou **Participante**, conforme o que o administrador marcar em *Usuários e permissões*. Quem tem mais de uma permissão escolhe o perfil ao entrar e troca pelo menu lateral ("Navegar como").
 
-Na aba *Permissões por perfil*, o administrador também liga ou desliga funções de cada perfil (por exemplo, esconder os insights de focus group do cliente).
+Na aba *Permissões por perfil*, o administrador marca, para cada perfil, o que ele pode fazer em cada módulo (visualizar, criar, editar, excluir, importar, exportar, gerenciar convites, consultar resultados, dados detalhados…). A matriz vale para menus, telas, botões e para a checagem central que roda antes de cada ação. Detalhes em [PERMISSOES.md](PERMISSOES.md).
 
 Entrevistadores e terceirizados (agentes de campo) **não têm acesso** à plataforma: ficam só em Cadastros, e o login recusa o e-mail deles (solicitação S5).
 
@@ -45,7 +50,7 @@ Entrevistadores e terceirizados (agentes de campo) **não têm acesso** à plata
 | S4 | Integração com a plataforma | Aba *Focus group* no projeto, esteira *Transcrição e análise*, insights nos resultados do cliente |
 | S5 | Controle de acesso | Agente sem login; perfil Equipe interna com 3 funções |
 
-Fluxo em três etapas, marcado nas telas: **1 · INÍCIO** agendar e convidar → **2 · MEIO** sala ao vivo → **3 · FIM** transcrição e análise. Limite honesto do S1: nenhum site impede foto da tela feita com outro aparelho; a marca d'água individual identifica quem vazou. Na versão real, o vídeo precisa de DRM (Widevine, FairPlay ou PlayReady).
+Fluxo em três etapas, marcado nas telas: **1 · INÍCIO** agendar e convidar → **2 · MEIO** reunião no Teams ou Meet (link externo) com o material protegido na Sinergia → **3 · FIM** transcrição importada e análise. Desde 27/10/2026 não há mais sala de vídeo própria nem chat (decisão do módulo D). Limite honesto do S1: nenhum site impede foto da tela feita com outro aparelho; a marca d'água individual identifica quem vazou. Na versão real, o vídeo precisa de DRM (Widevine, FairPlay ou PlayReady).
 
 O cadastro de participante no site cria uma conta nova com permissão de Participante. O botão *Restaurar dados de exemplo* (menu do administrador) volta tudo ao estado inicial.
 
@@ -73,9 +78,23 @@ O cadastro de participante no site cria uma conta nova com permissão de Partici
 - Participante recebe recomendações de pesquisas abertas; o pedido passa por triagem do administrador em Convites.
 - Cadastros com data de cadastro e filtro por tipo de pesquisa.
 
-Os dados ficam no navegador com a chave `sinergia-sistema-v2`; quem abriu a versão anterior recebe os dados novos automaticamente.
+### Evolução de 27/10/2026 (módulos A a E)
 
-As áreas logadas exigem login; um endereço de outra área redireciona para a área permitida.
+Importação centralizada em Pesquisas, link do SurveyMonkey, respostas detalhadas por perfil, documentos do projeto, ciclo de vida do convite, cadastros com paginação e seleção em massa, dispositivo usado na resposta, reuniões só por link do Teams/Meet, transcrição sem simulação e matriz de permissões módulo × ação. Ver [EVOLUCAO.md](EVOLUCAO.md).
+
+Os dados ficam no navegador com a chave `sinergia-sistema-v4`; quem abriu uma versão anterior recebe os dados novos automaticamente.
+
+As áreas logadas exigem login. Um endereço de outra área abre a página *Acesso negado* (403) e a tentativa fica registrada em *Usuários e permissões → Acessos negados*. A sessão expira após 30 minutos sem uso.
+
+## Testes automatizados
+
+```
+pip install pytest playwright
+playwright install chromium
+pytest -q tests
+```
+
+São quatro grupos: `test_funcional.py` (módulos A–D), `test_autorizacao.py` (rotas, ações forjadas, escalada, sessão), `test_integracoes.py` (links externos e ausência de credenciais no repositório) e `test_regressao.py` (todas as telas de todos os perfis abrem sem erro de JavaScript e o que já existia continua).
 
 ## Publicar no GitHub Pages
 
