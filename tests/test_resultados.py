@@ -65,7 +65,7 @@ def test_R7_respostas_detalhadas_com_colunas_da_pesquisa(app):
 
 
 def test_R8_cliente_ve_resultado_sem_dados_internos(app):
-    app.login(CLIENTE); app.liberar_resultados_cliente(); app.ir('cl-resultados')  # RF01 (V2): resultados só depois da liberação
+    app.login(CLIENTE); app.ir('cl-resultados')
     t = app.main()
     assert 'Entrevistas em campo' not in t and 'Campo atrasado' not in t
     app.p.click('.res-row [data-v="p1"]'); app.p.wait_for_timeout(200)

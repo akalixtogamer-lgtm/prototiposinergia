@@ -16,12 +16,10 @@ class App:
     def __init__(self, page): self.p = page; self.erros = []
     def ir(self, rota, espera=250): self.p.goto(URL + '#' + rota); self.p.wait_for_timeout(espera)
     def hash(self): return self.p.evaluate('location.hash')
-    def login(self, email, aba='usuario', senha=SENHA):
-        # RF05 (V2): o administrador entra pelo acesso interno (link discreto no rodapé); os demais pela tela Entrar
-        rota = 'acesso-interno' if aba == 'admin' else 'login'
-        self.ir(rota, 200)
-        if self.p.locator('[data-act="logout"]').count(): self.p.click('[data-act="logout"]'); self.p.wait_for_timeout(200); self.ir(rota, 200)
-        self.p.fill('#l-mail', email); self.p.fill('#l-senha', senha)
+    def login(self, email, aba='usuario'):
+        self.ir('login', 200)
+        if self.p.locator('[data-act="logout"]').count(): self.p.click('[data-act="logout"]'); self.p.wait_for_timeout(200)
+        self.p.click(f'[data-tab="{aba}"]'); self.p.fill('#l-mail', email); self.p.fill('#l-senha', SENHA)
         self.p.click('form[data-form=login] button[type=submit]'); self.p.wait_for_timeout(350)
     def st(self, expr):
         """Lê o estado salvo pelo sistema (o código roda isolado numa função; o teste só enxerga o que foi salvo)."""
@@ -37,9 +35,6 @@ class App:
         """Altera o estado salvo no navegador (simula adulteração do localStorage) e recarrega."""
         self.p.evaluate("f=>{const k='sinergia-sistema-v4';const s=JSON.parse(localStorage.getItem(k));(new Function('S',f))(s);localStorage.setItem(k,JSON.stringify(s))}", fn)
         self.p.reload(); self.p.wait_for_timeout(300)
-    def liberar_resultados_cliente(self, email='marina@cinemaalfa.com.br'):
-        """RF01 (V2): o cliente só vê resultados liberados. Simula um pedido 'todas as pesquisas' já aprovado pelo administrador."""
-        self.estado(f"const u=S.users.find(x=>x.email==='{email}'),emp=u.vinculos.find(v=>v.tipo==='cliente').ref;S.solicRes.push({{id:'sr-t',uid:u.id,nome:u.nome,empresa:emp,escopo:'todas',pid:'',status:'Aprovada',criada:'',decididaPor:'Helena Prado',decididaEm:'',pids:S.pesquisas.filter(p=>p.cliente===emp&&['Ativa','Pausada','Encerrada'].includes(p.status)).map(p=>p.id)}})")
     def main(self): return self.p.inner_text('.sys-main') if self.p.locator('.sys-main').count() else self.p.inner_text('body')
 
 @pytest.fixture
