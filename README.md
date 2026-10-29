@@ -11,6 +11,7 @@ SOLICITACOES.md            mapa das etiquetas ▶ INÍCIO / ◆ MEIO / ■ FIM (
 EVOLUCAO.md                evolução de 27/10/2026 e revisão de Resultados de 28/10/2026
 PERMISSOES.md              perfis, matriz módulo × ação, regras de rota, sessão e auditoria
 ACESSOS.md                 refatoração de 28/10/2026: diagnóstico, vínculos, regras R1–R13, migração, testes e limites
+REFATORACAO-V2.md          implementação do Prompt Master V2 (RF01–RF05): mudanças, fluxo audiovisual, testes, grupos, pendências
 INTEGRACOES.md             SurveyMonkey, Teams/Meet e transcrição: o que existe e como ativar de verdade
 REVERSAO.md                plano de reversão (ponto de restauração e passos)
 tests/                     testes automatizados (pytest + Playwright)
@@ -18,16 +19,16 @@ tests/                     testes automatizados (pytest + Playwright)
 
 ## Login e permissões
 
-O login tem duas entradas:
+Desde a V2 (28/10/2026, RF05) a home e o menu destacam **Entrar** e **Cadastre-se**. Há duas entradas:
 
-- **Administrador**: gerencia pesquisas, projetos, convites, resultados, cadastros, usuários e acessos.
-- **Usuário**: navega como **Equipe interna**, **Cliente Empresa** e/ou **Participante**, conforme os **vínculos** da conta (função na equipe, empresa cliente, código de participante). Quem tem mais de um vínculo escolhe o papel ao entrar e troca pelo menu lateral ("Navegar como"); as permissões não se somam.
+- **Entrar** (`#login`): participantes, clientes, equipe interna e agentes terceirizados. Cada um navega conforme os **vínculos** da conta (função na equipe, empresa cliente, código de participante, cadastro de agente). Quem tem mais de um vínculo escolhe o papel ao entrar e troca pelo menu lateral ("Navegar como"); as permissões não se somam.
+- **Acesso interno** (`#acesso-interno`, link discreto no rodapé): administradores. Esconder o link é só interface; a permissão continua conferida pela conta em cada tela e ação.
 
 Desde 28/10/2026 o sistema **calcula** o acesso: não há caixas para marcar áreas por usuário. Novo usuário nasce com um convite pendente e sem acesso; o vínculo vale quando a pessoa entra. Nomeação de administrador precisa da aprovação de outro administrador. A matriz por perfil é só leitura (está no código) e aparece em *Usuários e acessos → Arquitetura de acessos*, com regras, auditoria e um diagnóstico que explica por que cada pessoa tem ou não um acesso. Detalhes em [ACESSOS.md](ACESSOS.md) e [PERMISSOES.md](PERMISSOES.md).
 
-Entrevistadores e terceirizados (agentes de campo) **não têm acesso** à plataforma: ficam só em Cadastros, e o login recusa o e-mail deles (solicitação S5).
+**Agentes terceirizados (RF03, substitui a S5):** o administrador confere o cadastro em *Cadastros → Agentes* e clica em **Gerar login**; o agente entra pela tela Entrar com o e-mail e o código gerado. Ele estrutura pesquisas, envia arquivos e manda para revisão; não vê resultados. **Desativar login** corta o acesso e mantém o histórico.
 
-### Contas de demonstração (qualquer senha com 4+ caracteres)
+### Contas de demonstração (qualquer senha com 4+ caracteres; administradores pelo acesso interno)
 
 | Conta | Acesso |
 |---|---|
@@ -37,12 +38,13 @@ Entrevistadores e terceirizados (agentes de campo) **não têm acesso** à plata
 | carla@dadosco.com.br | Usuário · Equipe interna — Processamento (parceiro Dados & Co) |
 | livia@sinergia.com.br | Usuário · Equipe interna — Assistente de análise |
 | joao.tadeu@sinergia.com.br | Usuário · Participante |
-| yasmin@sinergia.com.br | Entrevistadora terceirizada: o login é recusado de propósito |
+| paulo.sena@campo.com.br | Agente terceirizado (V2) · código de acesso `CAMPO26` |
+| yasmin@sinergia.com.br | Agente sem login gerado: o login é recusado de propósito |
 | marina@cinemaalfa.com.br | Usuário · Cliente (Cinema Alfa) |
 | marcos@sinergia.com.br | Administrador (segundo administrador, aprova nomeações) |
 | otavio@ciabeta.com | Convite pendente de Cliente (Cia Beta): o acesso vale no primeiro login |
 | paulo@cinemadelta.com.br | Conta suspensa: o login é recusado de propósito |
-| ana.ribeiro@email.com | Usuário · Participante |
+| ana.ribeiro@email.com | Usuário · Participante · tem autorização de exibição presencial do "Trailer final — Filme A" (RF02) |
 
 ## Solicitações da cliente (relatório de 21/10/2026)
 
@@ -63,12 +65,12 @@ O cadastro de participante no site cria uma conta nova com permissão de Partici
 | Área | Telas do Figma | Endereço |
 |---|---|---|
 | Site | Home, Serviços, Cinema, CAT, CIA, Pesquisa aberta, Cadastro | `#home`, `#servicos`, `#cinema`, `#cat`, `#cia`, `#pesquisa`, `#cadastro` |
-| Acesso | Login (Administrador / Usuário) e escolha de perfil | `#login`, `#navegar` |
-| Administrador | A1 Pesquisas e A2 Nova pesquisa, A3 Resultados, A4 Projetos, A5 Projeto, A9 Clientes, A10 Cliente, A6 Convites, A7 Cadastros, A8 Usuários e acessos (com Arquitetura de acessos e Auditoria) | `#adm-pesquisas`, `#adm-resultados`, `#adm-projetos`, `#adm-projeto`, `#adm-clientes`, `#adm-cliente`, `#adm-convites`, `#adm-cadastros`, `#adm-usuarios` |
-| Agente | Desativada (S5): entrevistadores e terceirizados não acessam | — |
+| Acesso | Entrar, Acesso interno (administrador) e escolha de perfil | `#login`, `#acesso-interno`, `#navegar` |
+| Administrador | A1 Pesquisas e A2 Nova pesquisa, A3 Resultados, A4 Projetos, A5 Projeto, A9 Clientes, A10 Cliente, A6 Convites, A7 Cadastros, A8 Usuários e acessos (com Arquitetura de acessos e Auditoria), Revisão de pesquisas (V2), Audiovisual (V2) | `#adm-revisao`, `#adm-audiovisual`, `#adm-pesquisas`, `#adm-resultados`, `#adm-projetos`, `#adm-projeto`, `#adm-clientes`, `#adm-cliente`, `#adm-convites`, `#adm-cadastros`, `#adm-usuarios` |
+| Agente terceirizado (V2) | Minhas pesquisas, Pesquisa (rascunho, arquivos, revisão) | `#ag-pesquisas`, `#ag-pesquisa` |
 | Equipe interna | Focus group, Sala (observação), Transcrição e análise, Perfil | `#eq-focus`, `#eq-sala`, `#eq-transcricoes`, `#eq-perfil` |
 | Cliente Empresa | K2 Projetos (início), K3 Projeto, K5 Resultado individual, K1 Resultados (todas as pesquisas), K4 Perfil | `#cl-projetos`, `#cl-projeto`, `#cl-resultado`, `#cl-resultados`, `#cl-perfil` |
-| Participante | R1 Minhas pesquisas, R2 Preferências, R3 Pergunta com imagens, R4 Revisão, R5 Concluída, R6 Minhas respostas, R7 Perfil | `#pa-pesquisas`, `#pa-preferencias`, `#pa-responder`, `#pa-revisao`, `#pa-concluida`, `#pa-respostas`, `#pa-perfil` |
+| Participante | R1 Minhas pesquisas, R2 Preferências, R3 Pergunta com imagens, R4 Revisão, R5 Concluída, R6 Minhas respostas, R7 Perfil, Exibições presenciais (V2) | `#pa-exibicoes`, `#pa-pesquisas`, `#pa-preferencias`, `#pa-responder`, `#pa-revisao`, `#pa-concluida`, `#pa-respostas`, `#pa-perfil` |
 
 ### Revisão de 21/10/2026
 
@@ -90,6 +92,12 @@ Os dados ficam no navegador com a chave `sinergia-sistema-v4`; quem abriu uma ve
 
 As áreas logadas exigem login. Um endereço de outra área abre a página *Acesso negado* (403) e a tentativa fica registrada em *Usuários e acessos → Auditoria*. A sessão expira após 30 minutos sem uso.
 
+### Prompt Master V2 (28/10/2026, RF01–RF05)
+
+Resultados protegidos (participante e agente nunca; cliente por pedido aprovado), agente terceirizado com login gerado pelo administrador e upload validado, revisão humana de pesquisas com sinal de tema político, exibição presencial de filmes e trailers com autorização individual e reprodução única, e home com Entrar e Cadastre-se em destaque. Ver [REFATORACAO-V2.md](REFATORACAO-V2.md).
+
+O audiovisual guarda autorizações, sessões e eventos numa chave própria (`sinergia-av-v1`), lida e gravada com trava entre abas. Tudo continua no navegador: em produção essas regras precisam de servidor (D-06).
+
 ## Testes automatizados
 
 ```
@@ -98,7 +106,7 @@ playwright install chromium
 pytest -q tests
 ```
 
-São quatro grupos: `test_funcional.py` (módulos A–D), `test_autorizacao.py` (rotas, ações forjadas, escalada, sessão), `test_integracoes.py` (links externos e ausência de credenciais no repositório) e `test_regressao.py` (todas as telas de todos os perfis abrem sem erro de JavaScript e o que já existia continua).
+Arquivos `test_v2_rf01_resultados.py`, `test_v2_rf02_audiovisual.py`, `test_v2_rf03_agente.py`, `test_v2_rf04_revisao.py` e `test_v2_rf05_home.py` cobrem a V2. Os demais: `test_funcional.py` (módulos A–D), `test_autorizacao.py` (rotas, ações forjadas, escalada, sessão), `test_integracoes.py` (links externos e ausência de credenciais no repositório) e `test_regressao.py` (todas as telas de todos os perfis abrem sem erro de JavaScript e o que já existia continua).
 
 ## Publicar no GitHub Pages
 
