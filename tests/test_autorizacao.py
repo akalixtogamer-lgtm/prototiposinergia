@@ -1,4 +1,4 @@
-"""Testes de autorização (módulo E): rotas, ações forjadas, escalada, sessão expirada e matriz."""
+"""Testes de autorização (módulo E, revistos na refatoração de acessos de 28/10/2026): rotas, ações forjadas, escalada, sessão expirada e matriz só leitura."""
 from conftest import ADMIN, PARTICIPANTE, CLIENTE, TRANSCRICAO, ANALISE
 
 def test_E6_escalada_pelo_localStorage_bloqueada(app):
@@ -31,14 +31,12 @@ def test_E6_so_admin_gerencia_usuarios_mesmo_com_matriz_adulterada(app):
     app.forjar('novo-usuario'); assert app.p.locator('.modal-bg:visible').count() == 0
     app.ir('adm-usuarios', 300); assert app.hash() == '#negado'
 
-def test_E2_matriz_controla_tela_e_acao(app):
-    app.login(ADMIN, 'admin'); app.ir('adm-usuarios'); app.p.click('[data-act="set"][data-v="perm"]'); app.p.wait_for_timeout(150)
-    app.p.click('[data-act="set"][data-k="mxPerf"][data-v="analise"]'); app.p.wait_for_timeout(150)
-    app.p.uncheck('[data-act-change="mx2"][data-k="resultados.detalhes"]'); app.p.wait_for_timeout(150)
-    app.p.click('[data-act="salvar-mx2"]'); app.p.wait_for_timeout(150)
-    app.login(ANALISE); app.ir('eq-resultados')
-    assert 'Respostas detalhadas' not in app.main()
-    assert app.st("S.perm2.analise['resultados.detalhes']") in (0, None)
+def test_E2_matriz_so_leitura_e_politica_vem_do_codigo(app):
+    """A matriz virou só leitura: não há caixas para marcar, e mexer na cópia gravada no navegador não muda nada."""
+    app.login(ADMIN, 'admin'); app.ir('adm-usuarios'); app.p.click('[data-act="set"][data-v="arquitetura"]'); app.p.wait_for_timeout(200)
+    assert app.p.locator('.matrix input').count() == 0 and app.p.locator('[data-act="salvar-mx2"]').count() == 0
+    app.login(ANALISE); app.estado("S.perm2.analise['resultados.detalhes']=0")
+    app.ir('eq-resultados'); assert 'Respostas detalhadas' in app.main()
 
 def test_E6_funcao_da_equipe_so_age_na_propria_etapa(app):
     app.login(TRANSCRICAO)
@@ -47,6 +45,6 @@ def test_E6_funcao_da_equipe_so_age_na_propria_etapa(app):
     assert app.p.locator('.modal-bg:visible').count() == 0 and app.st(f"FG('{fid}').transcricao.status") == 'Transcrita' and app.st("S.auditoria[0].acao") == 'Transcrições · Editar'
 
 def test_A3_cliente_nao_ve_dados_individuais(app):
-    app.login(CLIENTE); app.ir('cl-resultados')
-    assert 'Respostas detalhadas' not in app.main()
-    assert app.st("!S.perm2.cliente['resultados.detalhes']")
+    app.login(CLIENTE); app.estado("S.perm2.cliente['resultados.detalhes']=1")  # adulterar a cópia gravada não libera nada
+    app.ir('cl-resultados')
+    assert 'Respostas detalhadas' not in app.main() and 'P-10' not in app.main()
